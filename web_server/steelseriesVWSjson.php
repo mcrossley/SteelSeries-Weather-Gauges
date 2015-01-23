@@ -1,14 +1,15 @@
 <?php
 // steelseriesVWSjson.php script by Ken True - webmaster@saratoga-weather.org
 // purpose:  read the WeatherFlash wflash.txt/wflash2.txt files and create
-//    a JSON output for use with Mark Crosley's Steel Series Gauges
+//    a JSON output for use with Mark Crossley's Steel Series Gauges
 //
 // Version 1.00 - 22-Jan-2013 - Initial release
 // Version 1.01 - 22-Jan-2013 - fixed VWS time issue with wflash[1] leading '+' instead of '0'
 // Version 1.02 - 23-Jan-2013 - fixed VWS date issue with international wflash2[275] d/m/y format
 // Version 1.03 - 24-Jan-2013 - added windrun for V2.1 gauges support
+// Version 1.04 - 04-Sep-2014 - added cloud base and indoor humidity lo/hi for v2.5 gauge support
 //
-$Version = "steelseriesVWSjson.php Version 1.03 - 24-Jan-2012";
+$Version = "steelseriesVWSjson.php Version 1.04 - 04-Sep-2014";
 //
 // error_reporting(E_ALL);  // uncomment to turn on full error reporting
 //
@@ -43,6 +44,9 @@ $uomWind = ' mph';     // =' km/h', =' kts', =' m/s', =' mph'
 $uomRain = ' in';      // =' mm', =' in'
 $WDdateMDY = true;     // =true  dates are 'month/day/year'
 //                     // =false dates are 'day/month/year'
+$uomWindRun = (preg_match('|C|',$uomTemp))?'km/h':'mph';
+$uomCloudBase = (preg_match('|C|',$uomTemp))?'m':'ft';
+//
 $ourTZ = "America/Los_Angeles";  //NOTE: this *MUST* be set correctly to
 // translate UTC times to your LOCAL time for the displays.
 $timeOnlyFormat = 'g:i a';          // USA format h:mm[am|pm\
@@ -125,6 +129,8 @@ $Status = "// $Version \n";
 "humTL":"<#humTL>",
 "humTH":"<#humTH>",
 "inhum":"<#inhum>",
+"inhumTL":"",
+"inhumTH":"",
 "SensorContactLost":"<#SensorContactLost>",
 "forecast":"<#forecastenc>",
 "tempunit":"<#tempunitnodeg>",
@@ -157,91 +163,99 @@ $Status = "// $Version \n";
 "BearingRangeFrom10":"<#BearingRangeFrom10>",
 "BearingRangeTo10":"<#BearingRangeTo10>",
 "UV":"<#UV>",
+"UVTH":"<#UVTH>",
 "SolarRad":"<#SolarRad>",
+"SolarTM":"<#solarTH>",
 "CurrentSolarMax":"<#CurrentSolarMax>",
 "domwinddir":"<#domwinddir>",
 "WindRoseData":[<#WindRoseData>],
+"windrun":"<#windrun>",
+"cloudbase":"<#cloudbasevalue>",
+"cloudbaseunit":"<#cloudbasunit>",
 "version":"<#version>",
 "build":"<#build>",
-"ver":"8"}
+"ver":"12"}
 
-Sample using Weather-Display output:
+Sample using Cumulus output:
 
-{"date":"3:39 PM",
-"dateFormat":"m/d/y",
-"temp":"64.7°F",
-"tempTL":"34.4°F",
-"tempTH":"64.7°F",
-"intemp":"73.2",
-"dew":"34.9°F",
-"dewpointTL":"30.1 °F",
-"dewpointTH":"40.8 °F",
-"apptemp":"63.4",
-"apptempTL":"32.2",
-"apptempTH":"72.3",
-"wchill":"64.7°F",
-"wchillTL":"34.4 °F",
-"heatindex":"64.7°F",
-"heatindexTH":"64.7 °F",
-"humidex":"61.6°F",
-"wlatest":"0.0 mph",
-"wspeed":"0.4 mph",
-"wgust":"7.0 mph",
-"wgustTM":"11.0 mph",
-"bearing":"292 °",
-"avgbearing":"311°",
-"press":"30.138 in.",
-"pressTL":"30.124 in.",
-"pressTH":"30.229 in.",
-"pressL":"26.001",
-"pressH":"30.569",
-"rfall":"0.00 in.",
-"rrate":"0.00",
-"rrateTM":"0.000",
-"hum":"33",
-"humTL":"31",
-"humTH":"86",
-"inhum":"32",
+{"date":"15:41",
+"temp":"9.6",
+"tempTL":"7.2",
+"tempTH":"11.9",
+"intemp":"18.6",
+"dew":"7.5",
+"dewpointTL":"6.1",
+"dewpointTH":"8.5",
+"apptemp":"8.4",
+"apptempTL":"5.4",
+"apptempTH":"10.3",
+"wchill":"9.6",
+"wchillTL":"6.5",
+"heatindex":"9.6",
+"heatindexTH":"11.9",
+"humidex":"9.8",
+"wlatest":"1",
+"wspeed":"2",
+"wgust":"7",
+"wgustTM":"15",
+"bearing":"195",
+"avgbearing":"198",
+"press":"1026.11",
+"pressTL":"1022.90",
+"pressTH":"1026.28",
+"pressL":"965.70",
+"pressH":"1045.30",
+"rfall":"0.0",
+"rrate":"0.0",
+"rrateTM":"0.0",
+"hum":"87",
+"humTL":"78",
+"humTH":"94",
+"inhum":"63",
 "SensorContactLost":"0",
-"forecast":"increasing clouds and warmer. precipitation possible within 12 to 24 hrs. windy.",
-"tempunit":"F",
+"forecast":" Partly cloudy with little temperature change. ",
+"tempunit":"C",
 "windunit":"mph",
-"pressunit":"inHg",
-"rainunit":"in",
-"temptrend":"+1.0 °F/last hr",
-"TtempTL":"7:40 AM",
-"TtempTH":"3:19 PM",
-"TdewpointTL":"7:40 AM",
-"TdewpointTH":"9:16 AM",
-"TapptempTL":"7:13 AM",
-"TapptempTH":"1:14 PM",
-"TwchillTL":"3:19 PM",
-"TheatindexTH":"3:19 PM",
-"TrrateTM":"00:00 AM",
-"ThourlyrainTH":"",
-"LastRainTipISO":"1/12/2013 4:12 AM",
-"hourlyrainTH":"0.000",
-"ThumTL":"3:22 PM",
-"ThumTH":"8:05 AM",
-"TpressTL":"2:18 PM",
-"TpressTH":"10:09 AM",
-"presstrendval":"-0.019 in. ",
-"Tbeaufort":"3",
-"TwgustTM":"2:19 PM",
-"windTM":"6.2 mph",
-"bearingTM":"315",
-"timeUTC":"2013,01,20,23,39,59",
-"BearingRangeFrom10":"289°",
-"BearingRangeTo10":"6°",
-"UV":"0.7",
-"SolarRad":"267",
-"CurrentSolarMax":"238",
-"SolarTM":"560",
-"domwinddir":"Northwesterly",
-"WindRoseData":[22.0,23.0,7.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,3.0,233.0,139.0],
-"version":"10.37R",
-"build":"45",
-"ver":"8"}
+"pressunit":"hPa",
+"rainunit":"mm",
+"temptrend":"-0.5",
+"TtempTL":"01:03",
+"TtempTH":"13:30",
+"TdewpointTL":"00:27",
+"TdewpointTH":"12:21",
+"TapptempTL":"01:03",
+"TapptempTH":"13:34",
+"TwchillTL":"01:41",
+"TheatindexTH":"13:30",
+"TrrateTM":"00:00",
+"ThourlyrainTH":"00:00",
+"LastRainTipISO":"2013-12-08 13:31",
+"hourlyrainTH":"0.0",
+"ThumTL":"13:31",
+"ThumTH":"01:15",
+"TpressTL":"03:46",
+"TpressTH":"09:58",
+"presstrendval":"0.10",
+"Tbeaufort":"F2",
+"TwgustTM":"03:46",
+"windTM":"6",
+"bearingTM":"264",
+"timeUTC":"2014,12,9,15,41,4",
+"BearingRangeFrom10":"160",
+"BearingRangeTo10":"240",
+"UV":"0.0",
+"UVTH":"0.9",
+"SolarRad":"7",
+"SolarTM":"160",
+"CurrentSolarMax":"0",
+"domwinddir":"SW",
+"WindRoseData":[0.0,0.0,0.0,0.0,0.0,0.0,0.0,81.0,1332.0,3848.0,4828.0,1655.0,288.0,24.0,0.0,0.0],
+"windrun":"59.3",
+"cloudbase":"1734",
+"cloudbaseunit":"ft",
+"version":"1.9.4",
+"build":"1085",
+"ver":"12"}
 
 */
   $wflashFile = "${wflashDir}wflash.txt";
@@ -271,48 +285,50 @@ if (!function_exists('date_default_timezone_set')) {
 // Assemble the JSON data array for output
 $JSONdata = array();
 
-$JSONdata["date"] 	= preg_replace('|\+|','0',$wflash[1]); // WD Sample= '3:39 PM'
-$JSONdata["dateFormat"] = ($WDdateMDY)?'m/d/y':'d/m/y'; // WD Sample= 'm/d/y'
-$JSONdata["temp"] 	= convertTemp($wflash[9],$uomTemp).$uomTemp; // WD Sample= '64.7°F'
-$JSONdata["tempTL"] = convertTemp($wflash2[92],$uomTemp).$uomTemp; // WD Sample= '34.4°F'
-$JSONdata["tempTH"] = convertTemp($wflash2[36],$uomTemp).$uomTemp; // WD Sample= '64.7°F'
-$JSONdata["intemp"] = convertTemp($wflash[8],$uomTemp).$uomTemp; // WD Sample= '73.2'
-$JSONdata["dew"] 	= convertTemp($wflash[24],$uomTemp).$uomTemp; // WD Sample= '34.9°F'
-$JSONdata["dewpointTL"] = convertTemp($wflash2[107],$uomTemp,1).$uomTemp; // WD Sample= '30.1 °F'
-$JSONdata["dewpointTH"] = convertTemp($wflash2[51],$uomTemp).$uomTemp; // WD Sample= '40.8 °F'
-$JSONdata["apptemp"] = convertTemp($wflash[29],$uomTemp); // WD Sample= '63.4'
-$JSONdata["apptempTL"] = '0.0'; // WD Sample= '32.2'
-$JSONdata["apptempTH"] = '0.0'; // WD Sample= '72.3'
-$JSONdata["wchill"] = convertTemp($wflash[21],$uomTemp).$uomTemp; // WD Sample= '64.7°F'
-$JSONdata["wchillTL"] = convertTemp($wflash2[104],$uomTemp).$uomTemp; // WD Sample= '34.4 °F'
-$JSONdata["heatindex"] = convertTemp($wflash[23],$uomTemp).$uomTemp; // WD Sample= '64.7°F'
-$JSONdata["heatindexTH"] = convertTemp($wflash2[50],$uomTemp).$uomTemp; // WD Sample= '64.7 °F'
-$JSONdata["humidex"] = calcHumidex($wflash[9],$wflash[7],$uomTemp); // WD Sample= '61.6°F'
-$JSONdata["wlatest"] = convertWind($wflash[4],$uomWind).$uomWind; // WD Sample= '0.0 mph'
-$JSONdata["wspeed"] = convertWind($wflash[4],$uomWind).$uomWind; // WD Sample= '0.4 mph'
-$JSONdata["wgust"] = convertWind($wflash[5],$uomWind).$uomWind; // WD Sample= '7.0 mph'
-$JSONdata["wgustTM"] = convertWind($wflash2[32],$uomWind).$uomWind; // WD Sample= '11.0 mph'
-$JSONdata["bearing"] = round($wflash[3]).' °'; // WD Sample= '292 °'
-$JSONdata["avgbearing"] = round($wflash2[2]).' °'; // WD Sample= '311°'
-$JSONdata["press"] = convertBaro($wflash[25],$uomBaro).$uomBaro; // WD Sample= '30.138 in.'
-$JSONdata["pressTL"] = convertBaro($wflash2[108],$uomBaro).$uomBaro; // WD Sample= '30.124 in.'
-$JSONdata["pressTH"] = convertBaro($wflash2[52],$uomBaro).$uomBaro; // WD Sample= '30.229 in.'
-$JSONdata["pressL"] = convertBaro($wflash2[108],$uomBaro).$uomBaro; // WD Sample= '26.001'
-$JSONdata["pressH"] = convertBaro($wflash2[52],$uomBaro).$uomBaro; // WD Sample= '30.569'
-$JSONdata["rfall"] = convertRain($wflash2[254],$uomRain).$uomRain; // WD Sample= '0.00 in.'
-$JSONdata["rrate"] = convertRain($wflash2[257],$uomRain); // WD Sample= '0.00'
-$JSONdata["rrateTM"] = convertRain($wflash2[150],$uomRain); // WD Sample= '0.000'
-$JSONdata["hum"] = round($wflash[7]); // WD Sample= '33'
-$JSONdata["humTL"] = round($wflash2[90]); // WD Sample= '31'
-$JSONdata["humTH"] = round($wflash2[34]); // WD Sample= '86'
-$JSONdata["inhum"] = round($wflash[6]); // WD Sample= '32'
-$JSONdata["SensorContactLost"] = '0'; // WD Sample= '0'
-$JSONdata["forecast"] = preg_replace('|\+|',' ',$wflash2[271]); // WD Sample= 'increasing clouds and warmer. precipitation possible within 12 to 24 hrs. windy.'
-$JSONdata["tempunit"] = preg_match('|C|i',$uomTemp)?'C':'F'; // WD Sample= 'F'
-$JSONdata["windunit"] = trim($uomWind); // WD Sample= 'mph'
-$JSONdata["pressunit"] = trim($uomBaro); // WD Sample= 'inHg'
-$JSONdata["rainunit"] = trim($uomRain); // WD Sample= 'in'
-$JSONdata["temptrend"] = convertTempRate($wflash[37],$uomTemp)." $uomTemp/last hr"; // WD Sample= '+1.0 °F/last hr'
+$JSONdata["date"] 	= preg_replace('|\+|','0',$wflash[1]); // CU Sample= '15:41'
+$JSONdata["dateFormat"] = ($WDdateMDY)?'m/d/y':'d/m/y'; // CU Sample= 'm/d/y'
+$JSONdata["temp"] 	= convertTemp($wflash[9],$uomTemp); // CU Sample= '64.7'
+$JSONdata["tempTL"] = convertTemp($wflash2[92],$uomTemp); // CU Sample= '34.4'
+$JSONdata["tempTH"] = convertTemp($wflash2[36],$uomTemp); // CU Sample= '64.7'
+$JSONdata["intemp"] = convertTemp($wflash[8],$uomTemp); // CU Sample= '73.2'
+$JSONdata["dew"] 	= convertTemp($wflash[24],$uomTemp); // CU Sample= '34.9'
+$JSONdata["dewpointTL"] = convertTemp($wflash2[107],$uomTemp,1); // CU Sample= '30.1'
+$JSONdata["dewpointTH"] = convertTemp($wflash2[51],$uomTemp); // CU Sample= '40.8'
+$JSONdata["apptemp"] = convertTemp($wflash[29],$uomTemp); // CU Sample= '63.4'
+$JSONdata["apptempTL"] = '0.0'; // CU Sample= '32.2'
+$JSONdata["apptempTH"] = '0.0'; // CU Sample= '72.3'
+$JSONdata["wchill"] = convertTemp($wflash[21],$uomTemp); // CU Sample= '64.7'
+$JSONdata["wchillTL"] = convertTemp($wflash2[104],$uomTemp); // CU Sample= '34.4'
+$JSONdata["heatindex"] = convertTemp($wflash[23],$uomTemp); // CU Sample= '64.7'
+$JSONdata["heatindexTH"] = convertTemp($wflash2[50],$uomTemp); // CU Sample= '64.7'
+$JSONdata["humidex"] = calcHumidex($wflash[9],$wflash[7],$uomTemp); // CU Sample= '61.6'
+$JSONdata["wlatest"] = convertWind($wflash[4],$uomWind); // CU Sample= '0.0'
+$JSONdata["wspeed"] = convertWind($wflash[4],$uomWind); // CU Sample= '0.4'
+$JSONdata["wgust"] = convertWind($wflash[5],$uomWind); // CU Sample= '7.0'
+$JSONdata["wgustTM"] = convertWind($wflash2[32],$uomWind); // CU Sample= '11.0'
+$JSONdata["bearing"] = round($wflash[3]); // CU Sample= '292'
+$JSONdata["avgbearing"] = round($wflash2[2]); // CU Sample= '311'
+$JSONdata["press"] = convertBaro($wflash[25],$uomBaro); // CU Sample= '30.138'
+$JSONdata["pressTL"] = convertBaro($wflash2[108],$uomBaro); // CU Sample= '30.124'
+$JSONdata["pressTH"] = convertBaro($wflash2[52],$uomBaro); // CU Sample= '30.229'
+$JSONdata["pressL"] = convertBaro($wflash2[108],$uomBaro); // CU Sample= '26.001'
+$JSONdata["pressH"] = convertBaro($wflash2[52],$uomBaro); // CU Sample= '30.569'
+$JSONdata["rfall"] = convertRain($wflash2[254],$uomRain); // CU Sample= '0.00'
+$JSONdata["rrate"] = convertRain($wflash2[257],$uomRain); // CU Sample= '0.00'
+$JSONdata["rrateTM"] = convertRain($wflash2[150],$uomRain); // CU Sample= '0.000'
+$JSONdata["hum"] = round($wflash[7]); // CU Sample= '33'
+$JSONdata["humTL"] = round($wflash2[90]); // CU Sample= '31'
+$JSONdata["humTH"] = round($wflash2[34]); // CU Sample= '86'
+$JSONdata["inhum"] = round($wflash[6]); // CU Sample= '32'
+$JSONdata["inhumTL"] = round($wflash2[89]); // CU Sample= '31'
+$JSONdata["inhumTH"] = round($wflash2[33]); // CU Sample= '86'
+$JSONdata["SensorContactLost"] = '0'; // CU Sample= '0'
+$JSONdata["forecast"] = preg_replace('|\+|',' ',$wflash2[271]); // CU Sample= 'increasing clouds and warmer. precipitation possible within 12 to 24 hrs. windy.'
+$JSONdata["tempunit"] = preg_match('|C|i',$uomTemp)?'C':'F'; // CU Sample= 'F'
+$JSONdata["windunit"] = trim($uomWind); // CU Sample= 'mph'
+$JSONdata["pressunit"] = trim($uomBaro); // CU Sample= 'inHg'
+$JSONdata["rainunit"] = trim($uomRain); // CU Sample= 'in'
+$JSONdata["temptrend"] = convertTempRate($wflash[37],$uomTemp); // CU Sample= '-1.0'
 $JSONdata["TtempTL"] = fixupTime($wflash2[120]); // WD Sample= '7:40 AM'
 $JSONdata["TtempTH"] = fixupTime($wflash2[64]); // WD Sample= '3:19 PM'
 $JSONdata["TdewpointTL"] = fixupTime($wflash2[135]); // WD Sample= '7:40 AM'
@@ -322,43 +338,46 @@ $JSONdata["TapptempTH"] = 'n/a'; // WD Sample= '1:14 PM'
 $JSONdata["TwchillTL"] = fixupTime($wflash2[132]); // WD Sample= '3:19 PM'
 $JSONdata["TheatindexTH"] = fixupTime($wflash2[78]); // WD Sample= '3:19 PM'
 $JSONdata["TrrateTM"] = 'n/a'; // WD Sample= '00:00 AM'
-$JSONdata["ThourlyrainTH"] = 'n/a'; // WD Sample= ''
-$JSONdata["LastRainTipISO"] = 'n/a'; // WD Sample= '1/12/2013 4:12 AM'
-$JSONdata["hourlyrainTH"] = $wflash2[255]; // WD Sample= '0.000'
+$JSONdata["ThourlyrainTH"] = 'n/a'; // CU Sample= '17:14'
+$JSONdata["LastRainTipISO"] = 'n/a'; // CU Sample= '2013/12/28 14:12'
+$JSONdata["hourlyrainTH"] = $wflash2[255]; // CU Sample= '0.000'
 $JSONdata["ThumTL"] = fixupTime($wflash2[118]); // WD Sample= '3:22 PM'
 $JSONdata["ThumTH"] = fixupTime($wflash2[62]); // WD Sample= '8:05 AM'
+$JSONdata["TinhumTL"] = fixupTime($wflash2[117]); // WD Sample= '3:22 PM'
+$JSONdata["TinhumTH"] = fixupTime($wflash2[61]); // WD Sample= '8:05 AM'
 $JSONdata["TpressTL"] = fixupTime($wflash2[136]); // WD Sample= '2:18 PM'
 $JSONdata["TpressTH"] = fixupTime($wflash2[80]); // WD Sample= '10:09 AM'
-$JSONdata["presstrendval"] = convertBaro($wflash[53],$uomBaro).$uomBaro; // WD Sample= '-0.019 in. '
-$JSONdata["Tbeaufort"] = getBeaufort($wflash[4]); // WD Sample= '3'
+$JSONdata["presstrendval"] = convertBaro($wflash[53],$uomBaro); // CU Sample= '-0.019'
+$JSONdata["Tbeaufort"] = getBeaufort($wflash[4]); // WD Sample = '3', CU Sample= 'F3'
 $JSONdata["TwgustTM"] = fixupTime($wflash2[60]); // WD Sample= '2:19 PM'
-$JSONdata["windTM"] = convertWind($wflash2[3],$uomWind).$uomWind; // WD Sample= '6.2 mph'
-$JSONdata["bearingTM"] = round($wflash2[2]); // WD Sample= '315'
+$JSONdata["windTM"] = convertWind($wflash2[3],$uomWind); // CU Sample= '6.2'
+$JSONdata["bearingTM"] = round($wflash2[2]); // CU Sample= '315'
 $fixedTimestamp = strtotime(fixupDate($wflash2[275],$WDdateMDY).' '.$JSONdata["date"]);
-$JSONdata["timeUTC"] = gmdate('Y,m,d,H,i,s',$fixedTimestamp); // WD Sample= '2013,01,20,23,39,59'
-$JSONdata["BearingRangeFrom10"] = '359'; // WD Sample= '289°'
-$JSONdata["BearingRangeTo10"] = '0'; // WD Sample= '6°'
-$JSONdata["UV"] = round($wflash[19],1); // WD Sample= '0.7'
-$JSONdata["UVTH"] = round($wflash[46],1); // WD Sample= '0.7';
-$JSONdata["SolarRad"] = round($wflash[20]); // WD Sample= '267'
-$JSONdata["CurrentSolarMax"] = round($wflash2[47]); // WD Sample= '238'
-$JSONdata["SolarTM"] = round($wflash2[47]); // WD Sample= '560'
-$JSONdata["domwinddir"] = getWindDir($wflash2[3]); // WD Sample= 'Northwesterly'
+$JSONdata["timeUTC"] = gmdate('Y,m,d,H,i,s',$fixedTimestamp); // WD/CU Sample= '2013,01,20,23,39,59'
+$JSONdata["BearingRangeFrom10"] = '359'; // CU Sample= '289'
+$JSONdata["BearingRangeTo10"] = '0'; // CU Sample= '6'
+$JSONdata["UV"] = round($wflash[19],1); // CU Sample= '0.7'
+$JSONdata["UVTH"] = round($wflash[46],1); // CU Sample= '1.7';
+$JSONdata["SolarRad"] = round($wflash[20]); // CU Sample= '267'
+$JSONdata["SolarTM"] = round($wflash2[47]); // CU Sample= '560'
+$JSONdata["CurrentSolarMax"] = round($wflash2[47]); // CU Sample= '438'
+$JSONdata["domwinddir"] = getWindDir($wflash2[3]); // WD Sample= 'Northwesterly', CU Sample= 'NW'
 $JSONdata["WindRoseData"] = '[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0]';
 // Note: VWS does not collect/publish this windrose data
 // a WD Sample='[22.0,23.0,7.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,3.0,233.0,139.0]'
-$uomWindRun = (preg_match('|C|',$uomTemp))?'km/h':'mph';
 $JSONdata["windrun"] = convertWind($wflash2[258],$uomWindRun); // new in ver=9
+$JSONdata["cloudbase"] = round($wflash[27],0); // CU Sample= '1783', new in ver 11
+$JSONdata["cloudbaseunit"] = $uomCloudBase; // CU Sample= 'ft', new in ver 11
 $JSONdata["version"] = substr($wflash2[283],1); // WD Sample= '10.37R'
 $JSONdata["build"] = ' n/a'; // WD Sample= '45'
-$JSONdata["ver"] = "10"; // constant);
+$JSONdata["ver"] = "11"; // for SS gauges 2.5.0);
 
 // JSON assembly done.  Output the JSON file+status
 if($doDebug) {
 	print "<pre>\n";
-  } else {
-	header("Content-Type: text/plain; charset=ISO-8859-1");
-  }
+} else {
+	header("Content-Type: application/json");
+}
 print '{';
 $comma = '';
 foreach ($JSONdata as $key => $val) {
@@ -368,7 +387,9 @@ foreach ($JSONdata as $key => $val) {
 }
 print "}\n";
 
-if($doDebug) {print $Status; print "</pre>\n";}
+if($doDebug) {
+  print $Status; print "</pre>\n";
+}
 
 // --- end of main program -----
 

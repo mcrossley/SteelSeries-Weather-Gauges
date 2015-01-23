@@ -1,3 +1,8 @@
+  <!--
+    30 Dec 2014 - Mark Crossley
+    Basic PHP include file for the steel series gauges.
+    Just contains the HTML for incuding in template page.
+  -->
   <noscript>
     <h2 style="color:red; text-align:center">&gt;&gt;This pages requires JavaScript enabling in your browser.&lt;&lt;<br>&gt;&gt;Please enable scripting it to enjoy this site at its best.&lt;&lt;</h2>
   </noscript>
@@ -63,6 +68,9 @@
     <div id="tip_9" class="gauge">
       <canvas id="canvas_solar" class="gaugeSizeStd"></canvas>
     </div>
+    <div id="tip_11" class="gauge">
+      <canvas id="canvas_cloud" class="gaugeSizeStd"></canvas>
+    </div>
   </div>
 
   <div class="unitsTable">
@@ -122,35 +130,44 @@
         <input id="rad_unitsWind2" type="radio" name="rad_unitsWind" value="kts" onclick="gauges.setUnits(this);"><label id="lab_unitsWind2" for="rad_unitsWind2">knots</label>
       </div>
     </div>
+    <div style="display:table-row">
+      <div id ="cloud" class="cellRight">
+        <span id="lang_cloudbase">CloudBase</span>:
+      </div>
+      <div style="display:table-cell">
+        <input id="rad_unitsCloudBase1" type="radio" name="rad_unitsCloud" value="m" checked onclick="gauges.setUnits(this);"><label id="lab_unitsCloudBase1" for="rad_unitsCloudBase1">m</label>
+      </div>
+      <div style="display:table-cell">
+        <input id="rad_unitsCloudBase2" type="radio" name="rad_unitsCloud" value="ft" onclick="gauges.setUnits(this);"><label id="lab_unitsCloudBase2" for="rad_unitsCloudBase2">ft</label>
+      </div>
+    </div>
   </div>
   <!-- Credits -->
   <div class="credits" style="padding: 0px 10px 10px 10px; text-align: left">
     <hr>
-    Scripts by Mark Crossley - version <span id="scriptVer"></span><br>
-    Gauges drawn using Gerrit Grunwald's <a href="http://harmoniccode.blogspot.com" target="_blank">SteelSeries</a> <a href="https://github.com/HanSolo/SteelSeries-Canvas">JavaScript library</a>
-    <span id="rgraph_attrib"><br>Wind Rose drawn using <a href="http://www.rgraph.net/">RGraph</a></span>
-    <br>
+    Scripts: Mark Crossley - version <span id="scriptVer"></span><br>
+    Gauges: Gerrit Grunwald's <a href="http://harmoniccode.blogspot.com" target="_blank">SteelSeries</a> <a href="https://github.com/HanSolo/SteelSeries-Canvas">JavaScript library</a><br>
+    <span id="rgraph_attrib">Wind Rose: <a href="http://www.rgraph.net/">RGraph</a><br></span>
+    A cookie is used to store your UoM and gauge preferences<br>
     powered by <span id="programName"></span> v<span id="programVersion"></span> (b<span id="programBuild"></span>)
   </div><!-- Credits -->
 
   <!-- Included Scripts -->
 
-  <!-- Google CDN hosted JQuery library -->
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+  <!-- CDN hosted JQuery library -->
+  <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
   <!-- or... -->
   <!-- Local JQuery library, do not use if your containing page already pulls in a copy of JQuery -->
-  <!-- <script src="scripts/jquery-1.8.2.min.js"></script> -->
+  <!-- <script src="scripts/jquery-1.11.1.min.js"></script> -->
 
   <!-- Combined steelseries.js & tween.js -->
-  <script src="<?php echo $ssgDir; ?>scripts/steelseries_tween.min.js"></script>
+  <script src="scripts/steelseries_tween.min.js"></script>
 
   <!-- Once you have customised this scripts to your requirements you should minimise
        and concatenate them into a single file in the same order  as below -->
-  <script src="<?php echo $ssgDir; ?>scripts/language.min.js"></script>
-  <script src="<?php echo $ssgDir; ?>scripts/gauges.js"></script>
+  <script src="scripts/language.min.js"></script>
+  <script src="scripts/gauges.js"></script>
 
   <!--Optional Wind Rose scripts -->
-
-  <script src="<?php echo $ssgDir; ?>scripts/windrose.js"></script>
-  <script src="<?php echo $ssgDir; ?>scripts/RGraph.common.core.min.js"></script>
-  <script src="<?php echo $ssgDir; ?>scripts/RGraph.rose.min.js"></script>
+  <script src="scripts/RGraph.common.core.min.js"></script>
+  <script src="scripts/RGraph.rose.min.js"></script>

@@ -1,8 +1,8 @@
 /*!
  * Name          : steelseries.js
  * Authors       : Gerrit Grunwald, Mark Crossley
- * Last modified : 17.05.2013
- * Revision      : 0.14.3 - Weather Gauge Version
+ * Last modified : 07.09.2014
+ * Revision      : 0.14.12
  *
  * Copyright (c) 2011, Gerrit Grunwald, Mark Crossley
  * All rights reserved.
@@ -84,7 +84,7 @@ var steelseries = (function () {
             fullScaleDeflectionTime = (undefined === parameters.fullScaleDeflectionTime ? 2.5 : parameters.fullScaleDeflectionTime);
 
         // Get the canvas context and clear it
-        var mainCtx = doc.getElementById(canvas).getContext('2d');
+        var mainCtx = getCanvasContext(canvas);
         // Has a size been specified?
         if (size === 0) {
             size = Math.min(mainCtx.canvas.width, mainCtx.canvas.height);
@@ -99,7 +99,6 @@ var steelseries = (function () {
         if (playAlarm && alarmSound !== false) {
             audioElement = doc.createElement('audio');
             audioElement.setAttribute('src', alarmSound);
-            //audioElement.setAttribute('src', 'js/alarm.mp3');
             audioElement.setAttribute('preload', 'auto');
         }
 
@@ -403,7 +402,6 @@ var steelseries = (function () {
             } else {
                 ctx.arc(0, 0, imageWidth * 0.365, startAngle, stopAngle, false);
             }
-//            ctx.closePath();
             if (filled) {
                 ctx.moveTo(0, 0);
                 ctx.fill();
@@ -441,7 +439,6 @@ var steelseries = (function () {
             ctx.fillStyle = backgroundColor.labelColor.getRgbaColor();
             ctx.translate(centerX, centerY);
             ctx.rotate(rotationOffset);
-
 
             if (gaugeType.type === 'type1' || gaugeType.type === 'type2') {
                 TEXT_WIDTH = imageWidth * 0.04;
@@ -822,7 +819,6 @@ var steelseries = (function () {
             }
         };
 
-
         //************************************ Public methods **************************************
         this.setValue = function (newValue) {
             newValue = parseFloat(newValue);
@@ -875,7 +871,7 @@ var steelseries = (function () {
             return odoValue;
         };
 
-        this.setValueAnimated = function (newValue) {
+        this.setValueAnimated = function (newValue, callback) {
             newValue = parseFloat(newValue);
             var targetValue = (newValue < minValue ? minValue : (newValue > maxValue ? maxValue : newValue)),
                 gauge = this,
@@ -921,6 +917,12 @@ var steelseries = (function () {
                         requestAnimFrame(gauge.repaint);
                     }
                 };
+
+                // do we have a callback function to process?
+                if (callback && typeof(callback) === "function") {
+                    tween.onMotionFinished = callback;
+                }
+
                 tween.start();
             }
             return this;
@@ -1359,7 +1361,7 @@ var steelseries = (function () {
             fullScaleDeflectionTime = (undefined === parameters.fullScaleDeflectionTime ? 2.5 : parameters.fullScaleDeflectionTime);
 
         // Get the canvas context and clear it
-        var mainCtx = doc.getElementById(canvas).getContext('2d');
+        var mainCtx = getCanvasContext(canvas);
         // Has a size been specified?
         if (size === 0) {
             size = Math.min(mainCtx.canvas.width, mainCtx.canvas.height);
@@ -1419,7 +1421,7 @@ var steelseries = (function () {
         var ACTIVE_LED_POS_X = imageWidth * 0.116822;
         var ACTIVE_LED_POS_Y = imageWidth * 0.485981;
         var LED_SIZE = Math.ceil(size * 0.093457);
-//        var LED_POS_X = imageWidth * 0.453271;
+        //var LED_POS_X = imageWidth * 0.453271;
         var LED_POS_X = imageWidth * 0.53;
         var LED_POS_Y = imageHeight * 0.61;
         var USER_LED_POS_X = gaugeType === steelseries.GaugeType.TYPE3 ? 0.7 * imageWidth : centerX - LED_SIZE / 2;
@@ -1461,7 +1463,7 @@ var steelseries = (function () {
             angleStep = angleRange / range;
             break;
 
-        case "type4":
+        case 'type4':
         /* falls through */
         default:
             freeAreaAngle = 60 * RAD_FACTOR;
@@ -1547,8 +1549,8 @@ var steelseries = (function () {
                 niceMinValue = minValue;
                 niceMaxValue = maxValue;
                 range = niceRange;
-//                minorTickSpacing = 1;
-//                majorTickSpacing = 10;
+                //minorTickSpacing = 1;
+                //majorTickSpacing = 10;
                 majorTickSpacing = calcNiceNumber(niceRange / (maxNoOfMajorTicks - 1), true);
                 minorTickSpacing = calcNiceNumber(majorTickSpacing / (maxNoOfMinorTicks - 1), true);
             }
@@ -2026,7 +2028,7 @@ var steelseries = (function () {
             return value;
         };
 
-        this.setValueAnimated = function (newValue) {
+        this.setValueAnimated = function (newValue, callback) {
             newValue = parseFloat(newValue);
             var targetValue = (newValue < minValue ? minValue : (newValue > maxValue ? maxValue : newValue)),
                 gauge = this,
@@ -2065,6 +2067,12 @@ var steelseries = (function () {
                         requestAnimFrame(gauge.repaint);
                     }
                 };
+
+                // do we have a callback function to process?
+                if (callback && typeof(callback) === "function") {
+                    tween.onMotionFinished = callback;
+                }
+
                 tween.start();
             }
             return this;
@@ -2333,7 +2341,7 @@ var steelseries = (function () {
                     // Convert angle back to value
                     currentValue = minValue + (angle / degAngleRange) * (maxValue - minValue);
                     gradRange = valueGradient.getEnd() - valueGradient.getStart();
-                    fraction = currentValue / gradRange;
+                    fraction = (currentValue - minValue) / gradRange;
                     fraction = Math.max(Math.min(fraction, 1), 0);
                     activeLedColor = customColorDef(valueGradient.getColorAt(fraction).getRgbaColor());
                 } else if (isSectionsVisible) {
@@ -2429,7 +2437,7 @@ var steelseries = (function () {
         var self = this;
 
         // Get the canvas context and clear it
-        var mainCtx = doc.getElementById(canvas).getContext('2d');
+        var mainCtx = getCanvasContext(canvas);
         // Has a size been specified?
         if (width === 0) {
             width = mainCtx.canvas.width;
@@ -2462,7 +2470,7 @@ var steelseries = (function () {
         var drawLcdText = function (value, color) {
             mainCtx.save();
             mainCtx.textAlign = 'right';
-//            mainCtx.textBaseline = 'top';
+            //mainCtx.textBaseline = 'top';
             mainCtx.strokeStyle = color;
             mainCtx.fillStyle = color;
 
@@ -2756,7 +2764,7 @@ var steelseries = (function () {
         var repainting = false;
 
         // Get the canvas context and clear it
-        var mainCtx = doc.getElementById(canvas).getContext('2d');
+        var mainCtx = getCanvasContext(canvas);
         // Has a size been specified?
         if (size === 0) {
             size = Math.min(mainCtx.canvas.width, mainCtx.canvas.height);
@@ -2810,7 +2818,6 @@ var steelseries = (function () {
             mainCtx.strokeStyle = lcdColor.textColor;
             mainCtx.fillStyle = lcdColor.textColor;
 
-
             //convert value from -180,180 range into 0-360 range
             while (value < -180) {
                 value += 360;
@@ -2860,7 +2867,6 @@ var steelseries = (function () {
             } else {
                 ctx.arc(0, 0, imageWidth * 0.365, startAngle, stopAngle, false);
             }
-//            ctx.closePath();
             if (filled) {
                 ctx.moveTo(0, 0);
                 ctx.fill();
@@ -2875,7 +2881,7 @@ var steelseries = (function () {
         var drawTickmarksImage = function (ctx) {
             var OUTER_POINT = imageWidth * 0.38,
                 MAJOR_INNER_POINT = imageWidth * 0.35,
-//                MED_INNER_POINT = imageWidth * 0.355,
+                //MED_INNER_POINT = imageWidth * 0.355,
                 MINOR_INNER_POINT = imageWidth * 0.36,
                 TEXT_WIDTH = imageWidth * 0.1,
                 TEXT_TRANSLATE_X = imageWidth * 0.31,
@@ -2885,7 +2891,6 @@ var steelseries = (function () {
 
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
-
 
             ctx.save();
             ctx.strokeStyle = backgroundColor.labelColor.getRgbaColor();
@@ -3165,7 +3170,6 @@ var steelseries = (function () {
                     while (0 < areaIndex);
                 }
 
-
                 drawTickmarksImage(backgroundContext);
             }
 
@@ -3258,7 +3262,7 @@ var steelseries = (function () {
             return valueAverage;
         };
 
-        this.setValueAnimatedLatest = function (newValue) {
+        this.setValueAnimatedLatest = function (newValue, callback) {
             var targetValue,
                 gauge = this,
                 diff,
@@ -3287,6 +3291,19 @@ var steelseries = (function () {
                             requestAnimFrame(gauge.repaint);
                         }
                     };
+
+                    tweenLatest.onMotionFinished = function (event) {
+                        valueLatest = event.target._pos === 360 ? 360 : event.target._pos % 360;
+                        if (!repainting) {
+                            repainting = true;
+                            requestAnimFrame(gauge.repaint);
+                        }
+                        // do we have a callback function to process?
+                        if (callback && typeof(callback) === "function") {
+                            callback();
+                        }
+                    };
+
                     tweenLatest.start();
                 } else {
                     // target different from current, but diff is zero (0 -> 360 for instance), so just repaint
@@ -3300,7 +3317,7 @@ var steelseries = (function () {
             return this;
         };
 
-        this.setValueAnimatedAverage = function (newValue) {
+        this.setValueAnimatedAverage = function (newValue, callback) {
             var targetValue,
                 gauge = this,
                 diff, time;
@@ -3326,6 +3343,19 @@ var steelseries = (function () {
                             requestAnimFrame(gauge.repaint);
                         }
                     };
+
+                    tweenAverage.onMotionFinished = function (event) {
+                        valueLatest = event.target._pos === 360 ? 360 : event.target._pos % 360;
+                        if (!repainting) {
+                            repainting = true;
+                            requestAnimFrame(gauge.repaint);
+                        }
+                        // do we have a callback function to process?
+                        if (callback && typeof(callback) === "function") {
+                            callback();
+                        }
+                    };
+                    
                     tweenAverage.start();
                 } else {
                     // target different from current, but diff is zero (0 -> 360 for instance), so just repaint
@@ -3512,7 +3542,7 @@ var steelseries = (function () {
         var ledTimerId = 0;
 
         // Get the canvas context and clear it
-        var mainCtx = doc.getElementById(canvas).getContext('2d');
+        var mainCtx = getCanvasContext(canvas);
         // Has a size been specified?
         if (size === 0) {
             size = Math.min(mainCtx.canvas.width, mainCtx.canvas.height);
@@ -3614,9 +3644,9 @@ var steelseries = (function () {
 
     var odometer = function (canvas, parameters) {
         parameters = parameters || {};
-        var doc = document,
-            // parameters
-            _context = (undefined === parameters._context ? null : parameters._context),  // If component used internally by steelseries
+
+        // parameters
+        var _context = (undefined === parameters._context ? null : parameters._context),  // If component used internally by steelseries
             height = (undefined === parameters.height ? 0 : parameters.height),
             digits = (undefined === parameters.digits ? 6 : parameters.digits),
             decimals = (undefined === parameters.decimals ? 1 : parameters.decimals),
@@ -3645,7 +3675,7 @@ var steelseries = (function () {
         if (_context) {
             ctx = _context;
         } else {
-            ctx = doc.getElementById(canvas).getContext('2d');
+            ctx = getCanvasContext(canvas);
         }
 
         // Has a height been specified?
@@ -3700,7 +3730,6 @@ var steelseries = (function () {
             grad.addColorStop(1, 'rgba(0, 0, 0, 1)');
             foregroundContext.fillStyle = grad;
             foregroundContext.fill();
-
 
             // Create a digit column
             // background
@@ -3789,7 +3818,7 @@ var steelseries = (function () {
             }
         }
 
-        this.setValueAnimated = function (newVal) {
+        this.setValueAnimated = function (newVal, callback) {
             var gauge = this;
             newVal = parseFloat(newVal);
 
@@ -3809,6 +3838,12 @@ var steelseries = (function () {
                         requestAnimFrame(gauge.repaint);
                     }
                 };
+
+                // do we have a callback function to process?
+                if (callback && typeof(callback) === "function") {
+                    tween.onMotionFinished = callback;
+                }
+
                 tween.start();
             }
             this.repaint();
@@ -4076,7 +4111,6 @@ var steelseries = (function () {
             // create a pointer buffer
             ptrBuffer = createBuffer(size, size);
             ptrCtx = ptrBuffer.getContext('2d');
-
 
             switch (ptrType.type) {
             case 'type2':
@@ -6228,7 +6262,7 @@ var steelseries = (function () {
             for (y = 0; y < height; y++) {
                 dy = height2 - y;
                 for (x = 0; x < width; x++) {
-                    if (y > thicknessY && y < height - thicknessY) {
+                    if (y > thicknessY && y <= height - thicknessY) {
                         // we are in the range where we only draw the sides
                         if (x > thicknessX && x < width - thicknessX) {
                             // we are in the empty 'middle', jump to the next edge
@@ -6388,7 +6422,7 @@ var steelseries = (function () {
         ctx.lineTo(x, y + radius);
         ctx.quadraticCurveTo(x, y, x + radius, y);
         ctx.closePath();
-        ctx.stroke();
+//        ctx.stroke();
     }
 
     function createBuffer(width, height) {
@@ -6610,6 +6644,11 @@ var steelseries = (function () {
             };
     }());
 
+    function getCanvasContext(elementOrId) {
+        var element = (typeof elementOrId === 'string' || elementOrId instanceof String) ?
+            doc.getElementById(elementOrId) : elementOrId;
+        return element.getContext('2d');
+    }
     //****************************************   C O N S T A N T S   ***************************************************
     var BackgroundColorDef;
     (function () {

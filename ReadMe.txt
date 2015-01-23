@@ -2,8 +2,8 @@ SteelSeries JavaScript gauges
 =============================
 Created by Mark Crossley July 2011
 
-Version 2.4.4
-Updated: 28 August 2013
+Version 2.5.0
+Updated: 23 January 2015
 
 +-------------------------------------------------------+
 |                                                       |
@@ -13,12 +13,18 @@ Updated: 28 August 2013
 | And the FAQ on the Wiki:                              |
 | http://wiki.sandaysoft.com/a/SteelSeries_FAQ          |
 |                                                       |
+| Released under GNU GENERAL PUBLIC LICENSE             |
+|  Version 2, June 1991                                 |
+| See the enclosed License file                         |
+|                                                       |
 +------------------------------------------------------ +
 
+Setting Up For Cumulus Users
+============================
 Some brief notes for Cumulus users (but other users should skim this as well):
 
-Copy "realtimegaugesT.txt" to your Cumulus web folder.
-Copy "gauges-ssT.htm" to your Cumulus web folder.
+Copy "weather_server\cumulus\realtimegaugesT.txt" to your Cumulus\web folder.
+Copy "weather_server\cumulus\gauges-ssT.htm" to your Cumulus\web folder.
 
 Configure Cumulus Internet|Files to:
  realtime file:-
@@ -39,7 +45,7 @@ NOTE: Cumulus does not actually update any data when it processes the web
       name, location, version etc. If you wish you can edit the .htm file and
       directly enter the information, then you do not need to get Cumulus to
       process the file, just copy it once to your web site, removing the 'T'
-      from the filename.
+      from the file name.
 
 If required edit the "gauges.js", the key items are at the top:
     The relative path on your website to the "realtimegauges.txt" file.
@@ -65,8 +71,8 @@ Relative Paths :
   your website, the relative path of the Cumulus css file is one folder back in the
   path. You would then enter the path as "../weatherstyle.css".
 
-Copy (or move) the folders 'css' and 'scripts' and their contents (the files
-that are contained in the ZIP file) to the folder where your "gauges-ss.htm" file is
+Copy (or move) the folders 'web_server\css' and 'web_server\scripts' and their contents (the
+files that are contained in the ZIP file) to the folder where your "gauges-ss.htm" file is
 located (probably the same folder where all your other Cumulus HTM files are located).
 
 
@@ -77,9 +83,9 @@ default gauges page on your web site. So assuming you are running the 'standard'
 web pages (if not then you can figure all this stuff out for yourself), you will need to
 edit all the Cumulus supplied template files.
 
-These files reside in your "<path to cumulus>\cumulus\web" folder. You will need to edit
+These files reside in your "<path_to_cumulus>\cumulus\web" folder. You will need to edit
 each xxxxxT.htm file, and near the bottom change the link from "gauges.htm" to "gauges-ss.htm"
-(also include the path if you have installed the SS gauges into a subfolder from you main
+(also include the path if you have installed the SS gauges into a sub-folder from you main
 Cumulus web site).
 
 Next time Cumulus updates your web site, the links on all your existing pages should now
@@ -124,8 +130,16 @@ Spanish, and Catalan translations to get you going.
 If you are only going to use one language, then deleting the unused language options and the
 changeLang() function from the language.js file will speed up the page load time slightly.
 
-To switch languages dynamically, you need to add script to your page which sets the LANG
-object to equal the desired language and tand replace the '<#forecastenc>' tag with the one of your choice.
+To switch languages dynamically, you need to add script code to your page which sets the LANG
+object to equal the desired language then call the changeLang() function.
+e.g.
+    // Dynamic script to change the default language to German
+    changeLang(LANG.DE);
+
+This will re-label all the gauges, and update the text/radio buttons etc on the web page.
+
+However, changing the language for the gauges DOES NOT translate the displayed forecast
+as the text of the message is being supplied by your weather station/software.
 
 NOTE: If your forecast messages use accented characters (or any character not in the basic 103
 characters in the LCD font), then I recommend that you disable the digital font on the status/forecast
@@ -141,6 +155,8 @@ ccrlocal file uses the Davis VP %vpforecasttext% tag. Change this to what suits 
     %dailywarning/forecast%     forecast from input daily weather
 
 
+
+
 Adding Logo's/Custom Images to the Gauge Backgrounds
 ----------------------------------------------------
 The supplied code contains some commented out instructions to add a small logo to the temperature
@@ -153,15 +169,7 @@ semi-transparent, which means saving them as PNG files.
 
 The SteelSeries code will clip your images if they exceed the gauge background area, I suggest you
 size the images similar to your desired gauge size. The code will resize the image to fit the
-hen calls the changeLang() function.
-e.g.
-    // Dynamic script to change the default language to German
-    changeLang(LANG.DE);
-
-This will re-label all the gauges, and update the text/radio buttons etc on the web page.
-
-However, changing the language for the gauges DOES NOT translate the displayed forecast
-as the text of the message is being supplied by your weather station/software.
+whole background, so it you want to retain the aspect ratio make your images square!
 
 Forecast Messages
 -----------------
@@ -172,17 +180,20 @@ Starting with version 1.9.2 Cumulus has additional forecast message options:
 <#wsforecastenc> - Always displays the external weather station forecast
 
 If you wish to use one of these options, then you should edit the "realtimegaugesT.txt" file
-whole background, so it you want to retain the aspect ratio make your images square!
+and replace the '<#forecastenc>' tag with the one of your choice.
+
+You can of course opt not to display the forecast at all, but display any data available from
+your weather programs 'tags'.
 
 
-Removing a Wind Rose 'gauge'
-----------------------------
+Removing a Wind Rose and Other Optional Gauges
+----------------------------------------------
 From release 2.0 I have integrated the Wind Rose 'gauge' into the standard 'package', from v2.1.0 it is enabled
-by default. To disable the Wind Rose you have to make the following changes...
+by default. From version 2.5.0 there is also an optional Cloud Base gauge, again enabled by default.
+To disable the Wind Rose you have to make the following changes...
 
 1. Edit gauges-ssT.htm/gauges-ss-basic.htm/gauges-ss-basic-inc.php and delete the 'radar' scripts
 towards the end of the document.
-       <script src="scripts/windrose.js"></script>
        <script src="scripts/RGraph.common.core.min.js"></script>
        <script src="scripts/RGraph.rose.min.js"></script>
 
@@ -195,27 +206,27 @@ That's it, the Wind Rose should now be removed from your page.
 Note for VWS users the Wind Rose will be automatically disabled, but these users should still remove the
 scripts from the HTML as above to reduce the page load times.
 
+To disable the other optional gauges, just edit gauges.js and change the following entries to 'false'...
+            showCloudGauge    : true,
+            showUvGauge       : true,
+            showSolarGauge    : true,
+
 
 Altering the gauge 'layout' on the page
 ---------------------------------------
 It is easy to 'move' the gauges around the page to create alternative layouts. By default, there are
-four rows of gauges laid out like this (o = optional gauge)...
+four rows of gauges laid out like this (letter = optional gauge)...
 
   * * *
-  * * o
+  * * r     r: Wind Rose
   * * *
-   o o
+  u s c     u: UV-I, s: Solar, c: Cloudbase
 
 To move the gauges you just need to edit the HTML file and move <div>'s (and their contents) with a
 class="gauge". Each 'row' is contained within a <div> with a class="row". If you do re-order the
 gauges, then DO NOT change the "tip_N" numbers, each number is associated with a particular gauge not
 it's position on the page.
 
-I use the following 'horizontal' layout on my personal page (no Solar or UV optional gauges, but with
-the optional Wind Rose)
-
-   * * * *
-  * * * * o
 
 
 Altering the gauge sizes on the page
@@ -240,92 +251,217 @@ This would change the Barometer from a 221 pixel gauge, to 261 pixels (using the
 
 Weather Display Users
 =====================
-These files will work with WD if you switch the following value in gauges.js:
-    weatherProgram    : 0,
-  To...
-    weatherProgram    : 1,
+  These files will work with WD if you switch the following value in gauges.js:
+      weatherProgram    : 0,
+    To...
+      weatherProgram    : 1,
 
-This will make the script use the WD customclientraw.txt file rather than the Cumulus realtimegauges.txt file.
-A template for this file suitable for processing by WD is provided in the zip file - customclientrawlocal.txt
+  This will make the script use the WD customclientraw.json file rather than the Cumulus realtimegauges.json file.
+  A template for this file suitable for processing by WD is provided in the zip file - weather_server/weather_display/customclientrawlocal.txt
 
-To process the customclientrawlocal.txt, in WD you need to:
-* in control panel, webfiles/web page setup, real time ftp setup
-* see the custom client raw file setup...and tick to create that
-* make sure the needed customclientrawlocal.txt is in the clientraw folder location
+  To process the customclientrawlocal.txt, in WD you need to:
+  * in control panel, webfiles/web page setup, real time ftp setup
+  * see the custom client raw file setup...and tick to create that
+  * make sure the needed customclientrawlocal.txt is in the clientraw folder location
 
-The provided HTML files gauges-ssT.htm etc, are designed to be 'processed' by Cumulus before uploading
-to the web site and renaming as gauges-ss.htm
-This processing replaces all the tags like <#location> with general information about your station (the
-station name) in this case.
+  For Weather Display you should use the provided HTML files gauges-ss-basic.htm, or gauges-ss-basic-inc.php. The file
+  gauges-ssT.htm is designed to be 'processed' by Cumulus before uploading to the web site.
 
-To use the templates with WD you will have to manually edit the HTML file, and replace each of these tags
-with information appropriate to you. I suggest you then save the file as gauges-ss.htm
 
-You will also want to replace the Menu bar at the bottom of the HTML page which is specific to the Cumulus
-sample web pages.
+  customclientrawlocal.txt
+  ------------------------
+  The value for Humidex is set to Celsius by default. You may want to change this
+  tag from %humidexcelsius% to %humidexfaren% if you use Fahrenheit as your temperature
+  scale. (there is no WD tag to report the value in your default scale).
 
-customclientrawlocal.txt
-------------------------
-The value for Humidex is set to Celcius by default. You may want to change this
-tag from %humidexcelsius% to %humidexfaren% if you use Fahrenheit as your temperature
-scale. (there is no WD tag to report the value in your default scale). This and the forecast tag (see above)
-are the only things you should have to edit in the ccr file.
+  The value for Cloudbase is set to metres by default. You may want to change this tag
+  from %cloudheightmeters% to %cloudheightfeet%, remember to also change the value for
+  "cloudbaseunit":"m" to "cloudbaseunit":"ft"
+
+  These and the forecast tag (see above)
+  are the only things you should have to edit in the ccr file.
+
 
 
 Virtual Weather Station (VWS) Users
 ===================================
-These files will work with VWS if you have setup VWS to upload the WeatherFlash conditions files
-(wflash.txt, wflash2.txt).  You do not have to purchase WeatherFlash to use these scripts, but
-just have to set up VWS to upload the files via HTTP or FTP methods.  See VWS, Internet, WeatherFlash
-dialog for setup and use either Server File or Active Server Page to perform the upload with
-an interval of 10 seconds or so.
+  These files will work with VWS if you have set-up VWS to upload the WeatherFlash conditions files
+  (wflash.txt, wflash2.txt).  You do not have to purchase WeatherFlash to use these scripts, but
+  just have to set up VWS to upload the files via HTTP or FTP methods.  See VWS, Internet, WeatherFlash
+  dialog for setup and use either Server File or Active Server Page to perform the upload with
+  an interval of 10 seconds or so.
 
-steelseriesVWSjson.php
-----------------------
-Configure the steelseriesVWSjson.php file settings area near the top of the file for the
-location of the WeatherFlash Data/ directory (using relative file addressing), and for your
-other preferences (units, timezone, etc.).
+  steelseriesVWSjson.php
+  ----------------------
+  Configure the steelseriesVWSjson.php file settings area near the top of the file for the
+  location of the WeatherFlash Data/ directory (using relative file addressing), and for your
+  other preferences (units, time zone, etc.).
 
-In scripts/gauges.js,
-* change the weatherProgram variable to 2 to indicate VWS is being used.
-* change the imgPathURL to the relative URL location of the VWS vwsNNN.jpg graphs.
-* change the realTimeURL_VWS to the relative URL path of the steelseriesVWSjson.php script
+  In scripts/gauges.js,
+  * change the weatherProgram variable to 2 to indicate VWS is being used.
+  * change the imgPathURL to the relative URL location of the VWS vwsNNN.jpg graphs.
+  * change the realTimeURL_VWS to the relative URL path of the steelseriesVWSjson.php script
 
-In gauges-ss-basic.htm,
-* remove the wind rose scripts by deleting the following lines...
-       <script src="scripts/windrose.js"></script>
-       <script src="scripts/RGraph.common.core.min.js"></script>
-       <script src="scripts/RGraph.rose.min.js"></script>
+  In gauges-ss-basic.htm,
+  * remove the wind rose scripts by deleting the following lines...
+         <script src="scripts/RGraph.common.core.min.js"></script>
+         <script src="scripts/RGraph.rose.min.js"></script>
 
-Note that VWS does *not* produce data for all the entries to be displayed.
-The following are missing due to this lack of VWS supplied data:
-* windrose display: the display will be disabled by default.
-* rain chart: the time of last rain is 'n/a'.
-* all-time min/max barometer pressure: the Barometer gauge will not show red areas up to
-  the all record low pressure and from the record high pressure to the max of the gauge.
-* some gauges show only current values as the min/max values are not computed by VWS.
-* the humidex number is not provided by VWS, but computed by the steelseriesVWSjson.php script instead,
-  so there is no humidex graph available.
+  Note that VWS does *not* produce data for all the entries to be displayed.
+  The following are missing due to this lack of VWS supplied data:
+  * wind rose display: the display will be disabled by default.
+  * rain chart: the time of last rain is 'n/a'.
+  * all-time min/max barometer pressure: the Barometer gauge will not show red areas up to
+    the all record low pressure and from the record high pressure to the max of the gauge.
+  * some gauges show only current values as the min/max values are not computed by VWS.
+  * the humidex number is not provided by VWS, but computed by the steelseriesVWSjson.php script instead,
+    so there is no humidex graph available.
 
-(Thanks to Ken True of saratoga-weather.org for the VWS support script)
+  (Thanks to Ken True of saratoga-weather.org for the VWS support script)
+
+
 
 WeatherCat Users
 ================
 
-Please see the WeatherCat wiki page for instructions: http://wiki.trixology.com/index.php/Steel_Series_Gauges
+  Please see the WeatherCat wiki page for instructions: http://wiki.trixology.com/index.php/Steel_Series_Gauges
+
+
 
 
 Meteobridge Users
 =================
 
-Some features of the gauges page are not available, when you configure the program type to "4" the
-script automatically disables the Wind Rose gauge and the pop-up graphs.
+  Some features of the gauges page are not available, when you configure the program type to "4" the
+  script automatically disables the Wind Rose gauge and the pop-up graphs.
 
-(Thanks to Ken True of saratoga-weather.org for the Meteobridge support script)
+  (Thanks to Ken True of saratoga-weather.org for the Meteobridge support script)
+
+
+
+
+WView Users
+===========
+
+  In order to use the wind rose features, you may need to tweak your installation to produce the required
+  data. The supplied file uses the tag <!--dayWindRoseList-->. Please see this thread...
+  https://groups.google.com/d/msg/wview/Yxdy5IS0R6U/RhFv4eUBd-MJ
+
+
+
+WeeWX Users
+===========
+
+  Please refer to the separate readme.txt in the weather_server\WeeWX folder.
+
+
+
+What is 'Long Polling'
+======================
+
+  HTTP long polling is a technique for only downloading data from the server when it is updated. An outline
+  of the process is below, because it requires action on the web servers part, it requires something like PHP
+  to be running on the web server.
+
+    1. The client requests the webpage from the server using regular http.
+    2. The webpage executes javascript which requests the realtime from the server.
+    3. The server does not immediately respond with the requested file but waits until the file is updated.
+    4. When there is new data available, the server responds with the new file.
+    5. The client receives the new data and immediately sends another request to the server, re-starting the process at step 3.
+
+  Configuring Long Polling
+  ------------------------
+
+  Standard long polling is only available for those web sites running PHP. The steps involved are:
+
+    1. First establish the web site using the standard realtime text file for your weather software.
+    2. Edit the long polling PHP file 'realtimegauges-longpoll.php', and set the name and path of your realtime file on the web server:
+          $RealtimeFilename = $_SERVER['DOCUMENT_ROOT'].'/realtimegauges.txt';
+    3. Upload the long polling PHP file 'realtimegauges-longpoll.php' to your web server.
+    4. Edit the gauges.js script on your web server, and enable long polling:
+            config = {
+                ...
+                longPoll          : true,                  // if enabled, use long polling and PHP generated data !!only enable if you understand how this is implemented!!
+
+       Then set the path to the long polling PHP file:
+                ...
+                realTimeURL_LongPoll: './utils/realtimegauges-longpoll.php',     //*** ALL Users: Change to your location of the PHP long poll realtime file ***
+
+       Check that the realtime update interval is set correctly to your realtime interval:
+                ...
+                realtimeInterval  : 5,                      //*** Download data interval, set to your realtime data update interval in seconds
+
+  Test it out, it should download the JSON data when the page loads, then every time the file is updated on the server.
+  It is important that you also correctly configure the realtim upload interval, as this is used to determine if the next
+  download request should be queued immediately or delayed a while. PHP by default has a maximum 30 second runtime for
+  scripts, so we do not want to wait for a response longer than that - the script sets the max wait time to 20 seconds.
+
+
+
+
+Cloud Base Gauge
+===================
+
+The cloud base gauge performs some rounding of the displayed values to prevent the display bouncing around too much.
+
+If the display is in metres, then values below 1000 m are rounded to 10 m, above 1000 m, they are rounded to 50 m.
+If the display is in feet, then values below 2000 ft are rounded to 50 ft, above 2000 ft, they are rounded to 100 ft.
+
+
 
 
 Release History
 =======================
+
+2.5.0
+  * Adds support for WView
+    - New files: gauges-ss-basic.htx, customclientraw.txtx, pre-generate.sh
+  * Adds support for WeeWX
+    - New files: index.htm.tmpl, skin.conf, ss-data.txt.tmpl
+  * Rearranged the archive file to make it bit easier to understand
+    - New folder "web_server", contains all the file for uploadeding to your web server
+    - New folder "weather_server", sub-folders contain the files to be processed by the resective weather package.
+  * Added option for 'long polling'
+    - For people with PHP driven web sites, this downloads the data file each time it is updated on the web server
+      rather than at a fixed polling interval.
+    - Currently only works with a realtimegauges.txt file
+    - Experimental versions available for Cumulus, and Saratoga templates using PHP variables.
+  * Updated gauges.js
+    - Added optional cloud base gauge.
+    - Fixed a typo that was preventing the humidity graph updating (no cache defeat).
+    - Added optional 'wind rose' data to the wind direction gauge (enabled by default).
+    - Added optional 'sun shining' LED to solar gauge (enabled by default).
+    - Implemented the missing code for the rain/rainrate gauge default maximum values
+    - Fixed windspeed default unit radio button behaviour
+    - Added indoor humidity lo/hi for WeatherCat, Weather Display, VWS
+    - Moved Wind Rose code from separate windrose.js file into the main gauges.js file.
+    - Changed all the gauge updates to be event driven.
+       - A one second timer tick event:- 'gauges.clockTick'
+       - An Ajax data update event:- 'gauges.dataUpdated'
+       - A graphs need refresh event:- 'gauges.graphUpdate'
+       You could make use of these events outside the gauge code to update other page elements.
+    - Reorganised code to keep 'most' of a single gauges logic within the gauge singleton definition.
+    - Added option to not display the graphs in the pop-ups when running on a phone.
+  * Updated language.js/language.min.js
+    - Added cloud base gauge strings.
+    - Added Czech translation
+  * Updated realtime JSON files to include cloud base and indoor humidity lo/hi
+    - Cmumulus: realtimegaugesT.txt, version 12.
+    - Weather Display: customclientraw.txt, version 11.
+    - VWS: steelseriesVWSjson.php, version 1.04/11.
+  * Updated HTML to include cloud base gauge and UoM selection, update to JQuery library version 1.10.2
+    - gauges-ss-basic.htm
+    - gauges-ssT.htm
+    - gauge-ss-basic-inc.php
+  * Removed windrose.js file from package
+  * Updated gauges.css
+    - Minor sytling updates
+  * Updated steelseries.js/steelseries.min.js/steelseries_tween.min.js
+    - Moved to version 0.14.12
+  * Added a realtimeGaugesTMX.txt file for the new Cumulus MX program.
+  * Source for the scripts and download package moved to GitHub
+    - Latest download: https://github.com/mcrossley/SteelSeries-Weather-Gauges/archive/master.zip
+    - GitHub page: https://github.com/mcrossley/SteelSeries-Weather-Gauges/
 
 2.4.4
   * Updated language.js/language.min.js
@@ -380,11 +516,11 @@ Release History
 
 2.3.1
   * Updated gauges.js
-    - Fixed wind direction variablity calculation to cope with full 360 direction changes in the last 10 minutes
-    - Change wind direction METAR variablity speed threshold from USA based 6kts to European 3kts (line 1783
+    - Fixed wind direction variability calculation to cope with full 360 direction changes in the last 10 minutes
+    - Change wind direction METAR variability speed threshold from USA based 6kts to European 3kts (line 1783
       if you want to change it back)
     - Added full wind data to the METAR string
-    - Fixed the solar gauge, todays max indicator being shown with programs that do not supply this value
+    - Fixed the solar gauge, today's max indicator being shown with programs that do not supply this value
     - Added missing code to refresh the solar graph periodically
     - Added fix for WeatherCat not providing current theoretical solar max value
     - Added new user configurable options for the rain and rain-rate gauges default max scale values
@@ -393,9 +529,9 @@ Release History
   * Updated gauges-ss-basic.htm
     - Fixed two HTML5 errors
   * Updated realtimegaugesT.txt (ver 10) (Cumulus)
-    - Added missing todays solar max value
+    - Added missing today's solar max value
   * Updated realtimegaugesWC.txt (ver 10) (WeatherCat)
-    - Moved todays max value from current theoretical max to todays max
+    - Moved today's max value from current theoretical max to today's max
   * Updated src/steelseries.js
     - New library version v0.14.3 - Fixes script exception/crash in Firefox v21+
     - Also updated src/steelseries.min.js & steelseries_tween.min.js
@@ -419,7 +555,7 @@ Release History
    * Updated gauges.js
      - Fixed mph & knots wind unit handling for WeatherCat users only
    * Updated languages.js
-     - Nederlands strings updated
+     - Netherlands strings updated
 
 2.2.1
    * Updated gauges-ssT.htm

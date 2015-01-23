@@ -5,10 +5,10 @@
  *
  * File encoding = UTF-8
 */
-/*! Version: 2.4.4 - Updated: 12 August 2013 (missing Swedish entries from 2.3.1 added) */
+/*! Version: 2.5.0 - Updated: 16 December 2014 (missing Swedish entries from 2.3.1 added, Cloudbase entries added, added Czech) */
 
 /*global gauges */
-/*jshint jquery:true */
+/*jshint jquery:true,unused:false*/
 
 var LANG = LANG || {};
 
@@ -148,6 +148,15 @@ LANG.EN = {
     solar_currentMax : "Current theoretical maximum reading",
     solar_ofMax : "of maximum",
     solar_maxToday : "Today's maximum reading",
+    //
+    cloudbase_title : "Cloud Base",
+    cloudbase_popup_title : "Theoretical cloud base",
+    cloudbase_popup_text : "The calculation is a simple one; 1000 feet for every 4.4 degrees Fahrenheit<br>" +
+                           "difference between the temperature and the dew point. Note that this simply<br>" +
+                           "gives the theoretical height at which Cumulus clouds would begin to form, the<br>" +
+                           "air being saturated",
+    feet: "feet",
+    metres: "metres",
     //
     lowest_info : "Lowest",
     highest_info : "Highest",
@@ -309,6 +318,15 @@ LANG.FR = {
     solar_ofMax : "du maximum",
     solar_maxToday : "Lecture maximale de la journée",
     //
+    cloudbase_title : "Plafond nuageux",
+    cloudbase_popup_title : "Plafond nuageux théorique",
+    cloudbase_popup_text : "Le calcul est simple; 1000 pieds pour chaque différence de 4.4 degrés Fahrenheit<br>" +
+                           "entre la température et le point de rosée. A noter que cela donne simplement la<br>" +
+                           "hauteur théorique à laquelle des cumulus commenceront à se former, l'air étant saturé.",
+
+    feet: "feet",
+    metres: "mètres",
+    //
     lowest_info : "le plus bas",
     highest_info : "le plus élevé",
     lowestF_info : "la plus basse",  // for proper translation of feminine words
@@ -358,7 +376,7 @@ LANG.DE = {
     StatusRetry : "Wiederhole...",
     StatusRetryIn : "Wiederhole in...",
     StatusTimeout : "Zeitüberschreitung",
-    StatusPageLimit : 'Seiten "auto-update"-Zeitlimit erreicht, um fortzufahren aktuelle Seite neu laden',
+    StatusPageLimit : "Seiten 'auto-update'-Zeitlimit erreicht, um fortzufahren aktuelle Seite neu laden",
     //
     StatusLastUpdate : "Letzte Aktualisierung vor",
     StatusMinsAgo : "Minuten",
@@ -469,6 +487,15 @@ LANG.DE = {
     solar_ofMax : "vom Maximum",
     solar_maxToday : "Heutiger maximaler Messwert",
     //
+    cloudbase_title : "Wolkenuntergrenze",
+    cloudbase_popup_title : "Theoretische Wolkenuntergrenze",
+    cloudbase_popup_text : "Die Berechnung ist einfach; 1000 Fuß für jede 4,4 Grad Fahrenheit<br>" +
+                           "Unterschied zwischen der Temperatur und dem Taupunkt. Beachte das<br>" +
+                           "dies nur die theoretische Höhe angibt in der sich Cumulus Wolken formen<br>" +
+                           "wenn die Luft gesättigt ist",
+    feet: "Fuß",
+    metres: "Meter",
+    //
     lowest_info : "Niedrigster",
     highest_info : "Höchster",
     lowestF_info : "Niedrigste",     // for proper translation of feminine words
@@ -479,7 +506,7 @@ LANG.DE = {
     Rising : "steigend",
     RisingSlowly : "langsam steigend ",
     Steady : "konstant",
-    FallingSlowly : 'langsam fallend',
+    FallingSlowly : "langsam fallend",
     Falling : "fallend",
     FallingQuickly : "schnell fallend",
     FallingVeryRapidly : "sehr schnell fallend",
@@ -624,6 +651,15 @@ LANG.NL = {
     solar_currentMax : "Huidige theoretische maximale waarde",
     solar_ofMax : "van maximum",
     solar_maxToday : "Maximale  waarde vandaag",
+    //
+    cloudbase_title : "Wolkenbasis",
+    cloudbase_popup_title : "Theoretische wolkenbasis",
+    cloudbase_popup_text : "De berekening is ongecompliceerd; 1000 voet voor elke 4.4 graden Fahrenheit<br>" +
+                           "verschil tussen de temperatuur en dauwpunt. Let op dat dit eenvoudig<br>" +
+                           "de theoretische hoogte weergeeft wanneer Cumulus wolken zich zouden vormen, en de<br>" +
+                           "lucht verzadigd wordt",
+    feet: "feet",
+    metres: "meter",
     //
     lowest_info : "Laagste",
     highest_info : "Hoogste",
@@ -782,6 +818,15 @@ LANG.SE = {
     solar_currentMax : "Current theoretical maximum reading",
     solar_ofMax : "of maximum",
     solar_maxToday : "Today's maximum reading",
+    //
+    cloudbase_title : "Molnbas",
+    cloudbase_popup_title : "Teoretisk molnbas",
+    cloudbase_popup_text : "Beräkningen är enkel; 1000 fot för varje 4.4 grader Fahrenheit<br>" +
+                           "skillnaden mellan temperaturen och daggpunkten. Observera att detta bara<br>" +
+                           "ger den teoretiska höjden där Cumulusmoln skulle börja bildas, när<br>" +
+                           "luften är mättad",
+    feet: "feet",
+    metres: "meter",
     //
     lowest_info : "Lägsta",
     highest_info : "Högsta",
@@ -942,6 +987,15 @@ LANG.DK = {
     solar_ofMax : "af maximum",
     solar_maxToday : "Maximum i dag",
     //
+    cloudbase_title : "skyhøjde basen",
+    cloudbase_popup_title : "Theoretical cloud base",
+    cloudbase_popup_text : "The calculation is a simple one; 1000 feet for every 4.4 degrees Fahrenheit<br>" +
+                           "difference between the temperature and the dew point. Note that this simply<br>" +
+                           "gives the theoretical height at which Cumulus clouds would begin to form, the<br>" +
+                           "air being saturated",
+    feet: "feet",
+    metres: "meters",
+    //
     lowest_info : "Laveste",
     highest_info : "Højeste",
     lowestF_info : "Laveste",     // for proper translation of feminine words
@@ -967,7 +1021,7 @@ LANG.DK = {
 };
 
 //======================================================================================================================
-// Finish
+// Finnish
 //======================================================================================================================
 LANG.FI = {
     canvasnosupport : "Selaimesi ei tue HTML5 Canvas tekniikkaa... Sorry...<br>" +
@@ -1098,6 +1152,15 @@ LANG.FI = {
     solar_currentMax : "Teorettinen maksimisäteily nyt",
     solar_ofMax : "maksimista",
     solar_maxToday : "Maksimisäteily tänään",
+    //
+    cloudbase_title : "Pilvien korkeus",
+    cloudbase_popup_title : "Teoreettinen pilvien korkeus",
+    cloudbase_popup_text : "Laskentatapa on yksinkertainen; 1000 jalkaa jokaista 4.4 Fahrenheit aste-<br><br>" +
+                           "eroa lämpötilan ja kastepisteen välillä. Huomaa että tämä yksinkertaisesti<br>" +
+                           "antaa vain teoreettisen korkeuden jossa kumpupilviä alkaisi muodostua,<br>" +
+                           "ilman ollessa kylläinen",
+    feet: "feet",
+    metres: "metriä",
     //
     lowest_info : "Alin",
     highest_info : "Korkein",
@@ -1259,6 +1322,15 @@ LANG.NO = {
     solar_currentMax : "Nåværende teoretiske maksimale måling",
     solar_ofMax : "av maksimalt",
     solar_maxToday : "Dagens maksimale måling",
+    //
+    cloudbase_title:"Skybase",
+    cloudbase_popup_title : "Teoretisk skybase",
+    cloudbase_popup_text : "Beregningen er en enkel en; 1000 feet for hver 4,4 grader Fahrenheit<br>" +
+                           "forskjell mellom temperaturen og duggpunktet. Legg merke til at dette<br>" +
+                           "gir bare den teoretiske høyden hvor cumulusskyer ville begynne å dannes, når<br>" +
+                           "luften er mettet.",
+    feet: "feet",
+    metres: "meters",
     //
     lowest_info : "Lavest",
     highest_info : "Høyest",
@@ -1422,6 +1494,15 @@ LANG.IT = {
     solar_ofMax : "del massimo",
     solar_maxToday : "Lettura massima odierna",
     //
+    cloudbase_title: "Base nuvola",
+    cloudbase_popup_title: "base nuvola teorica",
+    cloudbase_popup_text: "Il calcolo è semplice; 1000 piedi per ogni 4,4 gradi Fahrenheit <br>" +
+                          "differenza tra la temperatura e il punto di rugiada. Si noti che questo semplicemente <br> " +
+                          "dà l'altezza teorica a cui Cumulus nuvole avrebbero cominciato a formare, <br>" +
+                          "perché l'aria essere satura",
+    feet: "piedi",
+    metres: "metri",
+    //
     lowest_info : "Minimo",
     highest_info : "Massimo",
     lowestF_info : "Minima",      // for proper translation of feminine words
@@ -1448,6 +1529,7 @@ LANG.IT = {
 
 //======================================================================================================================
 // Spanish
+// ***INCOMPLETE***
 //======================================================================================================================
 LANG.ES = {
     canvasnosupport : "No hay soporte para HTML5 en su navegador ... Lo siento ...<br>" +
@@ -1581,6 +1663,15 @@ LANG.ES = {
     solar_ofMax : "del máximo teórico",
     solar_maxToday : "Valor máximo real hoy",
     //
+    cloudbase_title : "base de las nubes",
+    cloudbase_popup_title : "Theoretical cloud base",
+    cloudbase_popup_text : "The calculation is a simple one; 1000 feet for every 4.4 degrees Fahrenheit<br>" +
+                           "difference between the temperature and the dew point. Note that this simply<br>" +
+                           "gives the theoretical height at which Cumulus clouds would begin to form, the<br>" +
+                           "air being saturated",
+    feet: "feet",
+    metres: "metros",
+    //
     lowest_info : "Mínima",
     highest_info : "Máxima",
     lowestF_info : "Mínima",
@@ -1607,6 +1698,7 @@ LANG.ES = {
 
 //======================================================================================================================
 // Catalan
+// ***INCOMPLETE***
 //======================================================================================================================
 LANG.CT = {
     canvasnosupport : "No hi ha suport per HTML5 en el seu navegador ... Ho sento ...<br>" +
@@ -1741,6 +1833,15 @@ LANG.CT = {
     solar_currentMax : "Màxima lectura teòrica actual",
     solar_ofMax : "del màxim",
     solar_maxToday : "Lectura màxima d'avui",
+    //
+    cloudbase_title : "base dels núvols",
+    cloudbase_popup_title : "Theoretical cloud base",
+    cloudbase_popup_text : "The calculation is a simple one; 1000 feet for every 4.4 degrees Fahrenheit<br>" +
+                           "difference between the temperature and the dew point. Note that this simply<br>" +
+                           "gives the theoretical height at which Cumulus clouds would begin to form, the<br>" +
+                           "air being saturated",
+    feet: "feet",
+    metres: "metres",
     //
     lowest_info : "Mínima",
     highest_info : "Màxima",
@@ -1903,6 +2004,15 @@ LANG.GR = {
     solar_ofMax : "της μέγιστης",
     solar_maxToday : "Σημερινή μέγιστη ένδειξη",
     //
+    cloudbase_title : "Υψος βάσης νεφών",
+    cloudbase_popup_title : "Θεωρητικό ύψος βάσης νεφών",
+    cloudbase_popup_text :  "Ο υπολογισμός είναι απλός; 1000 πόδια για κάθε 4.4 Βαθμούς Φαρενάιτ.<br>" +
+                            "Είναι η διαφορά μεταξύ της θερμοκρασίας και του σημείου δρόσου. Αυτή είναι απλή<br>" +
+                            "Δίνει το θεωρητικό ύψος των νεφών στη βάση τους, <br>" +
+                            "οταν ο αέρας είναι κορεσμένος",
+    feet: "πόδια",
+    metres: "μέτρα",
+    //
     lowest_info : "Eλάχιστη",
     highest_info : "Μέγιστη",
     lowestF_info : "Ελάχιστη", // for proper translation of feminine words
@@ -2050,12 +2160,20 @@ LANG.PT = {
                 "cubra o corpo com roupa com mangas, vista calças, e use um chapéu de abas largas.<br>" +
                 "Evite a exposição ao sol nas duas horas anteriores e até às tres horas posteriores ao meio dia solar<br>" +
                 "(cerca das 11:00 até às 16:00 durante o verão nas zonas que praticam horário de verão)."],
-
     //
     solar_title:"Rad. Solar",
     solar_currentMax:"Valor máximo teórico actual",
     solar_ofMax:"do máximo",
     solar_maxToday:"Hoje, valor máximo",
+    //
+    cloudbase_title : "Base das Nuvens",
+    cloudbase_popup_title : "Base das Nuvens Teórica",
+    cloudbase_popup_text : "É um cálculo simples; 1000 pés por cada 4.4 graus Fahrenheit de diferença<br>" +
+                           "entre a temperatura e o ponto de orvalho. Note que isto dá simplesmente<br>" +
+                           "a altura teórica em que nuvens tipo Cumulus se começam a formar, e o<br>" +
+                           "ar começa a ficar saturado",
+    feet: "pés",
+    metres: "metros",
     //
     lowest_info:"Mais Baixa",
     highest_info:"Máxima",
@@ -2081,10 +2199,182 @@ LANG.PT = {
 };
 
 //======================================================================================================================
+// Czech by Milos Jirik
+//======================================================================================================================
+LANG.CS = {
+    canvasnosupport : "Ve vašem prohlížeči není podpora pro HTML5 Canvas... Lituji...<br>" +
+                      "Zkuste aktualizovat svůj prohlížeč na novější verzi - téměř všechny prohlížeče podporují nyní Canvas, i IE9!<br><br>" +
+                      "Budete přesměrováni na původní stránku měřidel...",
+    //
+    led_title : "Senzor dálkového ovládání stav neznámý",
+    led_title_ok : "Remote sensor OK",
+    led_title_lost : "Senzor dálkového ovládání kontakt ztracen!",
+    led_title_unknown : "Senzor dálkového ovládání stav neznámý!",
+    led_title_offline: "Meteorologická stanice je nyní v režimu offline.",
+    //
+    weather   : "počasí",
+    latitude  : "Zeměpisná délka",
+    longitude : "Zeměpisná šířka",
+    elevation : "Nadm. výška",
+    //
+    statusStr : "Nahrávání...",
+    StatusMsg : "Stahování...",
+    StatusHttp : "HTTP požadavek selhal",
+    StatusRetry : "Opakování...",
+    StatusRetryIn : "Opakování za...",
+    StatusTimeout : "Vypršel časový limit",
+    StatusPageLimit : "Automatická aktualizace stránky hotova, klepněte na stavovou LED pro pokračování",
+    //
+    StatusLastUpdate : "Poslední aktualizace před",
+    StatusMinsAgo : "minutami",
+    StatusHoursAgo : "hodinami",
+    StatusDaysAgo : "dny",
+    //
+    realtimeCorrupt : "Stahovaný textový soubor poškozen! Opakování...",
+    //
+    timer : "sec.",
+    at : "v",
+    //
+    // MAXIMUM number of characters that can be used for the 'title' variables (such as 'LANG_EN.temp_title_out')
+    //        11 characters  ===="12345678901"====  11 characters
+    //
+    temp_title_out : "Teplota",
+    temp_title_in : "Vn. teplota",
+    temp_out_info : "Venkovní teplota",
+    temp_out_web : "Venkovní",
+    temp_in_info : "Vnitřní teplota",
+    temp_in_web : "Vnitřní",
+    temp_trend_info : "Teplotní trend",
+    //
+    dew_title : "Rosný bod",
+    dew_info : "Rosný bod",
+    dew_web : "Rosný bod",
+    apptemp_title : "Zdánl. tepl.",
+    apptemp_info : "Zdánlivá teplota",
+    apptemp_web : "Zdánl. teplota",
+    chill_title : "Chlad větru",
+    chill_info : "Chlad větru",
+    chill_web : "Chlad větru",
+    heat_title : "Index horka",
+    heat_info : "Index horka",
+    heat_web : "Index horka",
+    humdx_title : "Humidex",
+    humdx_info : "Humidex",
+    humdx_web : "Humidex",
+    //
+    rain_title : "Srážky",
+    rrate_title : "Intenzita",
+    rrate_info : "Intenzita srážek",
+    LastRain_info : "Poslední srážky",
+    LastRainedT_info : "Dnes v",
+    LastRainedY_info : "Včera v",
+    //
+    hum_title_out : "Vlhkost",
+    hum_title_in : "Vn. vlhkost",
+    hum_out_info : "Venkovní vlhkost",
+    hum_in_info : "Vnitřní vlhkost",
+    hum_out_web : "Venkovní",
+    hum_in_web : "Vnitřní",
+    //
+    baro_title : "Tlak vzd.",
+    baro_info : "Barometrický tlak",
+    baro_trend_info : "Tlaková tendence",
+    //
+    wind_title : "Vítr rychlost",
+    tenminavg_title : "Prům. rychlost větru",
+    tenminavgwind_info : "Prům. rychlost větru (10 min)",
+    maxavgwind_info : "Max prům. rychlost větru",
+    tenmingust_info : "Náraz (10 min)",
+    maxgust_info : "Maximum náraz",
+    latest_title : "Poslední vítr",
+    latestwind_info : "Poslední rychlost větru",
+    bearing_info : "Směr větru",
+    latest_web : "Poslední",
+    tenminavg_web : "Průměr",
+    dominant_bearing : "Převažující směr větru dnes",
+    calm: "bezvětří",
+    windrose: "Větrná růžice",
+    windruntoday: "Denní proběh větru",
+    //
+    uv_title : "UV Index",
+    uv_levels : ["Žádné riziko",
+                 "Nízké riziko",
+                 "Střední riziko",
+                 "Vysoké riziko",
+                 "Velmi vysoké riziko",
+                 "Extrémní riziko"],
+    uv_headlines : ["Neměřitelný UV Index",
+                    "Bez nebezpečí pro průměrné osoby",
+                    "Riziko při nechráněném pobytu na slunci",
+                    "Velké riziko při nechráněném pobytu na slunci",
+                    "Vysoké riziko při nechráněném pobytu na slunci",
+                    "Extreme riziko při nechráněném pobytu na slunci"],
+    uv_details : ["Je ještě noc nebo je velmi zatažený den.",
 
-function changeLang(newLang) {
+                 "Noste sluneční brýle za jasných dnů, používejte opalovací krém, pokud je na zemi sníh,<br>" +
+                 "který odráží UV záření, nebo máte-li zvlášť světlou pokožku.",
+
+                 "Noste sluneční brýle a používejte krém na opalování SPF 30+, zakryjte tělo oblečením a<br>" +
+                 "kloboukem, vyhledejte stín kolem poledne, kdy je slunce nejintenzivnější.",
+
+                 "Noste sluneční brýle a používejte krém na opalování SPF 30+, zakryjte tělo ochranným<br>" +
+                 "oděvem a kloboukem se širokou krempou, zkraťte dobu pobytu na slunci v době mezi 11:00 a 16:00 hod.,<br>" +
+                 "tj. kolem slunečního poledne letního času na tři hodiny během léta v oblastech,<br>" +
+                 "které používají letního času.",
+
+                 "Používejte krém na opalování SPF 30+, košili, sluneční brýle a klobouk.<br>" +
+                 "Nezůstávejte na slunci příliš dlouho.",
+
+                 "Učiňte veškerá opatření, včetně nošení slunečních brýlí a použití krému na opalování SPF 30+,<br>" +
+                 "zakryjte tělo košilí s dlouhým rukávem a kalhotami, noste velmi široký klobouk a<br>" +
+                 "vyhněte se slunci od dvou hodin před až po tři hodiny po slunečním poledni (v době od 11:00<br>" +
+                 "do 16:00 v létě v oblastech, které používají letního času)."],
+    //
+    solar_title : "Sluneční záření",
+    solar_currentMax : "Aktuální teoretické maximum záření",
+    solar_ofMax : "maximum",
+    solar_maxToday : "Dnešní maximum záření",
+    //
+    lowest_info : "Nejnižší",
+    highest_info : "Nejvyšší",
+    lowestF_info : "Nejnižší",     // for proper translation of feminine words
+    highestF_info : "Nejvyšší",    // for proper translation of feminine words
+    //
+    RisingVeryRapidly : "Prudký vzestup",
+    RisingQuickly : "Silný vzestup",
+    Rising : "Vzestup",
+    RisingSlowly : "Slabý vzestup",
+    Steady : "Ustálený stav",
+    FallingSlowly : "Slabý pokles",
+    Falling : "Pokles",
+    FallingQuickly : "Silný pokles",
+    FallingVeryRapidly : "Prudký pokles",
+    //
+    maximum_info : "Maximum",
+    max_hour_info : "Max za hodinu",
+    minimum_info : "Minimum",
+    //
+    coords : ["S", "SSV", "SV", "VSV", "V", "VJV", "JV", "JJV", "J", "JJZ", "JZ", "ZJZ", "Z", "ZSZ", "SZ", "SSZ"],
+    compass : ["S", "SV", "V", "JV", "J", "JZ", "Z", "SZ"],
+    months : ["Led", "Úno", "Bře", "Dub", "Kvě", "Čer", "Čec", "Srp", "Zář", "Říj", "Lis", "Pro"],
+    //
+    //
+    cloudbase_title : "Základna mraků",
+    cloudbase_popup_title : "Teoretická základna mraků",
+    cloudbase_popup_text : "Výpočet je jednoduchý; 1000 ft na každých 4,4 stupňů Fahrenheita<br>" +
+                           "rozdílu mezi teplotou a teplotou rosného bodu. Všimněte si, že to prostě<br>" +
+                           "dává teoretickou výšku, ve které se kupovité mraky začínají tvořit, kdy<br>" +
+                           "vzduch je nasycen",
+};
+
+//======================================================================================================================
+
+function changeLang(newLang, updateGauges) {
+    updateGauges = updateGauges === undefined ? true : updateGauges;
     // update the gauge titles etc
-    gauges.setLang(newLang);
+    if (updateGauges) {
+        gauges.setLang(newLang);
+    }
 
     // HTML boiler plate
     $('#lang_weather').html(newLang.weather);
@@ -2108,5 +2398,5 @@ function changeLang(newLang) {
     $('#lang_rainfall').html(newLang.rain_title);
     $('#lang_pressure').html(newLang.baro_title);
     $('#lang_windSpeed').html(newLang.wind_title);
-
+    $('#lang_cloudbase').html(newLang.cloudbase_title);
 }
