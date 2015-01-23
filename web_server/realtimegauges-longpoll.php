@@ -19,6 +19,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //----------------------------------------------------------------------
 
+$timeout = 28;  // Seconds to wait for file update before giving up (PHP default runtime limit is 30 seconds)
 
 $RealtimeFilename = $_SERVER['DOCUMENT_ROOT'].'/realtimegauges.txt';  // full path to your realtime gauges data file
 
@@ -32,7 +33,9 @@ $response = array(
 	'status' => '',
 	'data' => '{}');
 
-if (file_exists($RealtimeFilename)) {
+$endTime = time() + $timeout;
+
+if (file_exists($RealtimeFilename) && time() < $endTime) {
 	$lastmodif = isset($_GET['timestamp']) ? $_GET['timestamp'] : 0 ;
 	$currentmodif = filemtime($RealtimeFilename);
 	while ($currentmodif <= $lastmodif) {
@@ -40,15 +43,19 @@ if (file_exists($RealtimeFilename)) {
 		clearstatcache();
 		$currentmodif = filemtime($RealtimeFilename);
 	}
-	// wait 0.2 seconds for file to be closed, just in case we caught it during an update
-	usleep(200000);
-	$response['timestamp'] = $currentmodif;
-	$response['status'] = 'OK';
-	$response['data'] = json_decode(file_get_contents($RealtimeFilename), true);
+	if (time() >= $endTime) {
+		$response['timestamp'] = $lastmodif;
+		$response['status'] = 'Timed Out!';
+	} else {
+		// wait 0.2 seconds for file to be closed, just in case we caught it during an update
+		usleep(200000);
+		$response['timestamp'] = $currentmodif;
+		$response['status'] = 'OK';
+		$response['data'] = json_decode(file_get_contents($RealtimeFilename), true);
+	}
 } else {
 	$response['status'] = "Realtime file [$RealtimeFilename] not found";
 }
-
 
 // JSON encode the response
 echo json_encode($response);
