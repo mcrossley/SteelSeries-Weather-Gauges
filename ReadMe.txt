@@ -417,10 +417,10 @@ Release History
   * Adds support for WView
     - New files: gauges-ss-basic.htx, customclientraw.txtx, pre-generate.sh
   * Adds support for WeeWX
-    - New files: index.htm.tmpl, skin.conf, ss-data.txt.tmpl
+    - New files: index.htm.tmpl, skin.conf, gauge-data.txt.tmpl
   * Rearranged the archive file to make it bit easier to understand
-    - New folder "web_server", contains all the file for uploadeding to your web server
-    - New folder "weather_server", sub-folders contain the files to be processed by the resective weather package.
+    - New folder "web_server", contains all the files for uploading to your web server
+    - New folder "weather_server", sub-folders contain the files to be processed by the respective weather package.
   * Added option for 'long polling'
     - For people with PHP driven web sites, this downloads the data file each time it is updated on the web server
       rather than at a fixed polling interval.
