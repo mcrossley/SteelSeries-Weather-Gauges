@@ -2,8 +2,8 @@ SteelSeries JavaScript gauges
 =============================
 Created by Mark Crossley July 2011
 
-Version 2.5.0
-Updated: 23 January 2015
+Version 2.5.1
+Updated: 25 January 2015
 
 +-------------------------------------------------------+
 |                                                       |
@@ -412,6 +412,11 @@ If the display is in feet, then values below 2000 ft are rounded to 50 ft, above
 
 Release History
 =======================
+
+2.5.1
+  * Updated WD customclientrawlocal.txt to fix cloudbasevalue key, now version 12.
+  * Updated WeeWX gauge-data.txt.tmpl to fix cloudbasevalue key, now version 12.
+  * Updated gauges.js to mandate WD & WeeWX JSON version 12 files.
 
 2.5.0
   * Adds support for WView

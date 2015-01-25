@@ -2,6 +2,7 @@
 ## $Id: gauge-data.txt.tmpl 1225 2015-01-17 22:52:41Z mwall $
 ## by Matthew Wall on flight 868 ;)
 ## 31dec2014
+## Updated 25jan2015 by M Crossley, changed cloudbase: to cloudbasevalue:
 
 ## definitions for the tags can be found here:
 ## http://wiki.sandaysoft.com/a/Webtags
@@ -24,8 +25,8 @@
 ## WindRoseData
 ## windrun - calculated in this template
 ##
-## ver:11?
-## cloudbase - calculated in this template in feet
+## ver:12
+## cloudbasevalue - calculated in this template in feet
 ## cloudbaseunit - defined in this template as ft
 
 
@@ -128,7 +129,7 @@
 ## calulate solar max
 ## Ryan-Stolzenbach, MIT 1972 formula
 ## http://www.ecy.wa.gov/programs/eap/models.html
-## 
+##
 ##       jd - julian day (1 january = 1, etc)
 ##     year - year
 ##  dayfrac - current time of day as fraction of day
@@ -298,9 +299,9 @@
           "SolarRad":"$current.radiation.raw",
            "SolarTM":"$day.radiation.max.raw",
    "CurrentSolarMax":"$solarMax",
-         "cloudbase":"$cloudbase",
+         "cloudbasevalue":"$cloudbase",
           "forecast":"$fc",
            "version":"$station.version",
              "build":"",
-               "ver":"11"
+               "ver":"12"
 }

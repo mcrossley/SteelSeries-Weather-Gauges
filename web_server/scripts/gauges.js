@@ -30,7 +30,7 @@ var gauges = (function () {
     var strings = LANG.EN,         //Set to your default language. Store all the strings in one object
         config = {
             // Script configuration parameters you may want to 'tweak'
-            scriptVer         : '2.5.0',
+            scriptVer         : '2.5.1',
             weatherProgram    : 0,                      //Set 0=Cumulus, 1=Weather Display, 2=VWS, 3=WeatherCat, 4=Meteobridge, 5=WView, 6=WeeWX
             imgPathURL        : '/images/',             //*** Change this to the relative path for your 'Trend' graph images
             oldGauges         : 'gauges.htm',           //*** Change this to the relative path for your 'old' gauges page.
@@ -220,7 +220,7 @@ var gauges = (function () {
                 break;
             case 1:
                 // Weather Display
-                _realtimeVer = 11;   //minimum version of the realtime JSON file required
+                _realtimeVer = 12;   //minimum version of the realtime JSON file required
                 config.realTimeURL = config.longPoll ? config.realTimeURL_LongPoll : config.realTimeURL_WD;
                 config.tipImgs = [                                      // config.tipImgs for Weather Display users with wxgraph
                     ['temp+hum_24hr.php', 'indoor_temp_24hr.php'],      // Temperature: outdoor, indoor
@@ -316,7 +316,7 @@ var gauges = (function () {
                 break;
             case 6:
                 // weewx
-                _realtimeVer = 10;   //minimum version of the realtime JSON file required
+                _realtimeVer = 12;   //minimum version of the realtime JSON file required
                 config.realTimeURL = config.longPoll ? config.realTimeURL_LongPoll : config.realTimeURL_weewx;
                 config.showSunshineLed = true;
                 config.showWindVariation = true;
