@@ -2,8 +2,8 @@ SteelSeries JavaScript gauges
 =============================
 Created by Mark Crossley July 2011
 
-Version 2.5.1
-Updated: 25 January 2015
+Version 2.5.2
+Updated: 26 January 2015
 
 +-------------------------------------------------------+
 |                                                       |
@@ -412,6 +412,14 @@ If the display is in feet, then values below 2000 ft are rounded to 50 ft, above
 
 Release History
 =======================
+
+2.5.2
+  * Updated gauges.js to fix language switch in Saratoga SS gauge template file.
+    - Also requires a change to the Saratoga template file, the initial call to changeLang() needs to be changed to:
+      print "<script type=\"text/javascript\">
+        $(document).ready(function () {
+          changeLang(LANG.$toLang);  // change SteelSeries language\n
+        });</script>\n";
 
 2.5.1
   * Updated WD customclientrawlocal.txt to fix cloudbasevalue key, now version 12.

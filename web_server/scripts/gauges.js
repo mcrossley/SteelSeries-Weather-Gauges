@@ -30,7 +30,7 @@ var gauges = (function () {
     var strings = LANG.EN,         //Set to your default language. Store all the strings in one object
         config = {
             // Script configuration parameters you may want to 'tweak'
-            scriptVer         : '2.5.1',
+            scriptVer         : '2.5.2',
             weatherProgram    : 0,                      //Set 0=Cumulus, 1=Weather Display, 2=VWS, 3=WeatherCat, 4=Meteobridge, 5=WView, 6=WeeWX
             imgPathURL        : '/images/',             //*** Change this to the relative path for your 'Trend' graph images
             oldGauges         : 'gauges.htm',           //*** Change this to the relative path for your 'old' gauges page.
@@ -370,10 +370,6 @@ var gauges = (function () {
             // End of logo images
 
 
-            // set some default units
-            // DO NOT CHANGE THESE - THE SCRIPT DEPENDS ON THESE DEFAULTS
-            // the units actually displayed, will be read from the realtime.txt file, or from the users last visit
-
             // Get the display units the user last used when they visited before - if present
             _displayUnits = getCookie('units');
             // Set 'units' radio buttons to match preferred units
@@ -399,6 +395,8 @@ var gauges = (function () {
                 data.cloudunit = _displayUnits.cloud;
             } else {
                 // Set the defaults to metric )
+                // DO NOT CHANGE THESE - THE SCRIPT DEPENDS ON THESE DEFAULTS
+                // The units actually displayed will be read from the realtime.txt file, or from the users last visit cookie
                 _displayUnits = {
                     temp: 'C',
                     rain: 'mm',
@@ -1451,6 +1449,7 @@ var gauges = (function () {
                 }
 
                 return {
+                    data: cache,
                     update: update,
                     gauge: ssGauge
                 };
@@ -1884,7 +1883,7 @@ var gauges = (function () {
                     }
 
                     // optional rose data on direction gauge
-                    if (config.showRoseOnDirGauge) {
+                    if (config.showRoseOnDirGauge && data.WindRoseData) {
                         // Process rose data
                         rosePoints = data.WindRoseData.length;
                         roseSectionAngle = 360 / rosePoints;
@@ -3850,55 +3849,57 @@ var gauges = (function () {
             // call all the gauge functions to update pop-up data
             if (gaugeTemp) {
                 gaugeTemp.gauge.setTitleString(gaugeTemp.data.title);
-                gaugeTemp.update();
+                if (data.ver) { gaugeTemp.update(); }
             }
             if (gaugeDew)  {
                 gaugeDew.gauge.setTitleString(gaugeDew.data.title);
-                gaugeDew.update();
+                if (data.ver) { gaugeDew.update(); }
             }
             if (gaugeBaro) {
-                gaugeBaro.setTitleString(gaugeBaro.data.title);
-                gaugeBaro.update();
+                gaugeBaro.gauge.setTitleString(gaugeBaro.data.title);
+                if (data.ver) { gaugeBaro.update(); }
             }
             if (gaugeRain) {
                 gaugeRain.gauge.setTitleString(gaugeRain.data.title);
-                gaugeRain.update();
+                if (data.ver) { gaugeRain.update(); }
             }
             if (gaugeRRate) {
                 gaugeRRate.gauge.setTitleString(gaugeRRate.data.title);
-                gaugeRRate.update();
+                if (data.ver) { gaugeRRate.update(); }
             }
             if (gaugeHum)  {
                 gaugeHum.gauge.setTitleString(gaugeHum.data.title);
-                gaugeHum.update();
+                if (data.ver) { gaugeHum.update(); }
             }
             if (gaugeWind) {
                 gaugeWind.gauge.setTitleString(gaugeWind.data.title);
-                gaugeWind.update();
+                if (data.ver) { gaugeWind.update(); }
             }
             if (gaugeDir) {
                 gaugeDir.gauge.setPointSymbols(strings.compass);
                 gaugeDir.data.titles = [strings.latest_web, strings.tenminavg_web];
                 gaugeDir.gauge.setLcdTitleStrings(gaugeDir.data.titles);
-                gaugeDir.update();
+                if (data.ver) { gaugeDir.update(); }
             }
             if (gaugeUV) {
                 gaugeUV.gauge.setTitleString(strings.uv_title);
+                if (data.ver) { gaugeUV.update(); }
             }
             if (gaugeSolar) {
                 gaugeSolar.gauge.setTitleString(strings.solar_title);
+                if (data.ver) { gaugeSolar.update(); }
             }
             if (gaugeRose) {
                 gaugeRose.setTitle(strings.windrose);
                 gaugeRose.setCompassString(strings.compass);
-                gaugeRose.doWindRose();
+                if (data.ver) { gaugeRose.update(); }
             }
             if (gaugeCloud) {
                 // Cloudbase
                 gaugeCloud.data.units = data.cloudunit === 'm' ? strings.metres : strings.feet;
                 gaugeCloud.gauge.setTitleString(strings.cloudbase_title);
-                gaugeCloud.gauge.setUnits(gaugeCloud.data.units);
-                gaugeCloud.update();
+                gaugeCloud.gauge.setUnitString(gaugeCloud.data.units);
+                if (data.ver) { gaugeCloud.update(); }
             }
         },
 
