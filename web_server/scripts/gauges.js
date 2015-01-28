@@ -14,12 +14,11 @@
 /*globals steelseries, LANG, changeLang */
 /*jshint jquery:true,nomen:false,plusplus:false */
 
-'option strict';
-
 /*! Tiny Pub/Sub - v0.7.0 - 2013-01-29
 * https://github.com/cowboy/jquery-tiny-pubsub
 * Copyright (c) 2013 "Cowboy" Ben Alman; Licensed MIT */
 (function($) {
+    'use strict';
     var o = $({});
     $.subscribe = function() {o.on.apply(o, arguments);};
     $.unsubscribe = function() {o.off.apply(o, arguments);};
@@ -27,6 +26,7 @@
 }(jQuery));
 
 var gauges = (function () {
+    'use strict';
     var strings = LANG.EN,         //Set to your default language. Store all the strings in one object
         config = {
             // Script configuration parameters you may want to 'tweak'
@@ -2930,7 +2930,7 @@ var gauges = (function () {
                 ddimgtooltip.init('[id^="tip_"]');
                 // Are we running on a phone device (or really low res screen)?
                 if ($(window).width() < 480) {
-                    $(".ddimgtooltip").filter(':hidden').width('200px');
+                    $('.ddimgtooltip').filter(':hidden').width('200px');
                 }
             }
 
