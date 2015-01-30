@@ -2,8 +2,8 @@ SteelSeries JavaScript gauges
 =============================
 Created by Mark Crossley July 2011
 
-Version 2.5.2
-Updated: 26 January 2015
+Version 2.5.3
+Updated: 30 January 2015
 
 +-------------------------------------------------------+
 |                                                       |
@@ -412,6 +412,10 @@ If the display is in feet, then values below 2000 ft are rounded to 50 ft, above
 
 Release History
 =======================
+
+2.5.3
+  * Updated steelseries.js/steelseries.min.js/steelseries_tween.min.js
+    - Moved to version 0.14.13 - Bug fixes affecting the wind direction gauge
 
 2.5.2
   * Updated gauges.js to fix language switch in Saratoga SS gauge template file.
