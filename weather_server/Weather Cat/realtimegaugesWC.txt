@@ -75,6 +75,8 @@
 "domwinddir":"DOMWDTEXT$",
 "WindRoseData":[WINDROSE45$],
 "windrun":"STAT$WINDRUN:TOTAL:TODAY$",
+"cloudbasevalue":"STAT$CLOUDBASE:CURRENT$",
+"cloudbaseunit":"HEIGHTUNITS$",
 "version":"BD$",
 "build":"0",
-"ver":"12"}
+"ver":"13"}
