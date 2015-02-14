@@ -2,8 +2,8 @@ SteelSeries JavaScript gauges
 =============================
 Created by Mark Crossley July 2011
 
-Version 2.5.4
-Updated: 09 February 2015
+Version 2.5.5
+Updated: 12 February 2015
 
 +-------------------------------------------------------+
 |                                                       |
@@ -413,12 +413,19 @@ If the display is in feet, then values below 2000 ft are rounded to 50 ft, above
 Release History
 =======================
 
+2.5.5
+  * Updated gauges.js
+    - Fixed UTF-8 corruption of °C & °F introduced in 2.5.4
+    - Changed WeatherCat cloudbase graph from pressure1.jpg to cloudbase1.jpg
+    - Added gaugeGlobal values for the direction gauge average pointer type and colour
+
 2.5.4
   * Updated gauges.js
     - Internal changes to support Cumulus MX dashboard
     - More error checking added for missing gauges on HTML page, it will now tolerate the removal of the LED,
       timer, status display etc.
     - Enables the cloudbase gauge for WeatherCat - Must be running WC version 2.10 or later
+  * Updated realtimegaugesWC.txt, added cloudbase
 
 2.5.3
   * Updated steelseries.js/steelseries.min.js/steelseries_tween.min.js

@@ -30,7 +30,7 @@ var gauges = (function () {
     var strings = LANG.EN,         //Set to your default language. Store all the strings in one object
         config = {
             // Script configuration parameters you may want to 'tweak'
-            scriptVer         : '2.5.4',
+            scriptVer         : '2.5.5',
             weatherProgram    : 0,                      //Set 0=Cumulus, 1=Weather Display, 2=VWS, 3=WeatherCat, 4=Meteobridge, 5=WView, 6=WeeWX
             imgPathURL        : '/images/',             //*** Change this to the relative path for your 'Trend' graph images
             oldGauges         : 'gauges.htm',           //*** Change this to the relative path for your 'old' gauges page.
@@ -86,6 +86,8 @@ var gauges = (function () {
             foreground             : steelseries.ForegroundType.TYPE1,
             pointer                : steelseries.PointerType.TYPE8,
             pointerColour          : steelseries.ColorDef.RED,
+            dirAvgPointer          : steelseries.PointerType.TYPE8,
+            dirAvgPointerColour    : steelseries.ColorDef.BLUE,
             gaugeType              : steelseries.GaugeType.TYPE4,
             lcdColour              : steelseries.LcdColor.STANDARD,
             knob                   : steelseries.KnobType.STANDARD_KNOB,
@@ -277,7 +279,7 @@ var gauges = (function () {
                     (config.showUvGauge ? 'uv1.jpg' : null),             // UV graph if UV sensor is present | =null if no UV sensor
                     (config.showSolarGauge ? 'solarrad1.jpg' : null),    // Solar rad graph if Solar sensor is present | Solar =null if no Solar sensor
                     (config.showRoseGauge ? 'winddirection1.jpg' : null),// Wind direction if Rose is enabled | =null if Rose is disabled
-                    (config.showCloudGauge ? 'pressure1.jpg' : null)     // Pressure for cloud height | =null if Cloud Height is disabled
+                    (config.showCloudGauge ? 'cloudbase1.jpg' : null)     // Pressure for cloud height | =null if Cloud Height is disabled
                 ];
                 break;
             case 4:
@@ -1802,9 +1804,9 @@ var gauges = (function () {
                 // create wind direction/compass radial gauge
                 if ($('#canvas_dir').length) {
                     params.size = Math.ceil($('#canvas_dir').width() * config.gaugeScaling);
-                    params.pointerTypeLatest = gaugeGlobals.pointer; // default TYPE1,
-                    params.pointerTypeAverage = steelseries.PointerType.TYPE8; // default TYPE8
-                    params.pointerColorAverage = steelseries.ColorDef.BLUE;
+                    params.pointerTypeLatest = gaugeGlobals.pointer; // default TYPE8,
+                    params.pointerTypeAverage = gaugeGlobals.dirAvgPointer; // default TYPE8
+                    params.pointerColorAverage = gaugeGlobals.dirAvgPointerColour;
                     params.degreeScale = true;             // Show degree scale rather than ordinal directions
                     params.pointSymbols = strings.compass;
                     params.roseVisible = false;
@@ -2992,7 +2994,9 @@ var gauges = (function () {
                 // - and we delay the download of the images speeding up page display
                 //
                 $('#imgtip0_img').attr('src', config.imgPathURL + config.tipImgs[0][0] + cacheDefeat);
-                $('#imgtip1_img').attr('src', config.imgPathURL + config.tipImgs[1][gaugeDew.data.popupImg] + cacheDefeat);
+                if (gaugeDew) {
+                    $('#imgtip1_img').attr('src', config.imgPathURL + config.tipImgs[1][gaugeDew.data.popupImg] + cacheDefeat);
+                }
                 $('#imgtip2_img').attr('src', config.imgPathURL + config.tipImgs[2] + cacheDefeat);
                 $('#imgtip3_img').attr('src', config.imgPathURL + config.tipImgs[3] + cacheDefeat);
                 $('#imgtip4_img').attr('src', config.imgPathURL + config.tipImgs[4][0] + cacheDefeat);
@@ -3704,7 +3708,7 @@ var gauges = (function () {
 
         setTempUnits = function (celsius) {
             if (celsius) {
-                data.tempunit = '?C';
+                data.tempunit = '°C';
                 if (gaugeTemp) {
                     gaugeTemp.data.sections = createTempSections(true);
                     gaugeTemp.data.minValue = gaugeGlobals.tempScaleDefMinC;
@@ -3716,7 +3720,7 @@ var gauges = (function () {
                     gaugeDew.data.maxValue = gaugeGlobals.tempScaleDefMaxC;
                 }
             } else {
-                data.tempunit = '?F';
+                data.tempunit = '°F';
                 if (gaugeTemp) {
                     gaugeTemp.data.sections = createTempSections(false);
                     gaugeTemp.data.minValue = gaugeGlobals.tempScaleDefMinF;
