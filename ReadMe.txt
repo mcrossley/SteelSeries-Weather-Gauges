@@ -3,7 +3,7 @@ SteelSeries JavaScript gauges
 Created by Mark Crossley July 2011
 
 Version 2.5.6
-Updated: 08 February 2015
+Updated: 08 March 2015
 
 +-------------------------------------------------------+
 |                                                       |
