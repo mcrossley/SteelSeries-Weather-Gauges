@@ -352,7 +352,7 @@ LANG.FR = {
 };
 
 //======================================================================================================================
-// Deutsch by RASter
+// Deutsch by RASter & wurzelmac
 //======================================================================================================================
 LANG.DE = {
     canvasnosupport : "Ihr Browser hat keine HTML5 Canvas Unterstützung.<br>" +
@@ -376,7 +376,7 @@ LANG.DE = {
     StatusRetry : "Wiederhole...",
     StatusRetryIn : "Wiederhole in...",
     StatusTimeout : "Zeitüberschreitung",
-    StatusPageLimit : "Seiten 'auto-update'-Zeitlimit erreicht, um fortzufahren aktuelle Seite neu laden",
+    StatusPageLimit : "Automatisches Seitenupdate: Zeitlimit erreicht. Um fortzufahren auf die Status-LED klicken.",
     //
     StatusLastUpdate : "Letzte Aktualisierung vor",
     StatusMinsAgo : "Minuten",
@@ -402,9 +402,9 @@ LANG.DE = {
     apptemp_title : "Gefühlt",
     apptemp_info : "Gefühlte Temperatur",
     apptemp_web : "Gefühlt",
-    chill_title : "Windkälte",
-    chill_info : "Windkälte",
-    chill_web : "Windkälte",
+    chill_title : "Windkühle",
+    chill_info : "Windkühle",
+    chill_web : "Windkühle",
     heat_title : "Hitzeindex",
     heat_info : "Hitzeindex",
     heat_web : "Hitzeindex",
@@ -444,7 +444,7 @@ LANG.DE = {
     dominant_bearing : "vorherrschende Windrichtung Heute",
     calm: "calm",
     windrose: "Windrose",
-    windruntoday: "Wind run today",
+    windruntoday: "Windmenge heute",
     //
     uv_title : "UV Index",
     uv_levels : ["keiner",
@@ -462,24 +462,28 @@ LANG.DE = {
     uv_details : ["Es ist entweder Nacht oder ein sehr bewölkter Tag.",
 
                   "Tragen Sie an hellen Tagen eine Sonnenbrille; verwenden Sie Sonnenschutzmittel<br>" +
-                  "wenn Sie besonders helle Haut haben oder wenn Schnee liegt welcher UV_Strahlung reflektiert.",
+                  "wenn Sie besonders helle Haut haben oder wenn Schnee liegt welcher UV_Strahlung<br>" +
+                  "reflektiert.",
+
+                  "Tragen Sie eine Sonnenbrille und verwenden Sie Sonnencreme mit<br>" +
+                  "Lichtschutzfaktor 30 oder höher. Bedecken Sie den Körper mit Kleidung und tragen<br>" +
+                  "Sie einen Hut. Suchen Sie um die Mittagszeit, wenn die Sonne am stärksten ist,<br>" +
+                  "Schatten auf.",
 
                   "Tragen Sie eine Sonnenbrille und verwenden Sie Sonnencreme<br>" +
-                  "mit Lichtschutzfaktor 30 oder höher. Bedecken Sie den Körper mit Kleidung und tragen Sie einen Hut.<br>" +
-                  "Suchen Sie um die Mittagszeit, wenn die Sonne am stärksten ist, Schatten auf.",
-
-                  "Tragen Sie eine Sonnenbrille und verwenden Sie Sonnencreme<br>" +
-                  "mit Lichtschutzfaktor 30 und höher. Schützen Sie den Körper durch entsprechende Kleidung<br>" +
-                  "und einen breitkrempigen Hut. Begrenzen Sie den Aufenthalt in der Sonne zwei Stunden vor bis drei Stunden nach<br>" +
-                  "dem solaren Mittag (ca. 11:00 - 16:00 Uhr in Ländern mit Sommerzeit) auf ein Minimum",
+                  "mit Lichtschutzfaktor 30 und höher. Schützen Sie den Körper durch entsprechende<br>" +
+                  "Kleidung und einen breitkrempigen Hut. Begrenzen Sie den Aufenthalt in der Sonne<br>" +
+                  "zwei Stunden vor bis drei Stunden nach dem solaren Mittag<br>" +
+                  "(ca. 11:00 - 16:00 Uhr in Ländern mit Sommerzeit) auf ein Minimum",
 
                   "Benutzen Sie Sonnencreme, Lichtschutzfaktor 30 und höher.<br>" +
                   "Tragen Sie eine Sonnenbrille, T-Shirt und einen Hut.<br>" +
                   "Bleiben Sie nicht zu lange in der Sonne.",
 
-                  "Treffen Sie alle Vorsichtsmaßnahmen: tragen Sie eine Sonnenbrille und benutzen Sie Sonnencreme,<br>" +
-                  "Lichtschutzfaktor 30 oder höher, bedecken Sie den Körper mit einem langärmeligen T-Shirt, tragen Sie lange Hosen und einen breiten Hut, <br>" +
-                  "meiden Sie die Sonne zwei Stunden vor bis drei Stunden nach dem solaren Mittag (ca. 11:00 - <br>" +
+                  "Treffen Sie alle Vorsichtsmaßnahmen: tragen Sie eine Sonnenbrille und benutzen Sie<br>" +
+                  "Sonnencreme, Lichtschutzfaktor 30 oder höher, bedecken Sie den Körper mit einem " +
+                  "langärmeligen T-Shirt, tragen Sie lange Hosen und einen breiten Hut, meiden Sie die<br>" +
+                  "Sonne zwei Stunden vor bis drei Stunden nach dem solaren Mittag (ca. 11:00 - <br>" +
                   "16:00 Uhr in Ländern mit Sommerzeit)."],
     //
     solar_title : "Sonnenstrahlung",
@@ -489,10 +493,10 @@ LANG.DE = {
     //
     cloudbase_title : "Wolkenuntergrenze",
     cloudbase_popup_title : "Theoretische Wolkenuntergrenze",
-    cloudbase_popup_text : "Die Berechnung ist einfach; 1000 Fuß für jede 4,4 Grad Fahrenheit<br>" +
-                           "Unterschied zwischen der Temperatur und dem Taupunkt. Beachte das<br>" +
-                           "dies nur die theoretische Höhe angibt in der sich Cumulus Wolken formen<br>" +
-                           "wenn die Luft gesättigt ist",
+    cloudbase_popup_text : "Die Berechnung ist einfach: 122 Meter für je 1,0 Grad Celsius<br>" +
+                           "Differenz zwischen Temperatur und Taupunkt. Beachte, dass<br>" +
+                           "dies nur die theoretische Höhe angibt, in der sich Cumulus Wolken formen,<br>" +
+                           "wenn die Luft gesättigt ist.",
     feet: "Fuß",
     metres: "Meter",
     //
