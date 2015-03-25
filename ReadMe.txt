@@ -2,8 +2,8 @@ SteelSeries JavaScript gauges
 =============================
 Created by Mark Crossley July 2011
 
-Version 2.5.6
-Updated: 08 March 2015
+Version 2.5.7
+Updated: 25 March 2015
 
 +-------------------------------------------------------+
 |                                                       |
@@ -412,6 +412,10 @@ If the display is in feet, then values below 2000 ft are rounded to 50 ft, above
 
 Release History
 =======================
+
+2.5.7
+  * Updated gauges.js
+    - Fix to the dewpoint gauge, now handles invalid values for today's hi/lo's more sensibly
 
 2.5.6
   * Updated language.js/language.min.js

@@ -30,7 +30,7 @@ var gauges = (function () {
     var strings = LANG.EN,         //Set to your default language. Store all the strings in one object
         config = {
             // Script configuration parameters you may want to 'tweak'
-            scriptVer         : '2.5.6',
+            scriptVer         : '2.5.7',
             weatherProgram    : 0,                      //Set 0=Cumulus, 1=Weather Display, 2=VWS, 3=WeatherCat, 4=Meteobridge, 5=WView, 6=WeeWX
             imgPathURL        : './images/',             //*** Change this to the relative path for your 'Trend' graph images
             oldGauges         : 'gauges.htm',           //*** Change this to the relative path for your 'old' gauges page.
@@ -993,6 +993,14 @@ var gauges = (function () {
 
                     cache.lowScale = getMinTemp();
                     cache.highScale = getMaxTemp();
+
+                    if (cache.lowScale === -9999) {
+                        cache.lowScale = data.tempunit[1] === 'C' ? gaugeGlobals.tempScaleDefMinC : gaugeGlobals.tempScaleDefMinF;
+                    }
+
+                    if (cache.highScale === -9999) {
+                        cache.highScale = data.tempunit[1] === 'C' ? gaugeGlobals.tempScaleDefMaxC : gaugeGlobals.tempScaleDefMaxF;
+                    }
 
                     switch (sel) {
                     case 'dew': // dew point
