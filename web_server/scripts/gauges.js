@@ -30,7 +30,7 @@ var gauges = (function () {
     var strings = LANG.EN,         //Set to your default language. Store all the strings in one object
         config = {
             // Script configuration parameters you may want to 'tweak'
-            scriptVer         : '2.5.7',
+            scriptVer         : '2.5.8',
             weatherProgram    : 0,                      //Set 0=Cumulus, 1=Weather Display, 2=VWS, 3=WeatherCat, 4=Meteobridge, 5=WView, 6=WeeWX
             imgPathURL        : './images/',             //*** Change this to the relative path for your 'Trend' graph images
             oldGauges         : 'gauges.htm',           //*** Change this to the relative path for your 'old' gauges page.
@@ -41,7 +41,7 @@ var gauges = (function () {
             stationTimeout    : 3,                      //period of no data change before we declare the station off-line, in minutes (default 3)
             pageUpdateLimit   : 20,                     //period after which the page stops automatically updating, in minutes (default 20),
                                                         // - set to 0 (zero) to disable this feature
-            pageUpdatePswd    : 'its-me',               //password to over ride the page updates time-out, do not set to blank even if you do not use a password
+            pageUpdatePswd    : 'its-me',               //password to over ride the page updates time-out, do not set to blank even if you do not use a password - http://<URL>&pageUpdate=its-me
             digitalFont       : false,                  //Font control for the gauges & timer
             digitalForecast   : false,                  //Font control for the status display, set this to false for languages that use accented characters in the forecasts
             showPopupData     : true,                   //Pop-up data displayed
@@ -162,7 +162,6 @@ var gauges = (function () {
         _timestamp = 0,            //the timestamp of last data update on the server.
         _jqXHR = null,             //handle to the jQuery web request
         _httpError = 0,            //global to track download errors
-        _pageUpdateParam,          //Stores the password if any from the page URL
         _displayUnits = null,      //Stores the display units cookie settings
         _sampleDate,
         _realtimeVer,   //minimum version of the realtime JSON file required
@@ -509,7 +508,7 @@ var gauges = (function () {
                     1000);
 
                 // start a timer to stop the page updates after the timeout period
-                if (config.pageUpdateLimit > 0 && _pageUpdateParam !== config.pageUpdatePswd) {
+                if (config.pageUpdateLimit > 0 && getUrlParam('pageUpdate') !== config.pageUpdatePswd) {
                     setTimeout(pageTimeout, config.pageUpdateLimit * 60 * 1000);
                 }
             }
@@ -773,13 +772,14 @@ var gauges = (function () {
                     // if rad isn't specified, just use existing value
                     var t1, scaleStep, tip;
 
+                    cache.minValue = data.tempunit[1] === 'C' ? gaugeGlobals.tempScaleDefMinC : gaugeGlobals.tempScaleDefMinF;
+                    cache.maxValue = data.tempunit[1] === 'C' ? gaugeGlobals.tempScaleDefMaxC : gaugeGlobals.tempScaleDefMaxF;
+
                     if (sel === 'out') {
-                        cache.minValue = data.tempunit[1] === 'C' ? gaugeGlobals.tempScaleDefMinC : gaugeGlobals.tempScaleDefMinF;
-                        cache.maxValue = data.tempunit[1] === 'C' ? gaugeGlobals.tempScaleDefMaxC : gaugeGlobals.tempScaleDefMaxF;
                         cache.low = extractDecimal(data.tempTL);
-                        cache.lowScale = getMinTemp();
                         cache.high = extractDecimal(data.tempTH);
-                        cache.highScale = getMaxTemp();
+                        cache.lowScale = getMinTemp(cache.minValue);
+                        cache.highScale = getMaxTemp(cache.maxValue);
                         cache.value = extractDecimal(data.temp);
                         cache.title = strings.temp_title_out;
                         cache.loc = strings.temp_out_info;
@@ -991,16 +991,11 @@ var gauges = (function () {
 
                     var tip, scaleStep;
 
-                    cache.lowScale = getMinTemp();
-                    cache.highScale = getMaxTemp();
+                    cache.minValue = data.tempunit[1] === 'C' ? gaugeGlobals.tempScaleDefMinC : gaugeGlobals.tempScaleDefMinF;
+                    cache.maxValue = data.tempunit[1] === 'C' ? gaugeGlobals.tempScaleDefMaxC : gaugeGlobals.tempScaleDefMaxF;
 
-                    if (cache.lowScale === -9999) {
-                        cache.lowScale = data.tempunit[1] === 'C' ? gaugeGlobals.tempScaleDefMinC : gaugeGlobals.tempScaleDefMinF;
-                    }
-
-                    if (cache.highScale === -9999) {
-                        cache.highScale = data.tempunit[1] === 'C' ? gaugeGlobals.tempScaleDefMaxC : gaugeGlobals.tempScaleDefMaxF;
-                    }
+                    cache.lowScale = getMinTemp(cache.minValue);
+                    cache.highScale = getMaxTemp(cache.maxValue);
 
                     switch (sel) {
                     case 'dew': // dew point
@@ -2628,7 +2623,7 @@ var gauges = (function () {
             _jqXHR = $.ajax({url: url,
                             cache: (config.longPoll ? true : false),
                             dataType: 'json',
-                            timeout: 21000 // 21 second time-out by default
+                            timeout: config.longPoll ? (Math.min(config.realtimeInterval, 20) + 21) * 1000 : 21000 // 21 second time-out by default
                         }).done(function (data) {
                             checkRtResp(data);
                         }).fail(function (xhr, status, err) {
@@ -2982,9 +2977,6 @@ var gauges = (function () {
             $('#programBuild').html(data.build);
             $('#programName').html(_programLink[config.weatherProgram]);
 
-            // has a page time-out over ride password been supplied?
-            _pageUpdateParam = getUrlParam('pageUpdate');
-
             if (config.showPopupData) {
                 // now initialise the pop-up script and download the trend images
                 // - has to be done here as doFirst may remove elements from the page
@@ -3222,11 +3214,12 @@ var gauges = (function () {
         // extractDecimal() returns a decimal number from a string, the decimal point can be either a dot or a comma
         // it ignores any text such as pre/appended units
         //
-        extractDecimal = function (str) {
-            try {
+        extractDecimal = function (str, errVal) {
+           try {
                 return (/[\-+]?[0-9]+\.?[0-9]*/).exec(str.replace(',', '.'))[0];
             } catch (e) {
-                return -9999;
+                // error condition
+                return errVal || -9999;
             }
         },
 
@@ -3234,11 +3227,12 @@ var gauges = (function () {
         // extractInteger() returns an integer from a string
         // it ignores any text such as pre/appended units
         //
-        extractInteger = function (str) {
+        extractInteger = function (str, errVal) {
             try {
                 return (/[\-+]?[0-9]+/).exec(str)[0];
             } catch (e) {
-                return -9999;
+                // error condition
+                return errVal || -9999;
             }
         },
 
@@ -3314,23 +3308,23 @@ var gauges = (function () {
         //
         // getMinTemp() returns the lowest temperature today for gauge scaling
         //
-        getMinTemp = function () {
+        getMinTemp = function (deflt) {
             return Math.min(
-                extractDecimal(data.tempTL),
-                extractDecimal(data.dewpointTL),
-                extractDecimal(data.apptempTL),
-                extractDecimal(data.wchillTL));
+                extractDecimal(data.tempTL, deflt),
+                extractDecimal(data.dewpointTL, deflt),
+                extractDecimal(data.apptempTL, deflt),
+                extractDecimal(data.wchillTL, deflt));
         },
 
         //
         // getMaxTemp() returns the highest temperature today for gauge scaling
         //
-        getMaxTemp = function () {
+        getMaxTemp = function (deflt) {
             return Math.max(
-                extractDecimal(data.tempTH),
-                extractDecimal(data.apptempTH),
-                extractDecimal(data.heatindexTH),
-                extractDecimal(data.humidex));
+                extractDecimal(data.tempTH, deflt),
+                extractDecimal(data.apptempTH, deflt),
+                extractDecimal(data.heatindexTH, deflt),
+                extractDecimal(data.humidex, deflt));
         },
 
         // Celsius to Fahrenheit

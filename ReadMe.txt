@@ -2,8 +2,8 @@ SteelSeries JavaScript gauges
 =============================
 Created by Mark Crossley July 2011
 
-Version 2.5.7
-Updated: 25 March 2015
+Version 2.5.8
+Updated: 27 March 2015
 
 +-------------------------------------------------------+
 |                                                       |
@@ -412,6 +412,12 @@ If the display is in feet, then values below 2000 ft are rounded to 50 ft, above
 
 Release History
 =======================
+
+2.5.8
+  * Updated gauges.js
+    - Applied fix 2.5.7 to the temperature gauge as well, doh!
+    - Fixed HTTP GET timeout errors when using long polling with real time intervals >= 30 seconds
+    - Fixed broken code that prevented the page timing out when a valid password was supplied to the 'pageUpdate' URL parameter
 
 2.5.7
   * Updated gauges.js
