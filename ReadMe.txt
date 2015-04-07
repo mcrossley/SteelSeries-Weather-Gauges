@@ -2,8 +2,8 @@ SteelSeries JavaScript gauges
 =============================
 Created by Mark Crossley July 2011
 
-Version 2.5.8
-Updated: 27 March 2015
+Version 2.5.9
+Updated: 06 April 2015
 
 +-------------------------------------------------------+
 |                                                       |
@@ -412,6 +412,12 @@ If the display is in feet, then values below 2000 ft are rounded to 50 ft, above
 
 Release History
 =======================
+
+2.5.9
+  * Updated gauges.js
+    - Applied fix for WView (lack of cloudbase unit)
+  * Updated customclientraw.txtx (for WView)
+    - Added cloudbase value/unit, incremented version to 11
 
 2.5.8
   * Updated gauges.js

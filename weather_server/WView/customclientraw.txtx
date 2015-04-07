@@ -71,6 +71,8 @@
 "domwinddir":"<!--daydomwinddir-->",
 "WindRoseData":"<!--dayWindRoseList-->",
 "windrun":"<!--daywindrun-->",
+"cloudbasevalue":"0",
+"cloudbaseunit":""
 "version":"<!--wviewVersion-->",
 "build":"0",
-"ver":"10"}
+"ver":"11"}

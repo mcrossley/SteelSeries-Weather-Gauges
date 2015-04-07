@@ -30,7 +30,7 @@ var gauges = (function () {
     var strings = LANG.EN,         //Set to your default language. Store all the strings in one object
         config = {
             // Script configuration parameters you may want to 'tweak'
-            scriptVer         : '2.5.8',
+            scriptVer         : '2.5.9',
             weatherProgram    : 0,                      //Set 0=Cumulus, 1=Weather Display, 2=VWS, 3=WeatherCat, 4=Meteobridge, 5=WView, 6=WeeWX
             imgPathURL        : './images/',             //*** Change this to the relative path for your 'Trend' graph images
             oldGauges         : 'gauges.htm',           //*** Change this to the relative path for your 'old' gauges page.
@@ -292,7 +292,7 @@ var gauges = (function () {
                 break;
             case 5:
                 // WView
-                _realtimeVer = 10;   //minimum version of the realtime JSON file required
+                _realtimeVer = 11;   //minimum version of the realtime JSON file required
                 config.realTimeURL = config.longPoll ? config.realTimeURL_LongPoll : config.realTimeURL_WView;
                 config.showSunshineLed = false;     //WView does not provide the current theoretical solar max required to determine sunshine
                 config.showWindVariation = false;   //no wind variation from WView
@@ -2791,7 +2791,7 @@ var gauges = (function () {
                         data.cloudbaseunit = 'ft';
                     }
                 } catch(e) {
-                    cloudbaseunit = '';
+                    data.cloudbaseunit = '';
                 }
                 if (config.showCloudGauge && (
                         (config.weatherProgram === 4 || config.weatherProgram === 5) ||
