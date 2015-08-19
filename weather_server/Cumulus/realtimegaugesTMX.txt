@@ -60,7 +60,7 @@
 "TwgustTM":"<#TwgustTM>",
 "windTM":"<#windTM>",
 "bearingTM":"<#bearingTM>",
-"timeUTC":"<#timeUTC format=yyyy,m,d,H,m,s>",
+"timeUTC":"<#timeUTC format=yyyy,M,d,H,m,s>",
 "BearingRangeFrom10":"<#BearingRangeFrom10>",
 "BearingRangeTo10":"<#BearingRangeTo10>",
 "UV":"<#UV>",
