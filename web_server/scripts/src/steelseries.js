@@ -1,8 +1,8 @@
 /*!
  * Name          : steelseries.js
  * Authors       : Gerrit Grunwald, Mark Crossley
- * Last modified : 30.01.2015
- * Revision      : 0.14.13
+ * Last modified : 01.12.2015
+ * Revision      : 0.14.16
  *
  * Copyright (c) 2011, Gerrit Grunwald, Mark Crossley
  * All rights reserved.
@@ -434,7 +434,7 @@ var steelseries = (function () {
             ctx.save();
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
-            ctx.font = fontSize + 'px' + stdFontName;
+            ctx.font = fontSize + 'px ' + stdFontName;
             ctx.strokeStyle = backgroundColor.labelColor.getRgbaColor();
             ctx.fillStyle = backgroundColor.labelColor.getRgbaColor();
             ctx.translate(centerX, centerY);
@@ -5274,8 +5274,9 @@ var steelseries = (function () {
 
     var createLedImage = function (size, state, ledColor) {
         var ledBuffer, ledCtx,
-            ledCenterX = size / 2,
-            ledCenterY = size / 2,
+            // Bug in Chrome browser, radialGradients do not draw correctly if the center is not an integer value
+            ledCenterX = 2 * Math.round(size / 4),
+            ledCenterY = 2 * Math.round(size / 4),
             grad,
             cacheKey = size.toString() + state + ledColor.outerColor_ON;
 
@@ -6333,7 +6334,7 @@ var steelseries = (function () {
         };
     };
 
-    var setAlpha = function(hex, alpha) {
+    function setAlpha(hex, alpha) {
         var hexColor = ('#' === hex.charAt(0)) ? hex.substring(1, 7) : hex,
             red = parseInt((hexColor).substring(0, 2), 16),
             green = parseInt((hexColor).substring(2, 4), 16),
@@ -6341,7 +6342,7 @@ var steelseries = (function () {
             color = 'rgba(' + red + ',' + green + ',' + blue + ',' + alpha + ')';
 
         return color;
-    };
+    }
 
     function getColorFromFraction(sourceColor, destinationColor, range, fraction, returnRawData) {
         var INT_TO_FLOAT = 1 / 255,

@@ -30,7 +30,7 @@ var gauges = (function () {
     var strings = LANG.EN,         //Set to your default language. Store all the strings in one object
         config = {
             // Script configuration parameters you may want to 'tweak'
-            scriptVer         : '2.5.9',
+            scriptVer         : '2.5.10',
             weatherProgram    : 0,                      //Set 0=Cumulus, 1=Weather Display, 2=VWS, 3=WeatherCat, 4=Meteobridge, 5=WView, 6=WeeWX
             imgPathURL        : './images/',             //*** Change this to the relative path for your 'Trend' graph images
             oldGauges         : 'gauges.htm',           //*** Change this to the relative path for your 'old' gauges page.
@@ -3087,54 +3087,30 @@ var gauges = (function () {
            > 2.0
         */
         createRainRateSections = function (metric) {
-            var section;
-            if (metric) {
-                section = [ steelseries.Section(0, 0.25, 'rgba(0, 140, 0, 0.5)'),
-                            steelseries.Section(0.25, 1, 'rgba(80, 192, 80, 0.5)'),
-                            steelseries.Section(1, 4, 'rgba(150, 203, 150, 0.5)'),
-                            steelseries.Section(4, 16, 'rgba(212, 203, 109, 0.5)'),
-                            steelseries.Section(16, 50, 'rgba(225, 155, 105, 0.5)'),
-                            steelseries.Section(50, 1000, 'rgba(245, 86, 59, 0.5)')];
-            } else {
-                section = [ steelseries.Section(0, 0.05, 'rgba(0, 140, 0, 0.5)'),
-                            steelseries.Section(0.05, 0.1, 'rgba(80, 192, 80, 0.5)'),
-                            steelseries.Section(0.1, 0.15, 'rgba(150, 203, 150, 0.5)'),
-                            steelseries.Section(0.15, 0.6, 'rgba(212, 203, 109, 0.5)'),
-                            steelseries.Section(0.6, 2, 'rgba(225, 155, 105, 0.5)'),
-                            steelseries.Section(2, 100, 'rgba(245, 86, 59, 0.5)')];
-            }
-            return section;
+            var factor = metric ? 1 : 1/25;
+            return [steelseries.Section(0,           0.25 * factor, 'rgba(0, 140, 0, 0.5)'),
+                    steelseries.Section(0.25 * factor,  1 * factor, 'rgba(80, 192, 80, 0.5)'),
+                    steelseries.Section(1 * factor,     4 * factor, 'rgba(150, 203, 150, 0.5)'),
+                    steelseries.Section(4 * factor,    16 * factor, 'rgba(212, 203, 109, 0.5)'),
+                    steelseries.Section(16 * factor,   50 * factor, 'rgba(225, 155, 105, 0.5)'),
+                    steelseries.Section(50 * factor, 1000 * factor, 'rgba(245, 86, 59, 0.5)')];
         },
 
         //
         // createRainFallSections()returns an array of section highlights for total rainfall in mm or inches
         //
         createRainfallSections = function (metric) {
-            var section;
-            if (metric) {
-                section = [ steelseries.Section(0, 5, 'rgba(0, 250, 0, 1)'),
-                            steelseries.Section(5, 10, 'rgba(0, 250, 117, 1)'),
-                            steelseries.Section(10, 25, 'rgba(218, 246, 0, 1)'),
-                            steelseries.Section(25, 40, 'rgba(250, 186, 0, 1)'),
-                            steelseries.Section(40, 50, 'rgba(250, 95, 0, 1)'),
-                            steelseries.Section(50, 65, 'rgba(250, 0, 0, 1)'),
-                            steelseries.Section(65, 75, 'rgba(250, 6, 80, 1)'),
-                            steelseries.Section(75, 100, 'rgba(205, 18, 158, 1)'),
-                            steelseries.Section(100, 125, 'rgba(0, 0, 250, 1)'),
-                            steelseries.Section(125, 500, 'rgba(0, 219, 212, 1)')];
-            } else {
-                section = [ steelseries.Section(0, 0.2, 'rgba(0, 250, 0, 1)'),
-                            steelseries.Section(0.2, 0.5, 'rgba(0, 250, 117, 1)'),
-                            steelseries.Section(0.5, 1, 'rgba(218, 246, 0, 1)'),
-                            steelseries.Section(1, 1.5, 'rgba(250, 186, 0, 1)'),
-                            steelseries.Section(1.5, 2, 'rgba(250, 95, 0, 1)'),
-                            steelseries.Section(2, 2.5, 'rgba(250, 0, 0, 1)'),
-                            steelseries.Section(2.5, 3, 'rgba(250, 6, 80, 1)'),
-                            steelseries.Section(3, 4, 'rgba(205, 18, 158, 1)'),
-                            steelseries.Section(4, 5, 'rgba(0, 0, 250, 1)'),
-                            steelseries.Section(5, 20, 'rgba(0, 219, 212, 1)')];
-            }
-            return section;
+            var factor = metric ? 1 : 1/25;
+            return [steelseries.Section(0,              5 * factor, 'rgba(0, 250, 0, 1)'),
+                    steelseries.Section(5 * factor ,   10 * factor, 'rgba(0, 250, 117, 1)'),
+                    steelseries.Section(10 * factor,   25 * factor, 'rgba(218, 246, 0, 1)'),
+                    steelseries.Section(25 * factor,   40 * factor, 'rgba(250, 186, 0, 1)'),
+                    steelseries.Section(40 * factor,   50 * factor, 'rgba(250, 95, 0, 1)'),
+                    steelseries.Section(50 * factor,   65 * factor, 'rgba(250, 0, 0, 1)'),
+                    steelseries.Section(65 * factor,   75 * factor, 'rgba(250, 6, 80, 1)'),
+                    steelseries.Section(75 * factor,  100 * factor, 'rgba(205, 18, 158, 1)'),
+                    steelseries.Section(100 * factor, 125 * factor, 'rgba(0, 0, 250, 1)'),
+                    steelseries.Section(125 * factor, 500 * factor, 'rgba(0, 219, 212, 1)')];
         },
 
         //
