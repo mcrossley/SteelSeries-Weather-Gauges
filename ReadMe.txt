@@ -2,8 +2,8 @@ SteelSeries JavaScript gauges
 =============================
 Created by Mark Crossley July 2011
 
-Version 2.5.9
-Updated: 06 April 2015
+Version 2.5.10
+Updated: 01 December 2015
 
 +-------------------------------------------------------+
 |                                                       |
@@ -412,6 +412,12 @@ If the display is in feet, then values below 2000 ft are rounded to 50 ft, above
 
 Release History
 =======================
+
+2.5.10
+  * Updated gauges.js
+    - Improved rainrate and rainfall coloured sections for imperial units, they are now calculated from the metric units
+  * Updated the SteelSeries library (steelseries.js, steelseries.min.js, steelseries_tween.min.js)
+    - Updated from version 0.14.13 to 0.14.16
 
 2.5.9
   * Updated gauges.js
