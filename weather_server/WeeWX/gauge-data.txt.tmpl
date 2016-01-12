@@ -3,6 +3,7 @@
 ## by Matthew Wall on flight 868 ;)
 ## 31dec2014
 ## Updated 25jan2015 by M Crossley, changed cloudbase: to cloudbasevalue:
+## Updated 12jan2016 by M Crossley, fixes applied from here: https://groups.google.com/forum/#!topic/weewx-user/rDdSbzQWbFw
 
 ## definitions for the tags can be found here:
 ## http://wiki.sandaysoft.com/a/Webtags
@@ -46,7 +47,7 @@
 
 ## calculate humidex
 ## http://www.physlink.com/reference/weather.cfm
-#if $varExists('current.outTemp') and $current.outTemp is not None and $varExists('current.dewpoint') and $current.dewpoint is not None
+#if $varExists('current.outTemp') and $current.outTemp.raw is not None and $varExists('current.dewpoint') and $current.dewpoint.raw is not None
 #set $oT_C = $current.outTemp.degree_C.raw
 #set $dp = $current.dewpoint.raw
   #if $oT_C is not None and $dp is not None
@@ -83,7 +84,7 @@
 ##   e is vapor pressure in kPa,
 ##   and v is 10m wind speed in m/sec
 ##
-#if $varExists('current.outTemp') and $current.outTemp is not None and $varExists('current.outHumidity') and $current.outHumidity is not None and $varExists('current.windSpeed') and $current.windSpeed is not None
+#if $varExists('current.outTemp') and $current.outTemp.raw is not None and $varExists('current.outHumidity') and $current.outHumidity.raw is not None and $varExists('current.windSpeed') and $current.windSpeed.raw is not None
 #set $oT_C = $current.outTemp.degree_C.raw
 #set $rh = $current.outHumidity.raw
 #set $ws = $current.windSpeed.meter_per_second.raw
@@ -101,7 +102,7 @@
 #end if
 
 ## calculate the cloud base in feet
-#if $varExists('current.outTemp') and $current.outTemp is not None and $varExists('current.dewpoint') and $current.dewpoint is not None
+#if $varExists('current.outTemp') and $current.outTemp.raw is not None and $varExists('current.dewpoint') and $current.dewpoint.raw is not None
 #set $oT_F = $current.outTemp.degree_F.raw
 #set $dp_F = $current.dewpoint.degree_F.raw
 #set $a_f = $station.altitude.foot.raw
@@ -166,7 +167,7 @@
 #end if
 
 ## calculate today's highest beaufort based on wind speed in knots
-#if $varExists('day.windSpeed') and $day.windSpeed is not None
+#if $varExists('day.windSpeed') and $day.windSpeed.max.raw is not None
 #if $unit.unit_type.windSpeed == 'mile_per_hour'
 #set $kts = $day.windSpeed.max.raw * 0.8689762
 #elif $unit.unit_type.windSpeed == 'km_per_hour'
