@@ -51,7 +51,7 @@
 #set $oT_C = $current.outTemp.degree_C.raw
 #set $dp_K = $current.dewpoint.degree_C.raw + 273.15
 #set $e = 6.11 * math.exp(5417.7530 * ((1/273.16) - 1/$dp_K))
-#set $h = 0.5555 * math.exp($e - 10.0)
+#set $h = 0.5555 * ($e - 10.0)
     #if $h > 0
 #set $humidex = $oT_C + $h
     #else
