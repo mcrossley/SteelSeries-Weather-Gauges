@@ -4,6 +4,9 @@
 ## 31dec2014
 ## Updated 25jan2015 by M Crossley, changed cloudbase: to cloudbasevalue:
 ## Updated 12jan2016 by M Crossley, fixes applied from here: https://groups.google.com/forum/#!topic/weewx-user/rDdSbzQWbFw
+## Updated 12mar2016 by M Crossley, force pressure UoM mbar to mb.
+##                                  added UoM consitency from unit_type rather than labels which can be localised
+##                                  force rain in cm to mm as guages do not cuurently handle cm's.
 
 ## definitions for the tags can be found here:
 ## http://wiki.sandaysoft.com/a/Webtags
@@ -29,7 +32,9 @@
 ## ver:12
 ## cloudbasevalue - calculated in this template in feet
 ## cloudbaseunit - defined in this template as ft
-
+##
+## ver:13
+## changed UoMs
 
 #import math
 #import time
@@ -52,7 +57,7 @@
 #set $dp = $current.dewpoint.raw
   #if $oT_C is not None and $dp is not None
 #set $e = 6.11 * math.exp(5417.7530 * ((1/273.16) - 1/$dp))
-#set $h = 0.5555 * math.exp($e - 10.0)
+#set $h = 0.5555 * ($e - 10.0)
     #if $h > 0
 #set $humidex = $oT_C + $h
     #else
@@ -130,7 +135,7 @@
 #set $windrun = $windrun / 3.6
 #elif $unit.unit_type.windSpeed == 'knot'
 #set $windrununit = 'mile'
-#set $windrun = $windrun / 0.8689762
+##set $windrun = $windrun / 0.8689762
 #else
 #set $windrununit = ''
 #end if
@@ -227,15 +232,51 @@
 #set $p_trend = 0
 #end if
 
+## Set consistent units of measure
+## Pressure UoM
+#set $UOM_bar = $unit.unit_type.barometer
+#if $UOM_bar == 'mbar'
+#set $UOM_bar = 'mb'
+#end if
+##
+## Temperature UoM
+#if $unit.unit_type.outTemp == 'degree_F'
+#set $UOM_temp = 'F'
+#else
+#set $UOM_temp = 'C'
+#end if
+##
+## Windspeed UoM
+#if $unit.unit_type.windSpeed == 'mile_per_hour'
+#set $UOM_wind = 'mph'
+#elif $unit.unit_type.windSpeed == 'km_per_hour'
+#set $UOM_wind = 'km/h'
+#elif $unit.unit_type.windSpeed == 'knot'
+#set $UOM_wind = 'kts'
+#elif $unit.unit_type.windSpeed == 'meter_per_second'
+#set $UOM_wind = 'm/s'
+#end if
+##
+## Rain UoM
+#set $rain_mult = 1
+#set $UOM_rain = $unit.unit_type.rain
+#if $unit.unit_type.rain == 'inch'
+#set $UOM_rain = 'in'
+#elif $unit.unit_type.rain == 'cm'
+## Gauges do not handle cm, convert to mm
+#set $UOM_rain = 'mm'
+#set $rain_mult = 10
+#end if
+
 {
            "timeUTC":"$timeutc",
               "date":"$current.dateTime.format('%Y.%m.%d %H:%M')",
         "dateFormat":"y.m.d h:m",
  "SensorContactLost":"$sensorContactLost",
-          "tempunit":"$unit.label.outTemp",
-          "windunit":"$unit.label.windSpeed",
-         "pressunit":"$unit.label.barometer",
-          "rainunit":"$unit.label.rain",
+          "tempunit":"$UOM_temp",
+          "windunit":"$UOM_wind",
+         "pressunit":"$UOM_bar",
+          "rainunit":"$UOM_rain",
        "windrununit":"$windrununit",
      "cloudbaseunit":" ft",
               "temp":"$current.outTemp.raw",
@@ -276,11 +317,11 @@
           "TpressTL":"$day.barometer.mintime",
           "TpressTH":"$day.barometer.maxtime",
      "presstrendval":"$p_trend",
-             "rfall":"$day.rain.sum.raw",
-             "rrate":"$current.rainRate.raw",
-           "rrateTM":"$day.rainRate.max.raw",
+             "rfall":"$day.rain.sum.raw * $rain_mult",
+             "rrate":"$current.rainRate.raw * $rain_mult",
+           "rrateTM":"$day.rainRate.max.raw * $rain_mult",
           "TrrateTM":"$day.rainRate.maxtime",
-      "hourlyrainTH":"$hour.rain.max.raw",
+      "hourlyrainTH":"$hour.rain.max.raw * $rain_mult",
      "ThourlyrainTH":"$hour.rain.maxtime",
     "LastRainTipISO":"2000-01-01 00:00",
            "wlatest":"$current.windSpeed.raw",
@@ -307,5 +348,5 @@
           "forecast":"$fc",
            "version":"$station.version",
              "build":"",
-               "ver":"12"
+               "ver":"13"
 }
