@@ -30,7 +30,7 @@ var gauges = (function () {
     var strings = LANG.EN,         //Set to your default language. Store all the strings in one object
         config = {
             // Script configuration parameters you may want to 'tweak'
-            scriptVer         : '2.5.11',
+            scriptVer         : '2.5.12',
             weatherProgram    : 0,                      //Set 0=Cumulus, 1=Weather Display, 2=VWS, 3=WeatherCat, 4=Meteobridge, 5=WView, 6=WeeWX
             imgPathURL        : './images/',             //*** Change this to the relative path for your 'Trend' graph images
             oldGauges         : 'gauges.htm',           //*** Change this to the relative path for your 'old' gauges page.
@@ -289,6 +289,7 @@ var gauges = (function () {
                 config.showRoseGauge = false;          // no windrose data from MB
                 config.showCloudGauge = false;
                 config.tipImgs = null;                 // config.tipImgs - no Meteobridge images available
+                config.showWindVariation = false;      // no wind variation data from MB
                 break;
             case 5:
                 // WView
@@ -316,7 +317,7 @@ var gauges = (function () {
                 break;
             case 6:
                 // weewx
-                _realtimeVer = 12;   //minimum version of the realtime JSON file required
+                _realtimeVer = 13;   //minimum version of the realtime JSON file required
                 config.realTimeURL = config.longPoll ? config.realTimeURL_LongPoll : config.realTimeURL_weewx;
                 config.showSunshineLed = true;
                 config.showWindVariation = true;

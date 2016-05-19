@@ -2,8 +2,8 @@ SteelSeries JavaScript gauges
 =============================
 Created by Mark Crossley July 2011
 
-Version 2.5.11
-Updated: 12 January 2016
+Version 2.5.12
+Updated: 19 May 2016
 
 +-------------------------------------------------------+
 |                                                       |
@@ -412,6 +412,15 @@ If the display is in feet, then values below 2000 ft are rounded to 50 ft, above
 
 Release History
 =======================
+
+2.5.12
+  * Updated gauges.js
+    - Auto-disable wind variantion for MeteoBridge users
+    - Uplift weewx data template version to 13
+  * Updated gauge-data.txt.tmpl
+    - Now uses non-localised units for more robust data conversions
+    - Corrected dew point calculation
+    - Improved rain in mm calculation
 
 2.5.11
   * Updated gauge-data.txt.tmpl
