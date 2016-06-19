@@ -19,3 +19,6 @@ $RECYCLE.BIN/
 # Mac crap
 .DS_Store
 
+jsconfig.json
+.eslintrc.json
+settings.json

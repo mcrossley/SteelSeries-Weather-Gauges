@@ -2,8 +2,8 @@ SteelSeries JavaScript gauges
 =============================
 Created by Mark Crossley July 2011
 
-Version 2.5.12
-Updated: 19 May 2016
+Version 2.5.13
+Updated: 11 June 2016
 
 +-------------------------------------------------------+
 |                                                       |
@@ -412,6 +412,10 @@ If the display is in feet, then values below 2000 ft are rounded to 50 ft, above
 
 Release History
 =======================
+2.5.13
+  * Updated gauges.js
+    - Switched to using ESLINT and some stylistic changes to code and layout
+    - Fix to Cloudbase autoscaling
 
 2.5.12
   * Updated gauges.js
@@ -454,7 +458,7 @@ Release History
 
 2.5.5
   * Updated gauges.js
-    - Fixed UTF-8 corruption of °C & °F introduced in 2.5.4
+    - Fixed UTF-8 corruption of Â°C & Â°F introduced in 2.5.4
     - Changed WeatherCat cloudbase graph from pressure1.jpg to cloudbase1.jpg
     - Added gaugeGlobal values for the direction gauge average pointer type and colour
 
@@ -745,7 +749,7 @@ Release History
       - Load orders changed to speed up initial page load/display
     * Updated gauges.js
       - Added ability to select the display units:
-          Temp: °C, °F
+          Temp: Â°C, Â°F
           Rain: mm, inch
           Wind: km/h, m/s, mph, knots
           Baro: hPa, mb, inHg, kPa
@@ -753,7 +757,7 @@ Release History
       - Added variables to set the default min/max values for gauges
       - Changed the temperature gauge scaling logic so both gauges always use the same range (except
         for the indoor temperature)
-      - Default units are now 'metric': °C, mm, hPa, km/h
+      - Default units are now 'metric': Â°C, mm, hPa, km/h
       - Fixed bug in getord() routine
       - Added config.dewDisplayType setting to control initial 'dew' gauge display
       - Added smaller gauge size option for 'mobile' devices
@@ -920,7 +924,7 @@ Release History
    * Updated ddimgtooltips.js (+ minimised version)
      - Moved popup initialiastion into gauges.js
    * Added Swedish translation
-     - Courtesy of Björn
+     - Courtesy of BjÃ¶rn
      - Updated language.js
      - Added gauges-ssT-se.htm
    * Updated gauges-ssT.htm (+ translations)
