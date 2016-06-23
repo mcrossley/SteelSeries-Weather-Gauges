@@ -19,21 +19,21 @@
 * https://github.com/cowboy/jquery-tiny-pubsub
 * Copyright (c) 2013 "Cowboy" Ben Alman; Licensed MIT
 */
-(function tinyPubSub($) {
+(function ($) {
     'use strict';
     var o = $({});
-    $.subscribe = function subscribe() {o.on.apply(o, arguments);};
-    $.unsubscribe = function unsubscribe() {o.off.apply(o, arguments);};
-    $.publish = function publish() {o.trigger.apply(o, arguments);};
+    $.subscribe = function () {o.on.apply(o, arguments);};
+    $.unsubscribe = function () {o.off.apply(o, arguments);};
+    $.publish = function () {o.trigger.apply(o, arguments);};
 }(jQuery));
 
 var gauges = (
-function gauges() {
+function () {
     'use strict';
     var strings = LANG.EN,         //Set to your default language. Store all the strings in one object
         config = {
             // Script configuration parameters you may want to 'tweak'
-            scriptVer          : '2.5.13',
+            scriptVer          : '2.5.14',
             weatherProgram     : 0,                      //Set 0=Cumulus, 1=Weather Display, 2=VWS, 3=WeatherCat, 4=Meteobridge, 5=WView, 6=WeeWX
             imgPathURL         : './images/',            //*** Change this to the relative path for your 'Trend' graph images
             oldGauges          : 'gauges.htm',           //*** Change this to the relative path for your 'old' gauges page.
@@ -194,7 +194,7 @@ function gauges() {
         // the first Ajax fetch of realtimegauges.txt. First draw of the gauges now deferred until
         // the Ajax data is available as a 'speed up'.
         //
-        init = function init(dashboard) {
+        init = function (dashboard) {
             // Cumulus, Weather Display, VWS, WeatherCat?
             switch (config.weatherProgram) {
             case 0:
@@ -507,7 +507,7 @@ function gauges() {
 
                 // start a timer to update the status time
                 tickTockInterval = setInterval(
-                    function tick() {
+                    function () {
                         $.publish('gauges.clockTick', null);
                     },
                     1000);
@@ -526,7 +526,7 @@ function gauges() {
         //
         // Singleton for the LED Indicator
         //
-        singleLed = (function singleLed() {
+        singleLed = (function () {
             var instance;   // Stores a reference to the Singleton
             var led;        // Stores a reference to the SS LED
 
@@ -576,7 +576,7 @@ function gauges() {
             return {
                 // Get the Singleton instance if one exists
                 // or create one if it doesn't
-                getInstance: function getInstance() {
+                getInstance: function () {
                     if (!instance) {
                         instance = init();
                     }
@@ -588,7 +588,7 @@ function gauges() {
         //
         // Singleton for the Status Scroller
         //
-        singleStatus = (function singleStatus() {
+        singleStatus = (function () {
             var instance;   // Stores a reference to the Singleton
             var scroller;   // Stores a reference to the SS scrolling display
 
@@ -621,7 +621,7 @@ function gauges() {
             return {
                 // Get the Singleton instance if one exists
                 // or create one if it doesn't
-                getInstance: function getInstance() {
+                getInstance: function () {
                     if (!instance) {
                         instance = init();
                     }
@@ -633,7 +633,7 @@ function gauges() {
         //
         // Singleton for the Status Timer
         //
-        singleTimer = (function singleTimer() {
+        singleTimer = (function () {
             var instance,   // Stores a reference to the Singleton
                 lcd,        // Stores a reference to the SS LED
                 count = 1;
@@ -682,7 +682,7 @@ function gauges() {
             return {
                 // Get the Singleton instance if one exists
                 // or create one if it doesn't
-                getInstance: function getInstance() {
+                getInstance: function () {
                     if (!instance) {
                         instance = init();
                     }
@@ -694,7 +694,7 @@ function gauges() {
         //
         // Singleton for the Temperature Gauge
         //
-        singleTemp = (function singleTemp() {
+        singleTemp = (function () {
             var instance;   // Stores a reference to the Singleton
             var ssGauge;    // Stores a reference to the SS Gauge
             var cache = {};      // Stores various config values and parameters
@@ -894,7 +894,7 @@ function gauges() {
             return {
                 // Get the Singleton instance if one exists
                 // or create one if it doesn't
-                getInstance: function getInstance() {
+                getInstance: function () {
                     if (!instance) {
                         instance = init();
                     }
@@ -906,7 +906,7 @@ function gauges() {
         //
         // Singleton for the Dewpoint Gauge
         //
-        singleDew = (function singleDew() {
+        singleDew = (function () {
             var instance;   // Stores a reference to the Singleton
             var ssGauge;    // Stores a reference to the SS Gauge
             var cache = {};      // Stores various config values and parameters
@@ -1130,7 +1130,7 @@ function gauges() {
             return {
                 // Get the Singleton instance if one exists
                 // or create one if it doesn't
-                getInstance: function getInstance() {
+                getInstance: function () {
                     if (!instance) {
                         instance = init();
                     }
@@ -1142,7 +1142,7 @@ function gauges() {
         //
         // Singleton for the Rainfall Gauge
         //
-        singleRain = (function singleRain() {
+        singleRain = (function () {
             var instance;   // Stores a reference to the Singleton
             var ssGauge;    // Stores a reference to the SS Gauge
             var cache = {};      // Stores various config values and parameters
@@ -1241,7 +1241,7 @@ function gauges() {
             return {
                 // Get the Singleton instance if one exists
                 // or create one if it doesn't
-                getInstance: function getInstance() {
+                getInstance: function () {
                     if (!instance) {
                         instance = init();
                     }
@@ -1253,7 +1253,7 @@ function gauges() {
         //
         // Singleton for the Rainfall Rate Gauge
         //
-        singleRRate = (function singleRRate() {
+        singleRRate = (function () {
             var instance;   // Stores a reference to the Singleton
             var ssGauge;    // Stores a reference to the SS Gauge
             var cache = {};      // Stores various config values and parameters
@@ -1360,7 +1360,7 @@ function gauges() {
             return {
                 // Get the Singleton instance if one exists
                 // or create one if it doesn't
-                getInstance: function getInstance() {
+                getInstance: function () {
                     if (!instance) {
                         instance = init();
                     }
@@ -1372,7 +1372,7 @@ function gauges() {
         //
         // Singleton for the Humidity Gauge
         //
-        singleHum = (function singleHum() {
+        singleHum = (function () {
             var instance;   // Stores a reference to the Singleton
             var ssGauge;    // Stores a reference to the SS Gauge
             var cache = {};      // Stores various config values and parameters
@@ -1496,7 +1496,7 @@ function gauges() {
             return {
                 // Get the Singleton instance if one exists
                 // or create one if it doesn't
-                getInstance: function getInstance() {
+                getInstance: function () {
                     if (!instance) {
                         instance = init();
                     }
@@ -1508,7 +1508,7 @@ function gauges() {
         //
         // Singleton for the Barometer Gauge
         //
-        singleBaro = (function singleBaro() {
+        singleBaro = (function () {
             var instance;   // Stores a reference to the Singleton
             var ssGauge;    // Stores a reference to the SS Gauge
             var cache = {};      // Stores various config values and parameters
@@ -1663,7 +1663,7 @@ function gauges() {
             return {
                 // Get the Singleton instance if one exists
                 // or create one if it doesn't
-                getInstance: function getInstance() {
+                getInstance: function () {
                     if (!instance) {
                         instance = init();
                     }
@@ -1675,7 +1675,7 @@ function gauges() {
         //
         // Singleton for the Wind Speed Gauge
         //
-        singleWind = (function singleWind() {
+        singleWind = (function () {
             var instance;   // Stores a reference to the Singleton
             var ssGauge;    // Stores a reference to the SS Gauge
             var cache = {};      // Stores various config values and parameters
@@ -1784,7 +1784,7 @@ function gauges() {
             return {
                 // Get the Singleton instance if one exists
                 // or create one if it doesn't
-                getInstance: function getInstance() {
+                getInstance: function () {
                     if (!instance) {
                         instance = init();
                     }
@@ -1796,7 +1796,7 @@ function gauges() {
         //
         // Singleton for the Wind Direction Gauge
         //
-        singleDir = (function singleDir() {
+        singleDir = (function () {
             var instance;   // Stores a reference to the Singleton
             var ssGauge;    // Stores a reference to the SS Gauge
             var cache = {}; // Stores various config values and parameters
@@ -1981,7 +1981,7 @@ function gauges() {
             return {
                 // Get the Singleton instance if one exists
                 // or create one if it doesn't
-                getInstance: function getInstance() {
+                getInstance: function () {
                     if (!instance) {
                         instance = init();
                     }
@@ -1993,7 +1993,7 @@ function gauges() {
         //
         // Singleton for the Wind Rose Gauge
         //
-        singleRose = (function singleRose() {
+        singleRose = (function () {
             var instance;   // Stores a reference to the Singleton
             var ssGauge;    // Stores a reference to the SS Gauge
 
@@ -2240,7 +2240,7 @@ function gauges() {
             return {
                 // Get the Singleton instance if one exists
                 // or create one if it doesn't
-                getInstance: function getInstance() {
+                getInstance: function () {
                     if (!instance) {
                         instance = init();
                     }
@@ -2252,7 +2252,7 @@ function gauges() {
         //
         // Singleton for the UV-Index Gauge
         //
-        singleUV = (function singleUV() {
+        singleUV = (function () {
             var instance;   // Stores a reference to the Singleton
             var ssGauge;    // Stores a reference to the SS Gauge
             var cache = {};      // Stores various config values and parameters
@@ -2373,7 +2373,7 @@ function gauges() {
             return {
                 // Get the Singleton instance if one exists
                 // or create one if it doesn't
-                getInstance: function getInstance() {
+                getInstance: function () {
                     if (!instance) {
                         instance = init();
                     }
@@ -2385,7 +2385,7 @@ function gauges() {
         //
         // Singleton for the Solar Irradiation Gauge
         //
-        singleSolar = (function singleSolar() {
+        singleSolar = (function () {
             var instance;   // Stores a reference to the Singleton
             var ssGauge;    // Stores a reference to the SS Gauge
             var cache = {};      // Stores various config values and parameters
@@ -2499,7 +2499,7 @@ function gauges() {
             return {
                 // Get the Singleton instance if one exists
                 // or create one if it doesn't
-                getInstance: function getInstance() {
+                getInstance: function () {
                     if (!instance) {
                         instance = init();
                     }
@@ -2511,7 +2511,7 @@ function gauges() {
         //
         // Singleton for the Cloudbase Gauge
         //
-        singleCloudBase = (function singleCloudBase() {
+        singleCloudBase = (function () {
             var instance;   // Stores a reference to the Singleton
             var ssGauge;    // Stores a reference to the SS Gauge
             var cache = {};      // Stores various config values and parameters
@@ -2615,7 +2615,7 @@ function gauges() {
             return {
                 // Get the Singleton instance if one exists
                 // or create one if it doesn't
-                getInstance: function getInstance() {
+                getInstance: function () {
                     if (!instance) {
                         instance = init();
                     }
@@ -2627,7 +2627,7 @@ function gauges() {
         //
         // getRealtime() fetches the realtimegauges JSON data from the server
         //
-        getRealtime = function getRealtime() {
+        getRealtime = function () {
             var url = config.realTimeURL;
             if ($.active > 0) {
                 // kill any outstanding requests
@@ -2640,9 +2640,9 @@ function gauges() {
                             cache   : (config.longPoll),
                             dataType: 'json',
                             timeout : config.longPoll ? (Math.min(config.realtimeInterval, 20) + 21) * 1000 : 21000 // 21 second time-out by default
-                        }).done(function done(data) {
+                        }).done(function (data) {
                             checkRtResp(data);
-                        }).fail(function fail(xhr, status, err) {
+                        }).fail(function (xhr, status, err) {
                             checkRtError(xhr, status, err);
                         });
         },
@@ -2650,7 +2650,7 @@ function gauges() {
         //
         // checkRtResp() called by the Ajax fetch once data has been downloaded
         //
-        checkRtResp = function checkRtResp(response) {
+        checkRtResp = function (response) {
             var delay;
             statusTimer.reset(config.longPoll ? 1 : config.realtimeInterval);
             if (config.longPoll && response.status !== 'OK') {
@@ -2672,7 +2672,7 @@ function gauges() {
         //
         // checkRtError() called by the Ajax fetch if an error occurs during the fetching realtimegauges.txt
         //
-        checkRtError = function checkRtError(xhr, status, error) {
+        checkRtError = function (xhr, status, error) {
             if (xhr.statusText !== 'abort') {
                 if (!config.longPoll) {
                     // Clear any existing download timer
@@ -2689,7 +2689,7 @@ function gauges() {
         //
         // processData() massages the data returned in realtimegauges.txt, and calls doUpdate() to update the page
         //
-        processData = function processData(dataObj) {
+        processData = function (dataObj) {
             var str, dt, tm, today, now, then, tmp, elapsedMins, retVal;
             // copy the realtime fields into the global 'data' object
             if (config.longPoll) {
@@ -2898,7 +2898,7 @@ function gauges() {
         //
         // pagetimeout() called once every config.pageUpdateLimit minutes to stop updates and prevent page 'sitters'
         //
-        pageTimeout = function pageTimeout() {
+        pageTimeout = function () {
             statusScroller.setText(strings.StatusPageLimit);
             ledIndicator.setLedColor(steelseries.LedColor.RED_LED);
             ledIndicator.setTitle(strings.StatusPageLimit);
@@ -2948,7 +2948,7 @@ function gauges() {
         // doFirst() called by doUpdate() the first time the page is updated to set-up various things that are
         // only known when the realtimegauges.txt data is available
         //
-        doFirst = function doFirst() {
+        doFirst = function () {
             var cacheDefeat = '?' + (new Date()).getTime().toString();
 
             if (data.tempunit[1] === 'F') {
@@ -3039,7 +3039,7 @@ function gauges() {
         //
         // createTempSections() creates an array of gauge sections appropriate for Celsius or Fahrenheit scales
         //
-        createTempSections = function createTempSections(celsius) {
+        createTempSections = function (celsius) {
             var section;
             if (celsius) {
                 section = [
@@ -3103,7 +3103,7 @@ function gauges() {
            0.60 to 2.0
            > 2.0
         */
-        createRainRateSections = function createRainRateSections(metric) {
+        createRainRateSections = function (metric) {
             var factor = metric ? 1 : 1 / 25;
             return [steelseries.Section(0,           0.25 * factor, 'rgba(0, 140, 0, 0.5)'),
                     steelseries.Section(0.25 * factor,  1 * factor, 'rgba(80, 192, 80, 0.5)'),
@@ -3116,7 +3116,7 @@ function gauges() {
         //
         // createRainFallSections()returns an array of section highlights for total rainfall in mm or inches
         //
-        createRainfallSections = function createRainfallSections(metric) {
+        createRainfallSections = function (metric) {
             var factor = metric ? 1 : 1 / 25;
             return [steelseries.Section(0,              5 * factor, 'rgba(0, 250, 0, 1)'),
                     steelseries.Section(5 * factor,   10 * factor, 'rgba(0, 250, 117, 1)'),
@@ -3133,7 +3133,7 @@ function gauges() {
         //
         // createRainfallGradient() returns an array of SS colours for continuous gradient colouring of the total rainfall LED gauge
         //
-        createRainfallGradient = function createRainfallGradient(metric) {
+        createRainfallGradient = function (metric) {
             var grad = new steelseries.gradientWrapper(
                 0,
                 (metric ? 100 : 4),
@@ -3149,7 +3149,7 @@ function gauges() {
         //
         // createClousBaseSections() returns an array of section highlights for the Cloud Base gauge
         //
-        createCloudBaseSections = function createCloudBaseSections(metric) {
+        createCloudBaseSections = function (metric) {
             var section;
             if (metric) {
                 section =  [steelseries.Section(0, 150, 'rgba(245, 86, 59, 0.5)'),
@@ -3178,7 +3178,7 @@ function gauges() {
         //
         // getord() converts a value in degrees (0-360) into a localised compass point (N, ENE, NE, etc)
         //
-        getord = function getord(deg) {
+        getord = function (deg) {
             if (deg === 0) {
                 // Special case, 0=No wind, 360=North
                 return strings.calm;
@@ -3190,7 +3190,7 @@ function gauges() {
         //
         // getUrlParam() extracts the named parameter from the current page URL
         //
-        getUrlParam = function getUrlParam(paramName) {
+        getUrlParam = function (paramName) {
             var name, regexS, regex, results;
             name = paramName.replace(/(\[|\])/g, '\\$1');
             regexS = '[\\?&]' + name + '=([^&#]*)';
@@ -3207,7 +3207,7 @@ function gauges() {
         // extractDecimal() returns a decimal number from a string, the decimal point can be either a dot or a comma
         // it ignores any text such as pre/appended units
         //
-        extractDecimal = function extractDecimal(str, errVal) {
+        extractDecimal = function (str, errVal) {
             try {
                 return (/[\-+]?[0-9]+\.?[0-9]*/).exec(str.replace(',', '.'))[0];
             } catch (e) {
@@ -3220,7 +3220,7 @@ function gauges() {
         // extractInteger() returns an integer from a string
         // it ignores any text such as pre/appended units
         //
-        extractInteger = function extractInteger(str, errVal) {
+        extractInteger = function (str, errVal) {
             try {
                 return (/[\-+]?[0-9]+/).exec(str)[0];
             } catch (e) {
@@ -3232,7 +3232,7 @@ function gauges() {
         //
         // tempTrend() converts a temperature trend value into a localised string, or +1, 0, -1 depending on the value of bTxt
         //
-        tempTrend = function tempTrend(trend, units, bTxt) {
+        tempTrend = function (trend, units, bTxt) {
             // Scale is over 3 hours, in Celsius
             var val = trend * 3 * (units[1] === 'C' ? 1 : (5 / 9)),
                 ret;
@@ -3263,7 +3263,7 @@ function gauges() {
         //
         // baroTrend() converts a pressure trend value into a localised string, or +1, 0, -1 depending on the value of bTxt
         //
-        baroTrend = function baroTrend(trend, units, bTxt) {
+        baroTrend = function (trend, units, bTxt) {
             var val = trend * 3,
                 ret;
             // The terms below are the UK Met Office terms for a 3 hour change in hPa
@@ -3301,7 +3301,7 @@ function gauges() {
         //
         // getMinTemp() returns the lowest temperature today for gauge scaling
         //
-        getMinTemp = function getMinTemp(deflt) {
+        getMinTemp = function (deflt) {
             return Math.min(
                 extractDecimal(data.tempTL, deflt),
                 extractDecimal(data.dewpointTL, deflt),
@@ -3312,7 +3312,7 @@ function gauges() {
         //
         // getMaxTemp() returns the highest temperature today for gauge scaling
         //
-        getMaxTemp = function getMaxTemp(deflt) {
+        getMaxTemp = function (deflt) {
             return Math.max(
                 extractDecimal(data.tempTH, deflt),
                 extractDecimal(data.apptempTH, deflt),
@@ -3404,7 +3404,7 @@ function gauges() {
         //
         // setCookie() writes the 'obj' in cookie 'name' for persistent storage
         //
-        setCookie = function setCookie(name, obj) {
+        setCookie = function (name, obj) {
             var date = new Date(),
                 expires;
             // cookies valid for 1 year
@@ -3416,7 +3416,7 @@ function gauges() {
         //
         // getCookie() reads the value of cookie 'name' from persistent storage
         //
-        getCookie = function getCookie(name) {
+        getCookie = function (name) {
             var i, x, y,
                 ret = null,
                 arrCookies = document.cookie.split(';');
@@ -3439,14 +3439,14 @@ function gauges() {
         //
         // setRadioCheck() sets the desired value of the HTML radio buttons to be selected
         //
-        setRadioCheck = function setRadioCheck(obj, val) {
+        setRadioCheck = function (obj, val) {
             $('input:radio[name="' + obj + '"]').filter('[value="' + val + '"]').prop('checked', true);
         },
 
         //
         // convTempData() converts all the temperature values using the supplied conversion function
         //
-        convTempData = function convTempData(convFunc) {
+        convTempData = function (convFunc) {
             data.apptemp = convFunc(data.apptemp);
             data.apptempTH = convFunc(data.apptempTH);
             data.apptempTL = convFunc(data.apptempTL);
@@ -3474,7 +3474,7 @@ function gauges() {
         //
         // convRainData() converts all the rain data units using the supplied conversion function
         //
-        convRainData = function convRainData(convFunc) {
+        convRainData = function (convFunc) {
             data.rfall = convFunc(data.rfall);
             data.rrate = convFunc(data.rrate);
             data.rrateTM = convFunc(data.rrateTM);
@@ -3485,10 +3485,10 @@ function gauges() {
         //
         // convWindData() converts all the wind values using the supplied conversion function
         //
-        convWindData = function convWindData(from, to) {
+        convWindData = function (from, to) {
             var fromFunc1, toFunc1,
                 fromFunc2, toFunc2,
-                dummy = function dummy(val) {
+                dummy = function (val) {
                     return val;
                 };
 
@@ -3549,9 +3549,9 @@ function gauges() {
         //
         // convBaroData() converts all the pressure values using the supplied conversion function
         //
-        convBaroData = function convBaroData(from, to) {
+        convBaroData = function (from, to) {
             var fromFunc, toFunc,
-                dummy = function dummy(val) {
+                dummy = function (val) {
                     return val;
                 };
 
@@ -3598,7 +3598,7 @@ function gauges() {
         //
         // convCloudBaseData() converts all the cloud base data units using the supplied conversion function
         //
-        convCloudBaseData = function convCloudBaseData(convFunc) {
+        convCloudBaseData = function (convFunc) {
             data.cloudbasevalue = convFunc(data.cloudbasevalue);
             data.cloudbaseunit = convFunc === m2ft ? 'ft' : 'm';
         },
@@ -3606,7 +3606,7 @@ function gauges() {
         //
         // setUnits() Main data conversion routine, calls all the setXXXX() sub-routines
         //
-        setUnits = function setUnits(radio) {
+        setUnits = function (radio) {
             var sel = radio.value;
 
             userUnitsSet = true;
@@ -3706,7 +3706,7 @@ function gauges() {
             }
         },
 
-        setTempUnits = function setTempUnits(celsius) {
+        setTempUnits = function (celsius) {
             if (celsius) {
                 data.tempunit = '°C';
                 if (gaugeTemp) {
@@ -3742,7 +3742,7 @@ function gauges() {
             }
         },
 
-        setRainUnits = function setRainUnits(mm) {
+        setRainUnits = function (mm) {
             if (mm) {
                 data.rainunit = 'mm';
                 if (gaugeRain) {
@@ -3797,7 +3797,7 @@ function gauges() {
             }
         },
 
-        setWindUnits = function setWindUnits(to) {
+        setWindUnits = function (to) {
             var maxVal;
             if (!gaugeWind) {return;}
 
@@ -3824,7 +3824,7 @@ function gauges() {
             gaugeWind.gauge.setValue(0);
         },
 
-        setBaroUnits = function setBaroUnits(to) {
+        setBaroUnits = function (to) {
             var minVal, maxVal;
 
             if (!gaugeBaro) {return;}
@@ -3867,7 +3867,7 @@ function gauges() {
             gaugeBaro.data.value = gaugeBaro.data.minValue;
         },
 
-        setCloudBaseUnits = function setCloudBaseUnits(m) {
+        setCloudBaseUnits = function (m) {
             if (!gaugeCloud) {return;}
 
             if (m) {
@@ -3885,7 +3885,7 @@ function gauges() {
         //
         // setLang() switches the HTML page language set, called by changeLang() in language.js
         //
-        setLang = function setLang(newLang) {
+        setLang = function (newLang) {
             // reset to the new language
             strings = newLang;
 
@@ -3983,7 +3983,7 @@ function gauges() {
             }
         },
 
-        getWindrunUnits = function getWindrunUnits(spdUnits) {
+        getWindrunUnits = function (spdUnits) {
             var retVal;
             switch (spdUnits) {
             case 'mph':
@@ -4003,7 +4003,7 @@ function gauges() {
             return retVal;
         },
 
-        calcCloudbase = function calcCloudbase(temp, tempunit, dew, cloudbaseunit) {
+        calcCloudbase = function (temp, tempunit, dew, cloudbaseunit) {
             var sprd = temp - dew;
             var cb = sprd * (tempunit[1] === 'C' ? 400 : 227.3); // cloud base in feet
             if (cloudbaseunit === 'm') {
@@ -4012,7 +4012,7 @@ function gauges() {
             return cb;
         },
 
-        gaugeShadow = function gaugeShadow(size) {
+        gaugeShadow = function (size) {
             var offset = Math.floor(size * 0.015);
             return {
                 'box-shadow'   : offset + 'px ' + offset + 'px ' + offset + 'px ' + gaugeGlobals.shadowColour,
@@ -4020,7 +4020,7 @@ function gauges() {
             };
         },
 
-        gradient = function gradient(startCol, endCol, fraction) {
+        gradient = function (startCol, endCol, fraction) {
             var redOrigin, grnOrigin, bluOrigin,
                 gradientSizeRed, gradientSizeGrn, gradientSizeBlu;
 
@@ -4042,7 +4042,7 @@ function gauges() {
     if (!document.createElement('canvas').getContext) {
         // failed, no canvas support detected
         $('body').html(strings.canvasnosupport);
-        setTimeout(function tick() {
+        setTimeout(function () {
             window.location = config.oldGauges;
         }, 3000);
         return false;
@@ -4051,7 +4051,7 @@ function gauges() {
         // Called when the document object has loaded
         // This starts the whole script.
         //
-        $(document).ready(function ready() {
+        $(document).ready(function () {
             // Kick it all off - false for web page, true for dashboard
             init(config.dashboardMode);
         });
@@ -4077,7 +4077,7 @@ function gauges() {
 */
 
     ddimgtooltip = {
-        tiparray: (function tiparray() {
+        tiparray: (function () {
             var style = {background: '#FFFFFF', color: 'black', border: '2px ridge darkblue'},
                 i = 12,  // set to number of tooltips required
                 tooltips = [];
@@ -4095,7 +4095,7 @@ function gauges() {
 
         tipprefix: 'imgtip', //tooltip DOM ID prefixes
 
-        createtip: function createtip($, tipid, tipinfo) {
+        createtip: function ($, tipid, tipinfo) {
             if ($('#' + tipid).length === 0) { //if this tooltip doesn't exist yet
                 return $('<div id="' + tipid + '" class="ddimgtooltip" />')
                             .html(
@@ -4109,7 +4109,7 @@ function gauges() {
             return null;
         },
 
-        positiontooltip: function positiontooltip($, $tooltip, e) {
+        positiontooltip: function ($, $tooltip, e) {
             var x = e.pageX + this.tooltipoffsets[0],
                 y = e.pageY + this.tooltipoffsets[1],
                 tipw = $tooltip.outerWidth(),
@@ -4122,7 +4122,7 @@ function gauges() {
             $tooltip.css({left: x, top: y});
         },
 
-        delaybox: function delaybox($, $tooltip) {
+        delaybox: function ($, $tooltip) {
             if (this.showTips) {
                 ddimgtooltip.delayTimer = setTimeout(
                     function timeout() {
@@ -4131,14 +4131,14 @@ function gauges() {
             }
         },
 
-        showbox: function showbox(tooltip) {
+        showbox: function (tooltip) {
             if (this.showTips) {
                 //$(tooltip).show();
                 $(tooltip).fadeIn();
             }
         },
 
-        hidebox: function hidebox($, $tooltip) {
+        hidebox: function ($, $tooltip) {
             clearTimeout(ddimgtooltip.delayTimer);
             //$tooltip.hide();
             $tooltip.fadeOut();
@@ -4146,15 +4146,15 @@ function gauges() {
 
         showTips: false,
 
-        init: function init(targetselector) {
-            $(document).ready(function ready($) {
+        init: function (targetselector) {
+            $(document).ready(function ($) {
                 var tiparray = ddimgtooltip.tiparray,
                     $targets = $(targetselector);
 
                 if ($targets.length === 0) {
                     return;
                 }
-                $targets.each(function each() {
+                $targets.each(function () {
                     var $target = $(this),
                         tipsuffix, tipid,
                         $tooltip;
@@ -4163,21 +4163,21 @@ function gauges() {
                     tipid = this.tipid = ddimgtooltip.tipprefix + tipsuffix; //construct this tip's ID value and remember it
                     $tooltip = ddimgtooltip.createtip($, tipid, tiparray[tipsuffix]);
 
-                    $target.mouseenter(function mouseenter(e) {
+                    $target.mouseenter(function (e) {
                         var $tooltip = $('#' + this.tipid);
                         //ddimgtooltip.showbox($, $tooltip, e);
                         ddimgtooltip.delaybox($, $tooltip, e);
                     });
-                    $target.mouseleave(function mouseleave() {
+                    $target.mouseleave(function () {
                         var $tooltip = $('#' + this.tipid);
                         ddimgtooltip.hidebox($, $tooltip);
                     });
-                    $target.mousemove(function mousemove(e) {
+                    $target.mousemove(function (e) {
                         var $tooltip = $('#' + this.tipid);
                         ddimgtooltip.positiontooltip($, $tooltip, e);
                     });
                     if ($tooltip) { //add mouseenter to this tooltip (only if event hasn't already been added)
-                        $tooltip.mouseenter(function mouseenter() {
+                        $tooltip.mouseenter(function () {
                             ddimgtooltip.hidebox($, $(this));
                         });
                     }

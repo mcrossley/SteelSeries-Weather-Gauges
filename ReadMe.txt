@@ -2,8 +2,8 @@ SteelSeries JavaScript gauges
 =============================
 Created by Mark Crossley July 2011
 
-Version 2.5.13
-Updated: 11 June 2016
+Version 2.5.14
+Updated: 23 June 2016
 
 +-------------------------------------------------------+
 |                                                       |
@@ -412,6 +412,9 @@ If the display is in feet, then values below 2000 ft are rounded to 50 ft, above
 
 Release History
 =======================
+2.5.14
+  * Updated gauges.js
+
 2.5.13
   * Updated gauges.js
     - Switched to using ESLINT and some stylistic changes to code and layout
