@@ -414,6 +414,7 @@ Release History
 =======================
 2.5.14
   * Updated gauges.js
+    - Reversed style change which named all functions. Back to anonymous functions.
 
 2.5.13
   * Updated gauges.js
