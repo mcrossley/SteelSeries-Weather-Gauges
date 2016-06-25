@@ -33,7 +33,7 @@ function () {
     var strings = LANG.EN,         //Set to your default language. Store all the strings in one object
         config = {
             // Script configuration parameters you may want to 'tweak'
-            scriptVer          : '2.5.14',
+            scriptVer          : '2.5.15',
             weatherProgram     : 0,                      //Set 0=Cumulus, 1=Weather Display, 2=VWS, 3=WeatherCat, 4=Meteobridge, 5=WView, 6=WeeWX
             imgPathURL         : './images/',            //*** Change this to the relative path for your 'Trend' graph images
             oldGauges          : 'gauges.htm',           //*** Change this to the relative path for your 'old' gauges page.
@@ -4125,8 +4125,8 @@ function () {
         delaybox: function ($, $tooltip) {
             if (this.showTips) {
                 ddimgtooltip.delayTimer = setTimeout(
-                    function timeout() {
-                        ddimgtooltip.showbox($tooltip.selector);
+                    function () {
+                        ddimgtooltip.showbox($tooltip);
                     }, ddimgtooltip.tipDelay);
             }
         },
@@ -4147,42 +4147,40 @@ function () {
         showTips: false,
 
         init: function (targetselector) {
-            $(document).ready(function ($) {
-                var tiparray = ddimgtooltip.tiparray,
-                    $targets = $(targetselector);
+            var tiparray = ddimgtooltip.tiparray,
+                $targets = $(targetselector);
 
-                if ($targets.length === 0) {
-                    return;
-                }
-                $targets.each(function () {
-                    var $target = $(this),
-                        tipsuffix, tipid,
-                        $tooltip;
-                    $target.attr('id').match(/_(\d+)/); //match d of attribute id='tip_d'
-                    tipsuffix = parseInt(RegExp.$1, 10); //get d as integer
-                    tipid = this.tipid = ddimgtooltip.tipprefix + tipsuffix; //construct this tip's ID value and remember it
-                    $tooltip = ddimgtooltip.createtip($, tipid, tiparray[tipsuffix]);
+            if ($targets.length === 0) {
+                return;
+            }
+            $targets.each(function () {
+                var $target = $(this),
+                    tipsuffix, tipid,
+                    $tooltip;
+                var ind = ($target.attr('id').match(/_(\d+)/) || [])[1] || ''; //match d of attribute id='tip_d'
+                tipsuffix = parseInt(ind, 10); //get d as integer
+                tipid = this.tipid = ddimgtooltip.tipprefix + tipsuffix; //construct this tip's ID value and remember it
+                $tooltip = ddimgtooltip.createtip($, tipid, tiparray[tipsuffix]);
 
-                    $target.mouseenter(function (e) {
-                        var $tooltip = $('#' + this.tipid);
-                        //ddimgtooltip.showbox($, $tooltip, e);
-                        ddimgtooltip.delaybox($, $tooltip, e);
-                    });
-                    $target.mouseleave(function () {
-                        var $tooltip = $('#' + this.tipid);
-                        ddimgtooltip.hidebox($, $tooltip);
-                    });
-                    $target.mousemove(function (e) {
-                        var $tooltip = $('#' + this.tipid);
-                        ddimgtooltip.positiontooltip($, $tooltip, e);
-                    });
-                    if ($tooltip) { //add mouseenter to this tooltip (only if event hasn't already been added)
-                        $tooltip.mouseenter(function () {
-                            ddimgtooltip.hidebox($, $(this));
-                        });
-                    }
+                $target.mouseenter(function (e) {
+                    var $tooltip = $('#' + this.tipid);
+                    //ddimgtooltip.showbox($, $tooltip, e);
+                    ddimgtooltip.delaybox($, $tooltip, e);
                 });
-            }); //end dom ready
+                $target.mouseleave(function () {
+                    var $tooltip = $('#' + this.tipid);
+                    ddimgtooltip.hidebox($, $tooltip);
+                });
+                $target.mousemove(function (e) {
+                    var $tooltip = $('#' + this.tipid);
+                    ddimgtooltip.positiontooltip($, $tooltip, e);
+                });
+                if ($tooltip) { //add mouseenter to this tooltip (only if event hasn't already been added)
+                    $tooltip.mouseenter(function () {
+                        ddimgtooltip.hidebox($, $(this));
+                    });
+                }
+            });
         }
     };
 
