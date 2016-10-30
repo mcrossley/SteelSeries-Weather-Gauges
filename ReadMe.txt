@@ -2,8 +2,8 @@ SteelSeries JavaScript gauges
 =============================
 Created by Mark Crossley July 2011
 
-Version 2.5.15
-Updated: 25 June 2016
+Version 2.5.16
+Updated: 04 October 2016
 
 +-------------------------------------------------------+
 |                                                       |
@@ -412,6 +412,25 @@ If the display is in feet, then values below 2000 ft are rounded to 50 ft, above
 
 Release History
 =======================
+2.5.16
+  * Updated gauges.js
+    - Minor code style/format changes
+    - Fixed the display of todays high/low decimal places the singleBaro.update() function
+    - Fixed an issue with the Ajax timeout error handling
+    - Amended the hPa to inchesHg conversion to use 3 decimals for inches
+    - Amended the popup tooltip positioning and sizing to try and keep it on-screen better on tiny displays
+    - Added config.roundCloudbaseVal to enable/disable cloud base rounding for display
+  * Updated gauges-ssT.htm, index.html.tmpl, gauges-ssT.htx, steelseriesVWSjson.php
+    - Fixed the demo HTML templates to use double quotes for element ids
+  * Updated steelseriesVWSjson.php
+    - Added no cache header
+    - Cosmetic changes
+  * Updated gauge-data.txt.tmpl (Changes via pull request 3 from gjr80)
+    - humidex calc now (correctly) uses dewpoint in degree K
+    - removed redunant code in humidex and apptemp calcs
+  * Updated language.js language.min.js
+    - Minor change to Norwegan 'meters' -> 'meter'
+
 2.5.15
   * Updated gauges.js
     - Removed deprecated RegExp.$1, and .selector code, plus other changes around the popups to make them compatible with JQuery 3.0

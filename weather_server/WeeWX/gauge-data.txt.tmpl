@@ -7,7 +7,7 @@
 ## Updated 12mar2016 by M Crossley, force pressure UoM mbar to mb.
 ##                                  added UoM consitency from unit_type rather than labels which can be localised
 ##                                  force rain in cm to mm as gauges do not currently handle cm's.
-##
+## Updated 04oct2016 by M Crossley, added changes from PR4
 ## definitions for the tags can be found here:
 ## http://wiki.sandaysoft.com/a/Webtags
 ##
@@ -54,9 +54,8 @@
 ## http://www.physlink.com/reference/weather.cfm
 #if $varExists('current.outTemp') and $current.outTemp.raw is not None and $varExists('current.dewpoint') and $current.dewpoint.raw is not None
 #set $oT_C = $current.outTemp.degree_C.raw
-#set $dp = $current.dewpoint.raw
-#if $oT_C is not None and $dp is not None
-#set $e = 6.11 * math.exp(5417.7530 * ((1/273.16) - 1/$dp))
+#set $dp_K = $current.dewpoint.degree_C.raw + 273.16
+#set $e = 6.11 * math.exp(5417.7530 * ((1/273.16) - 1/$dp_K))
 #set $h = 0.5555 * ($e - 10.0)
 #if $h > 0
 #set $humidex = $oT_C + $h
@@ -65,9 +64,6 @@
 #end if
 #if $unit.unit_type.outTemp == 'degree_F'
 #set $humidex = 32.0 + 1.8 * $humidex
-#end if
-#else
-#set $humidex = 'N/A'
 #end if
 #else
 #set $humidex = 'N/A'
@@ -93,15 +89,10 @@
 #set $oT_C = $current.outTemp.degree_C.raw
 #set $rh = $current.outHumidity.raw
 #set $ws = $current.windSpeed.meter_per_second.raw
-#if $oT_C is not None and $rh is not None and $ws is not None
 #set $e = ($rh / 100) * 6.105 * math.exp(17.27 * $oT_C / (237.7 + $oT_C))
 #set $apptemp = $oT_C + 0.33 * $e - 0.7 * $ws - 4.0
 #if $unit.unit_type.outTemp == 'degree_F'
 #set $apptemp = 32.0 + 1.8 * $apptemp
-#end if
-#else
-#set $apptemp = 'N/A'
-#end if
 #else
 #set $apptemp = 'N/A'
 #end if
