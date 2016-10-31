@@ -7,7 +7,7 @@
 ## Updated 12mar2016 by M Crossley, force pressure UoM mbar to mb.
 ##                                  added UoM consitency from unit_type rather than labels which can be localised
 ##                                  force rain in cm to mm as gauges do not currently handle cm's.
-##
+## Updated 04oct2016 by M Crossley, added changes from PR4
 ## definitions for the tags can be found here:
 ## http://wiki.sandaysoft.com/a/Webtags
 ##
@@ -93,7 +93,6 @@
 #set $apptemp = $oT_C + 0.33 * $e - 0.7 * $ws - 4.0
 #if $unit.unit_type.outTemp == 'degree_F'
 #set $apptemp = 32.0 + 1.8 * $apptemp
-#end if
 #else
 #set $apptemp = 'N/A'
 #end if
