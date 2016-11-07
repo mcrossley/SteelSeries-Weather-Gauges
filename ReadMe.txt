@@ -414,6 +414,7 @@ Release History
 =======================
 2.5.17
   * Updated gauges.js
+    - Added new config item "showWindMetar" to enable the METAR substring for wind on the direction gauge,
       the default is now disabled (was enabled). Previously you could only disable it by not showing any
       wind variation on the gauge.
 
