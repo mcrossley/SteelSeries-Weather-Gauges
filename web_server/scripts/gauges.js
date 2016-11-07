@@ -33,7 +33,7 @@ function () {
     var strings = LANG.EN,         //Set to your default language. Store all the strings in one object
         config = {
             // Script configuration parameters you may want to 'tweak'
-            scriptVer          : '2.5.16',
+            scriptVer          : '2.5.17',
             weatherProgram     : 0,                      //Set 0=Cumulus, 1=Weather Display, 2=VWS, 3=WeatherCat, 4=Meteobridge, 5=WView, 6=WeeWX
             imgPathURL         : './images/',            //*** Change this to the relative path for your 'Trend' graph images
             oldGauges          : 'gauges.htm',           //*** Change this to the relative path for your 'old' gauges page.
@@ -51,6 +51,7 @@ function () {
             showPopupGraphs    : true,                   //If pop-up data is displayed, show the graphs?
             mobileShowGraphs   : false,                  //If false, on a mobile/narrow display, always disable the graphs
             showWindVariation  : true,                   //Show variation in wind direction over the last 10 minutes on the direction gauge
+            showWindMetar      : false,                  //Show the METAR substring for wind speed/direction over the last 10 minutes on the direction gauge popup
             showIndoorTempHum  : true,                   //Show the indoor temperature/humidity options
             showCloudGauge     : true,                   //Display the Cloud Base gauge
             showUvGauge        : true,                   //Display the UV Index gauge
@@ -1881,9 +1882,12 @@ function () {
                         }
                         cache.avgKnots = Math.round(cache.avgKnots);
                         cache.gstKnots = Math.round(cache.gstKnots);
-                        ssGauge.VRB = ' - METAR: ' + ('0' + data.avgbearing).slice(-3) + ('0' + cache.avgKnots).slice(-2) +
-                                      'G' + ('0' + cache.gstKnots).slice(-2) + 'KT ';
-
+                        if (config.showWindMetar) {
+                            ssGauge.VRB = ' - METAR: ' + ('0' + data.avgbearing).slice(-3) + ('0' + cache.avgKnots).slice(-2) +
+                                        'G' + ('0' + cache.gstKnots).slice(-2) + 'KT ';
+                        } else {
+                            ssGauge.VRB = '';
+                        }
                         if (windSpd > 0) {
                             // If variation less than 60 degrees, then METAR = Steady
                             // Unless range = 0 and from/to direction = avg + 180
@@ -1903,17 +1907,20 @@ function () {
                                 ssGauge.setSection([]);
                                 ssGauge.setArea([steelseries.Section(cache.bearingFrom, cache.bearingTo, gaugeGlobals.minMaxArea)]);
                             }
-
-                            if ((range < 60 && range > 0) || range === 0 && cache.bearingFrom === cache.valueAverage) {
-                                ssGauge.VRB += ' STDY';
-                            } else if (cache.avgKnots < 3) { // Europe uses 3kts, USA 6kts as the threshold
-                                ssGauge.VRB += ' VRB';
-                            } else {
-                                ssGauge.VRB += ' ' + cache.bearingFrom + 'V' + cache.bearingTo;
+                            if (config.showWindMetar) {
+                                if ((range < 60 && range > 0) || range === 0 && cache.bearingFrom === cache.valueAverage) {
+                                    ssGauge.VRB += ' STDY';
+                                } else if (cache.avgKnots < 3) { // Europe uses 3kts, USA 6kts as the threshold
+                                    ssGauge.VRB += ' VRB';
+                                } else {
+                                    ssGauge.VRB += ' ' + cache.bearingFrom + 'V' + cache.bearingTo;
+                                }
                             }
                         } else {
                             // Zero wind speed, calm
-                            ssGauge.VRB = ' - METAR: 00000KT';
+                            if (config.showWindMetar) {
+                                ssGauge.VRB = ' - METAR: 00000KT';
+                            }
                             ssGauge.setSection([]);
                             if (!config.showRoseOnDirGauge) {
                                 ssGauge.setArea([]);
