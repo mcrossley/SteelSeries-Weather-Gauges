@@ -102,6 +102,6 @@ label {
   padding: 3px 0 3px 2px;
 }
 .tipimg{
-  width: 438px;
-  height: 175px;
+  width: 438px;   /* suggest 380 for wxgraphs */
+  height: 175px;  /* suggest 260 for wxgraphs */
 }

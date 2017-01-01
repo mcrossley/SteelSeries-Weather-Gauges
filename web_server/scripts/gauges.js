@@ -33,7 +33,7 @@ function () {
     var strings = LANG.EN,         //Set to your default language. Store all the strings in one object
         config = {
             // Script configuration parameters you may want to 'tweak'
-            scriptVer          : '2.5.17',
+            scriptVer          : '2.5.18',
             weatherProgram     : 0,                      //Set 0=Cumulus, 1=Weather Display, 2=VWS, 3=WeatherCat, 4=Meteobridge, 5=WView, 6=WeeWX
             imgPathURL         : './images/',            //*** Change this to the relative path for your 'Trend' graph images
             oldGauges          : 'gauges.htm',           //*** Change this to the relative path for your 'old' gauges page.
@@ -241,6 +241,10 @@ function () {
                     (config.showRoseGauge ? 'winddir_24hr.php' : null), // Wind direction if Rose is enabled | =null if Rose is disabled
                     (config.showCloudGauge ? 'baro_24hr.php' : null)    // Pressure for cloud height | =null if Cloud Height is disabled
                 ];
+                // WD useer generally use wxgraphs - tweak the CSS to accomadate the different aspect ratio
+                $('.tipimg').css({
+                    width : '360px',
+                    height: '260px'});
                 break;
             case 2:
                 // WVS
@@ -1570,19 +1574,19 @@ function () {
                     cache.trendVal = +extractDecimal(data.presstrendval) / (config.weatherProgram === 2 ? 3 : 1);
 
                     if (data.pressunit === 'hPa' || data.pressunit === 'mb') {
-                        //  min range 990-1030 - steps of 10 hPa
-                        cache.minValue = Math.min(Math.floor((cache.recLow - 2) / 10) * 10, 990);
-                        cache.maxValue = Math.max(Math.ceil((cache.recHigh + 2) / 10) * 10, 1030);
+                        //  default min range 990-1030 - steps of 10 hPa
+                        cache.minValue = Math.min(Math.floor((cache.recLow - 2) / 10) * 10, gaugeGlobals.baroScaleDefMinhPa);
+                        cache.maxValue = Math.max(Math.ceil((cache.recHigh + 2) / 10) * 10, gaugeGlobals.baroScaleDefMaxhPa);
                         dps = 1; // 1 decimal place
                     } else if (data.pressunit === 'kPa') {
-                        //  min range 99-105 - steps of 1 kPa
-                        cache.minValue = Math.min(Math.floor(cache.recLow - 0.2), 99);
-                        cache.maxValue = Math.max(Math.ceil(cache.recHigh + 0.2), 105);
+                        //  default min range 99-105 - steps of 1 kPa
+                        cache.minValue = Math.min(Math.floor(cache.recLow - 0.2), gaugeGlobals.baroScaleDefMinkPa);
+                        cache.maxValue = Math.max(Math.ceil(cache.recHigh + 0.2), gaugeGlobals.baroScaleDefMaxkPa);
                         dps = 2;
                     } else {
-                        // inHg: min range 29.5-30.5 - steps of 0.5 inHg
-                        cache.minValue = Math.min(Math.floor((cache.recLow - 0.1) * 2) / 2, 29.5);
-                        cache.maxValue = Math.max(Math.ceil((cache.recHigh + 0.1) * 2) / 2, 30.5);
+                        // inHg: default min range 29.5-30.5 - steps of 0.5 inHg
+                        cache.minValue = Math.min(Math.floor((cache.recLow - 0.1) * 2) / 2, gaugeGlobals.baroScaleDefMininHg);
+                        cache.maxValue = Math.max(Math.ceil((cache.recHigh + 0.1) * 2) / 2, gaugeGlobals.baroScaleDefMaxinHg);
                         dps = 3;
                     }
                     cache.trendValRnd = cache.trendVal.toFixed(dps);
