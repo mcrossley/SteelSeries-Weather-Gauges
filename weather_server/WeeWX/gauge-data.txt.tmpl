@@ -93,6 +93,7 @@
 #set $apptemp = $oT_C + 0.33 * $e - 0.7 * $ws - 4.0
 #if $unit.unit_type.outTemp == 'degree_F'
 #set $apptemp = 32.0 + 1.8 * $apptemp
+#end if
 #else
 #set $apptemp = 'N/A'
 #end if

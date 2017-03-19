@@ -33,7 +33,7 @@ function () {
     var strings = LANG.EN,         //Set to your default language. Store all the strings in one object
         config = {
             // Script configuration parameters you may want to 'tweak'
-            scriptVer          : '2.5.16',
+            scriptVer          : '2.5.18',
             weatherProgram     : 0,                      //Set 0=Cumulus, 1=Weather Display, 2=VWS, 3=WeatherCat, 4=Meteobridge, 5=WView, 6=WeeWX
             imgPathURL         : './images/',            //*** Change this to the relative path for your 'Trend' graph images
             oldGauges          : 'gauges.htm',           //*** Change this to the relative path for your 'old' gauges page.
@@ -51,6 +51,7 @@ function () {
             showPopupGraphs    : true,                   //If pop-up data is displayed, show the graphs?
             mobileShowGraphs   : false,                  //If false, on a mobile/narrow display, always disable the graphs
             showWindVariation  : true,                   //Show variation in wind direction over the last 10 minutes on the direction gauge
+            showWindMetar      : false,                  //Show the METAR substring for wind speed/direction over the last 10 minutes on the direction gauge popup
             showIndoorTempHum  : true,                   //Show the indoor temperature/humidity options
             showCloudGauge     : true,                   //Display the Cloud Base gauge
             showUvGauge        : true,                   //Display the UV Index gauge
@@ -240,6 +241,10 @@ function () {
                     (config.showRoseGauge ? 'winddir_24hr.php' : null), // Wind direction if Rose is enabled | =null if Rose is disabled
                     (config.showCloudGauge ? 'baro_24hr.php' : null)    // Pressure for cloud height | =null if Cloud Height is disabled
                 ];
+                // WD useer generally use wxgraphs - tweak the CSS to accomadate the different aspect ratio
+                $('.tipimg').css({
+                    width : '360px',
+                    height: '260px'});
                 break;
             case 2:
                 // WVS
@@ -1569,19 +1574,19 @@ function () {
                     cache.trendVal = +extractDecimal(data.presstrendval) / (config.weatherProgram === 2 ? 3 : 1);
 
                     if (data.pressunit === 'hPa' || data.pressunit === 'mb') {
-                        //  min range 990-1030 - steps of 10 hPa
-                        cache.minValue = Math.min(Math.floor((cache.recLow - 2) / 10) * 10, 990);
-                        cache.maxValue = Math.max(Math.ceil((cache.recHigh + 2) / 10) * 10, 1030);
+                        //  default min range 990-1030 - steps of 10 hPa
+                        cache.minValue = Math.min(Math.floor((cache.recLow - 2) / 10) * 10, gaugeGlobals.baroScaleDefMinhPa);
+                        cache.maxValue = Math.max(Math.ceil((cache.recHigh + 2) / 10) * 10, gaugeGlobals.baroScaleDefMaxhPa);
                         dps = 1; // 1 decimal place
                     } else if (data.pressunit === 'kPa') {
-                        //  min range 99-105 - steps of 1 kPa
-                        cache.minValue = Math.min(Math.floor(cache.recLow - 0.2), 99);
-                        cache.maxValue = Math.max(Math.ceil(cache.recHigh + 0.2), 105);
+                        //  default min range 99-105 - steps of 1 kPa
+                        cache.minValue = Math.min(Math.floor(cache.recLow - 0.2), gaugeGlobals.baroScaleDefMinkPa);
+                        cache.maxValue = Math.max(Math.ceil(cache.recHigh + 0.2), gaugeGlobals.baroScaleDefMaxkPa);
                         dps = 2;
                     } else {
-                        // inHg: min range 29.5-30.5 - steps of 0.5 inHg
-                        cache.minValue = Math.min(Math.floor((cache.recLow - 0.1) * 2) / 2, 29.5);
-                        cache.maxValue = Math.max(Math.ceil((cache.recHigh + 0.1) * 2) / 2, 30.5);
+                        // inHg: default min range 29.5-30.5 - steps of 0.5 inHg
+                        cache.minValue = Math.min(Math.floor((cache.recLow - 0.1) * 2) / 2, gaugeGlobals.baroScaleDefMininHg);
+                        cache.maxValue = Math.max(Math.ceil((cache.recHigh + 0.1) * 2) / 2, gaugeGlobals.baroScaleDefMaxinHg);
                         dps = 3;
                     }
                     cache.trendValRnd = cache.trendVal.toFixed(dps);
@@ -1881,9 +1886,12 @@ function () {
                         }
                         cache.avgKnots = Math.round(cache.avgKnots);
                         cache.gstKnots = Math.round(cache.gstKnots);
-                        ssGauge.VRB = ' - METAR: ' + ('0' + data.avgbearing).slice(-3) + ('0' + cache.avgKnots).slice(-2) +
-                                      'G' + ('0' + cache.gstKnots).slice(-2) + 'KT ';
-
+                        if (config.showWindMetar) {
+                            ssGauge.VRB = ' - METAR: ' + ('0' + data.avgbearing).slice(-3) + ('0' + cache.avgKnots).slice(-2) +
+                                        'G' + ('0' + cache.gstKnots).slice(-2) + 'KT ';
+                        } else {
+                            ssGauge.VRB = '';
+                        }
                         if (windSpd > 0) {
                             // If variation less than 60 degrees, then METAR = Steady
                             // Unless range = 0 and from/to direction = avg + 180
@@ -1903,17 +1911,20 @@ function () {
                                 ssGauge.setSection([]);
                                 ssGauge.setArea([steelseries.Section(cache.bearingFrom, cache.bearingTo, gaugeGlobals.minMaxArea)]);
                             }
-
-                            if ((range < 60 && range > 0) || range === 0 && cache.bearingFrom === cache.valueAverage) {
-                                ssGauge.VRB += ' STDY';
-                            } else if (cache.avgKnots < 3) { // Europe uses 3kts, USA 6kts as the threshold
-                                ssGauge.VRB += ' VRB';
-                            } else {
-                                ssGauge.VRB += ' ' + cache.bearingFrom + 'V' + cache.bearingTo;
+                            if (config.showWindMetar) {
+                                if ((range < 60 && range > 0) || range === 0 && cache.bearingFrom === cache.valueAverage) {
+                                    ssGauge.VRB += ' STDY';
+                                } else if (cache.avgKnots < 3) { // Europe uses 3kts, USA 6kts as the threshold
+                                    ssGauge.VRB += ' VRB';
+                                } else {
+                                    ssGauge.VRB += ' ' + cache.bearingFrom + 'V' + cache.bearingTo;
+                                }
                             }
                         } else {
                             // Zero wind speed, calm
-                            ssGauge.VRB = ' - METAR: 00000KT';
+                            if (config.showWindMetar) {
+                                ssGauge.VRB = ' - METAR: 00000KT';
+                            }
                             ssGauge.setSection([]);
                             if (!config.showRoseOnDirGauge) {
                                 ssGauge.setArea([]);

@@ -2,8 +2,8 @@ SteelSeries JavaScript gauges
 =============================
 Created by Mark Crossley July 2011
 
-Version 2.5.16
-Updated: 04 October 2016
+Version 2.5.17
+Updated: 07 November 2016
 
 +-------------------------------------------------------+
 |                                                       |
@@ -412,6 +412,17 @@ If the display is in feet, then values below 2000 ft are rounded to 50 ft, above
 
 Release History
 =======================
+2.5.18
+  * Updated gauges.js
+    - Added CS tweak for WD users who normally use wxgraphs for the popup images, changes aspect ratio.
+    - Now obeys the various default scale ranges in gaugeGlobals.[gauge]ScaleDef[Min|Max][unit] settings
+
+2.5.17
+  * Updated gauges.js
+    - Added new config item "showWindMetar" to enable the METAR substring for wind on the direction gauge,
+      the default is now disabled (was enabled). Previously you could only disable it by not showing any
+      wind variation on the gauge.
+
 2.5.16
   * Updated gauges.js
     - Minor code style/format changes
