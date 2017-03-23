@@ -17,11 +17,12 @@ cp web_server/scripts/*.js WEEWX_SKINS_DIR/ss/scripts
 
 2) make adjustments to WEEWX_SKINS_DIR/ss/scripts/gauges.js
 
-weatherProgram : 6
-imgPathURL : ''
-stationTimeout : 10             // set to twice archive interval, in minutes
-showUvGauge : true or false     // false if there is no UV sensor
-showSolarGauge : true or false  // false if there is no solar radiation sensor
+weatherProgram : 6,
+imgPathURL : '',
+stationTimeout : 10,        // set to twice archive interval, in minutes
+showUvGauge : true,         // false if there is no UV sensor
+showSolarGauge : true,      // false if there is no solar radiation sensor
+showRoseGauge : false,      // true if field WindRoseData is populated
 
 3) add a SteelSeries section to StdReport in weewx.conf
 
