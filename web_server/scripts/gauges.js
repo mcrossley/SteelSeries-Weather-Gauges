@@ -328,7 +328,6 @@ function () {
                 config.realTimeURL = config.longPoll ? config.realTimeUrlLongPoll : config.realTimeUrlWeewx;
                 config.showSunshineLed = true;
                 config.showWindVariation = true;
-                config.showRoseGauge = false;
                 config.tipImgs = [                                      // config.tipImgs for weewx
                     ['dayinouttemp.png', 'dayinouttemp.png'],           // Temperature: outdoor, indoor
                     // Temperature: dewpnt, apparent, windChill, HeatIndx, humidex
