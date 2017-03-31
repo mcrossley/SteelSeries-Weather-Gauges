@@ -33,7 +33,7 @@ function () {
     var strings = LANG.EN,         //Set to your default language. Store all the strings in one object
         config = {
             // Script configuration parameters you may want to 'tweak'
-            scriptVer          : '2.5.18',
+            scriptVer          : '2.5.19',
             weatherProgram     : 0,                      //Set 0=Cumulus, 1=Weather Display, 2=VWS, 3=WeatherCat, 4=Meteobridge, 5=WView, 6=WeeWX
             imgPathURL         : './images/',            //*** Change this to the relative path for your 'Trend' graph images
             oldGauges          : 'gauges.htm',           //*** Change this to the relative path for your 'old' gauges page.
@@ -1195,24 +1195,32 @@ function () {
 
                 function update() {
                     cache.value = extractDecimal(data.rfall);
-
                     if (data.rainunit === 'mm') { // 10, 20, 30...
-                        cache.maxValue = Math.max(Math.ceil(cache.value / 10) * 10, gaugeGlobals.rainScaleDefMaxmm);
+                        cache.maxValue = Math.max(Math.ceil(cache.value / 10) * 10, gaugeGlobals.rainScaleDefMaxmm, cache.maxValue);
                     } else {
                         // inches 0.5, 1.0, 2.0, 3.0 ... 10.0, 12.0, 14.0
                         if (cache.value < 6) {
-                            cache.maxValue = Math.max(Math.ceil(cache.value), gaugeGlobals.rainRateScaleDefMaxIn);
+                            cache.maxValue = Math.max(Math.ceil(cache.value), gaugeGlobals.rainRateScaleDefMaxIn, cache.maxValue);
                         } else {
-                            cache.maxValue = Math.max(Math.ceil(cache.value / 2) * 2, gaugeGlobals.rainRateScaleDefMaxIn);
+                            cache.maxValue = Math.max(Math.ceil(cache.value / 2) * 2, gaugeGlobals.rainRateScaleDefMaxIn, cache.maxValue);
                         }
                         cache.scaleDecimals = cache.maxValue < 1 ? 2 : 1;
                     }
 
                     if (cache.maxValue !== ssGauge.getMaxValue()) {
-                        ssGauge.setValue(0);
-                        ssGauge.setFractionalScaleDecimals(cache.scaleDecimals);
-                        ssGauge.setMaxValue(cache.maxValue);
-                    }
+                        if (ssGauge.getMaxValue() > cache.maxValue) {
+                            // Gauge currently showing more than our max (nice scale effct),
+                            // so reset our max to match
+                            cache.maxValue = ssGauge.getMaxValue();
+                        } else {
+                            // Gauge scale is too low, increase it.
+                            // First set the pointer back to zero so we get a nice animation
+                            ssGauge.setValue(0);
+                            // and redraw the gauge with teh new scale
+                            ssGauge.setFractionalScaleDecimals(cache.scaleDecimals);
+                            ssGauge.setMaxValue(cache.maxValue);
+                        }
+                   }
 
                     ssGauge.setValueAnimated(cache.value);
 

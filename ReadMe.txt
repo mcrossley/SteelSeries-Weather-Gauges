@@ -2,8 +2,8 @@ SteelSeries JavaScript gauges
 =============================
 Created by Mark Crossley July 2011
 
-Version 2.5.17
-Updated: 07 November 2016
+Version 2.5.19
+Updated: 30 March 2017
 
 +-------------------------------------------------------+
 |                                                       |
@@ -412,6 +412,10 @@ If the display is in feet, then values below 2000 ft are rounded to 50 ft, above
 
 Release History
 =======================
+2.5.19
+  * Updated gauges.js
+    - Added tweak to rain gauge to fix constant redraws due to maxValue/maxScale mismatch when using default niceScale.
+
 2.5.18
   * Updated gauges.js
     - Added CS tweak for WD users who normally use wxgraphs for the popup images, changes aspect ratio.
