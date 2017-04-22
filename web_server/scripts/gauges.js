@@ -30,62 +30,64 @@
 var gauges = (
 function () {
     'use strict';
-    var strings = LANG.EN,         //Set to your default language. Store all the strings in one object
+    var strings = LANG.EN,         // Set to your default language. Store all the strings in one object
         config = {
             // Script configuration parameters you may want to 'tweak'
-            scriptVer          : '2.5.19',
-            weatherProgram     : 0,                      //Set 0=Cumulus, 1=Weather Display, 2=VWS, 3=WeatherCat, 4=Meteobridge, 5=WView, 6=WeeWX
-            imgPathURL         : './images/',            //*** Change this to the relative path for your 'Trend' graph images
-            oldGauges          : 'gauges.htm',           //*** Change this to the relative path for your 'old' gauges page.
-            realtimeInterval   : 5,                      //*** Download data interval, set to your realtime data update interval in seconds
+            scriptVer          : '2.6.0',
+            weatherProgram     : 0,                      // Set 0=Cumulus, 1=Weather Display, 2=VWS, 3=WeatherCat, 4=Meteobridge, 5=WView, 6=WeeWX, 7=WLCOM
+            imgPathURL         : './images/',            // *** Change this to the relative path for your 'Trend' graph images
+            oldGauges          : 'gauges.htm',           // *** Change this to the relative path for your 'old' gauges page.
+            realtimeInterval   : 15,                     // *** Download data interval, set to your realtime data update interval in seconds
             longPoll           : false,                  // if enabled, use long polling and PHP generated data !!only enable if you understand how this is implemented!!
-            gaugeMobileScaling : 0.85,                   //scaling factor to apply when displaying the gauges mobile devices, set to 1 to disable (default 0.85)
-            graphUpdateTime    : 15,                     //period of pop-up data graph refresh, in minutes (default 15)
-            stationTimeout     : 3,                      //period of no data change before we declare the station off-line, in minutes (default 3)
-            pageUpdateLimit    : 20,                     //period after which the page stops automatically updating, in minutes (default 20),
+            gaugeMobileScaling : 0.85,                   // scaling factor to apply when displaying the gauges mobile devices, set to 1 to disable (default 0.85)
+            graphUpdateTime    : 15,                     // period of pop-up data graph refresh, in minutes (default 15)
+            stationTimeout     : 3,                      // period of no data change before we declare the station off-line, in minutes (default 3)
+            pageUpdateLimit    : 20,                     // period after which the page stops automatically updating, in minutes (default 20),
                                                          // - set to 0 (zero) to disable this feature
-            pageUpdatePswd     : 'its-me',               //password to over ride the page updates time-out, do not set to blank even if you do not use a password - http://<URL>&pageUpdate=its-me
-            digitalFont        : false,                  //Font control for the gauges & timer
-            digitalForecast    : false,                  //Font control for the status display, set this to false for languages that use accented characters in the forecasts
-            showPopupData      : true,                   //Pop-up data displayed
-            showPopupGraphs    : true,                   //If pop-up data is displayed, show the graphs?
-            mobileShowGraphs   : false,                  //If false, on a mobile/narrow display, always disable the graphs
-            showWindVariation  : true,                   //Show variation in wind direction over the last 10 minutes on the direction gauge
-            showWindMetar      : false,                  //Show the METAR substring for wind speed/direction over the last 10 minutes on the direction gauge popup
-            showIndoorTempHum  : true,                   //Show the indoor temperature/humidity options
-            showCloudGauge     : true,                   //Display the Cloud Base gauge
-            showUvGauge        : true,                   //Display the UV Index gauge
-            showSolarGauge     : true,                   //Display the Solar gauge
-            showSunshineLed    : true,                   //Show 'sun shining now' LED on solar gauge
-            showRoseGauge      : true,                   //Show the optional Wind Rose gauge
-            showRoseGaugeOdo   : true,                   //Show the optional Wind Rose gauge wind run Odometer
-            showRoseOnDirGauge : true,                   //Show the rose data as sectors on the direction gauge
-            showGaugeShadow    : true,                   //Show a drop shadow outside the gauges
-            roundCloudbaseVal  : true,                   //Round the value shown on the cloud base gauge to make it easier to read
+            pageUpdatePswd     : 'its-me',               // password to over ride the page updates time-out, do not set to blank even if you do not use a password - http://<URL>&pageUpdate=its-me
+            digitalFont        : false,                  // Font control for the gauges & timer
+            digitalForecast    : false,                  // Font control for the status display, set this to false for languages that use accented characters in the forecasts
+            showPopupData      : true,                   // Pop-up data displayed
+            showPopupGraphs    : true,                   // If pop-up data is displayed, show the graphs?
+            mobileShowGraphs   : false,                  // If false, on a mobile/narrow display, always disable the graphs
+            showWindVariation  : true,                   // Show variation in wind direction over the last 10 minutes on the direction gauge
+            showWindMetar      : false,                  // Show the METAR substring for wind speed/direction over the last 10 minutes on the direction gauge popup
+            showIndoorTempHum  : true,                   // Show the indoor temperature/humidity options
+            showCloudGauge     : true,                   // Display the Cloud Base gauge
+            showUvGauge        : true,                   // Display the UV Index gauge
+            showSolarGauge     : true,                   // Display the Solar gauge
+            showSunshineLed    : true,                   // Show 'sun shining now' LED on solar gauge
+            showRoseGauge      : true,                   // Show the optional Wind Rose gauge
+            showRoseGaugeOdo   : true,                   // Show the optional Wind Rose gauge wind run Odometer
+            showRoseOnDirGauge : true,                   // Show the rose data as sectors on the direction gauge
+            showGaugeShadow    : true,                   // Show a drop shadow outside the gauges
+            roundCloudbaseVal  : true,                   // Round the value shown on the cloud base gauge to make it easier to read
                                                          // The realtime files should be absolute paths, "/xxx.txt" refers to the public root of your web server
-            realTimeUrlLongPoll: 'realtimegauges-longpoll.php',     //*** ALL Users: If using long polling, change to your location of the PHP long poll realtime file ***
-            realTimeUrlCumulus : 'realtimegauges.txt',     //*** Cumulus Users: Change to your location of the realtime file ***
-            realTimeUrlWD      : 'customclientraw.txt',    //*** WD Users: Change to your location of the ccr file ***
-            realTimeUrlVWS     : 'steelseriesVWSjson.php', //*** VWS Users: Change to your location of the JSON script generator ***
-            realTimeUrlWC      : 'realtimegaugesWC.txt',   //*** WeatherCat Users: Change to your location of the JSON script generator ***
-            realTimeUrlMB      : 'MBrealtimegauges.txt',   //*** Meteobridge Users: Change to the location of the JSON file
-            realTimeUrlWView   : 'customclientraw.txt',    //*** WView Users: Change to your location of the customclientraw.txt file ***
-            realTimeUrlWeewx   : 'gauge-data.txt',         //*** WeeWX Users: Change to your location of the gauge data file ***
-            useCookies         : true,                   //Persistently store user preferences in a cookie?
+            realTimeUrlLongPoll: 'realtimegauges-longpoll.php',     // *** ALL Users: If using long polling, change to your location of the PHP long poll realtime file ***
+                                                                    // *** the supplied file is for Cumulus only
+            realTimeUrlCumulus : 'realtimegauges.txt',     // *** Cumulus Users: Change to your location of the realtime file ***
+            realTimeUrlWD      : 'customclientraw.txt',    // *** WD Users: Change to your location of the ccr file ***
+            realTimeUrlVWS     : 'steelseriesVWSjson.php', // *** VWS Users: Change to your location of the JSON script generator ***
+            realTimeUrlWC      : 'realtimegaugesWC.txt',   // *** WeatherCat Users: Change to your location of the JSON script generator ***
+            realTimeUrlMB      : 'MBrealtimegauges.txt',   // *** Meteobridge Users: Change to the location of the JSON file
+            realTimeUrlWView   : 'customclientraw.txt',    // *** WView Users: Change to your location of the customclientraw.txt file ***
+            realTimeUrlWeewx   : 'gauge-data.txt',         // *** WeeWX Users: Change to your location of the gauge data file ***
+            realTimeUrlWLCOM   : 'WLrealtimegauges.php',   // *** WLCOM Users: change to location of WLCOMtags.php file ***
+            useCookies         : true,                   // Persistently store user preferences in a cookie?
             tipImages          : [],
-            dashboardMode      : false,                  //Used by Cumulus MX dashboard - SET TO FALSE OTHERWISE
-            dewDisplayType     : 'app'                   //Initial 'scale' to display  'dew' - Dewpoint
-                                                         // on the 'dew point' gauge.  'app' - Apparent temperature
-                                                         //                            'wnd' - Wind Chill
-                                                         //                            'hea' - Heat Index
-                                                         //                            'hum' - Humidex
+            dashboardMode      : false,                  // Used by Cumulus MX dashboard - SET TO FALSE OTHERWISE
+            dewDisplayType     : 'app'                   // Initial 'scale' to display  'dew' - Dewpoint
+                                                         //  on the 'dew point' gauge.  'app' - Apparent temperature
+                                                         //                             'wnd' - Wind Chill
+                                                         //                             'hea' - Heat Index
+                                                         //                             'hum' - Humidex
         },
 
-        //Gauge global look'n'feel settings
+        // Gauge global look'n'feel settings
         gaugeGlobals = {
-            minMaxArea            : 'rgba(212,132,134,0.3)', //area sector for today's max/min. (red, green, blue, transparency)
+            minMaxArea            : 'rgba(212,132,134,0.3)', // area sector for today's max/min. (red, green, blue, transparency)
             windAvgArea           : 'rgba(132,212,134,0.3)',
-            windVariationSector   : 'rgba(120,200,120,0.7)', //only used when rose data is shown on direction gauge
+            windVariationSector   : 'rgba(120,200,120,0.7)', // only used when rose data is shown on direction gauge
             frameDesign           : steelseries.FrameDesign.TILTED_GRAY,
             background            : steelseries.BackgroundColor.BEIGE,
             foreground            : steelseries.ForegroundType.TYPE1,
@@ -126,17 +128,17 @@ function () {
             rainScaleDefMaxIn     : 0.5,
             rainRateScaleDefMaxmm : 10,
             rainRateScaleDefMaxIn : 0.5,
-            uvScaleDefMax         : 10,				//Northern Europe may be lower - max. value recorded in the UK is 8, so use a scale of 10 for UK
-            solarGaugeScaleMax    : 1000,           //Max value to be shown on the solar gauge - theoretical max without atmosphere ~ 1374 W/m²
+            uvScaleDefMax         : 10,             // Northern Europe may be lower - max. value recorded in the UK is 8, so use a scale of 10 for UK
+            solarGaugeScaleMax    : 1000,           // Max value to be shown on the solar gauge - theoretical max without atmosphere ~ 1374 W/m²
                                                     // - but Davis stations can read up to 1800, use 1000 for Northern Europe?
             cloudScaleDefMaxft    : 3000,
             cloudScaleDefMaxm     : 1000,
-            shadowColour          : 'rgba(0,0,0,0.3)'  //Colour to use for gauge shadows - default 30% transparent black
+            shadowColour          : 'rgba(0,0,0,0.3)'  // Colour to use for gauge shadows - default 30% transparent black
         },
 
         commonParams = {
             // Common parameters for all the SteelSeries gauges
-            fullScaleDeflectionTime: 4,			    //Bigger numbers (seconds) slow the gauge pointer movements more
+            fullScaleDeflectionTime: 4,             // Bigger numbers (seconds) slow the gauge pointer movements more
             gaugeType              : gaugeGlobals.gaugeType,
             minValue               : 0,
             niceScale              : true,
@@ -154,28 +156,29 @@ function () {
             tickLabelOrientation   : gaugeGlobals.tickLabelOrientation,
             labelNumberFormat      : gaugeGlobals.labelFormat
         },
-        firstRun = true,            //Used to set-up units & scales etc
-        userUnitsSet = false,       //Tracks if the display units have been set by a user preference
-        data = {},                  //Stores all the values from realtime.txt
-        tickTockInterval,           //The 1s clock interval timer
+        firstRun = true,            // Used to set-up units & scales etc
+        userUnitsSet = false,       // Tracks if the display units have been set by a user preference
+        data = {},                  // Stores all the values from realtime.txt
+        tickTockInterval,           // The 1s clock interval timer
 
                                     // ajaxDelay, used by long polling, the delay between getting a response and queueing the next request, as the default PHP
                                     // script runtime timout is 30 seconds, we do not want the PHP task to run for more than 20 seconds. So queue the next
                                     // request half of the realtime interval, or 20 seconds before it is due, which ever is the larger.
         ajaxDelay = config.longPoll ? Math.max(config.realtimeInterval - 20, 0) : config.realtimeInterval,
-        downloadTimer,              //Stores a reference to the ajax download setTimout() timer
-        timestamp = 0,              //the timestamp of last data update on the server.
-        jqXHR = null,               //handle to the jQuery web request
-        displayUnits = null,        //Stores the display units cookie settings
+        downloadTimer,              // Stores a reference to the ajax download setTimout() timer
+        timestamp = 0,              // the timestamp of last data update on the server.
+        jqXHR = null,               // handle to the jQuery web request
+        displayUnits = null,        // Stores the display units cookie settings
         sampleDate,
-        realtimeVer,                //minimum version of the realtime JSON file required
+        realtimeVer,                // minimum version of the realtime JSON file required
         programLink = ['<a href="http://sandaysoft.com/products/cumulus" target="_blank">Cumulus</a>',
                        '<a href="http://www.weather-display.com/" target="_blank">Weather Display</a>',
                        '<a href="http://www.ambientweather.com/virtualstation.html" target="_blank">Virtual Weather Station</a>',
                        '<a href="http://trixology.com/weathercat/" target="_blank">WeatherCat</a>',
                        '<a href="http://www.meteobridge.com/" target="_blank">Meteobridge</a>',
                        '<a href="http://www.wviewweather.com/" target="_blank">Wview</a>',
-                       '<a href="http://www.weewx.com/" target="_blank">weewx</a>'],
+                       '<a href="http://www.weewx.com/" target="_blank">weewx</a>',
+                       '<a href="http://weatherlink.com/" target="_blank">Weatherlink.com</a>'],
 
         ledIndicator, statusScroller, statusTimer,
 
@@ -201,7 +204,7 @@ function () {
             switch (config.weatherProgram) {
             case 0:
                 // Cumulus
-                realtimeVer = 12;   //minimum version of the realtime JSON file required
+                realtimeVer = 12;   // minimum version of the realtime JSON file required
                 config.realTimeURL = config.longPoll ? config.realTimeUrlLongPoll : config.realTimeUrlCumulus;
                 // the trend images to be used for the pop-up data, used in conjunction with config.imgPathURL
                 // by default this is configured for the Cumulus 'standard' web site
@@ -224,7 +227,7 @@ function () {
                 break;
             case 1:
                 // Weather Display
-                realtimeVer = 12;   //minimum version of the realtime JSON file required
+                realtimeVer = 12;   // minimum version of the realtime JSON file required
                 config.realTimeURL = config.longPoll ? config.realTimeUrlLongPoll : config.realTimeUrlWD;
                 config.tipImgs = [                                      // config.tipImgs for Weather Display users with wxgraph
                     ['temp+hum_24hr.php', 'indoor_temp_24hr.php'],      // Temperature: outdoor, indoor
@@ -248,7 +251,7 @@ function () {
                 break;
             case 2:
                 // WVS
-                realtimeVer = 11;   //minimum version of the realtime JSON file required
+                realtimeVer = 11;   // minimum version of the realtime JSON file required
                 config.realTimeURL = config.longPoll ? config.realTimeUrlLongPoll : config.realTimeUrlVWS;
                 config.showRoseGauge = false; // no wind rose data from VWS
                 config.showCloudGauge = false;
@@ -270,7 +273,7 @@ function () {
                 break;
             case 3:
                 // WeatherCat
-                realtimeVer = 13;   //minimum version of the realtime JSON file required
+                realtimeVer = 13;   // minimum version of the realtime JSON file required
                 config.realTimeURL = config.longPoll ? config.realTimeUrlLongPoll : config.realTimeUrlWC;
                 config.tipImgs = [                                       // config.tipImgs - WeatherCat users using the 'default' weather site
                     ['temperature1.jpg', 'tempin1.jpg'],                 // Temperature: outdoor, indoor
@@ -290,7 +293,7 @@ function () {
                 break;
             case 4:
                 // Meteobridge
-                realtimeVer = 10;   //minimum version of the realtime JSON file required
+                realtimeVer = 10;   // minimum version of the realtime JSON file required
                 config.realTimeURL = config.longPoll ? config.realTimeUrlLongPoll : config.realTimeUrlMB;
                 config.showPopupGraphs = false;        // config.tipImgs - no Meteobridge images available
                 config.showRoseGauge = false;          // no windrose data from MB
@@ -300,11 +303,11 @@ function () {
                 break;
             case 5:
                 // WView
-                realtimeVer = 11;   //minimum version of the realtime JSON file required
+                realtimeVer = 11;   // minimum version of the realtime JSON file required
                 config.realTimeURL = config.longPoll ? config.realTimeUrlLongPoll : config.realTimeUrlWView;
-                config.showSunshineLed = false;     //WView does not provide the current theoretical solar max required to determine sunshine
-                config.showWindVariation = false;   //no wind variation from WView
-                config.showRoseGauge = false;       //No wind rose array from WView by default - there is a user supplied modification to enable it though.
+                config.showSunshineLed = false;     // WView does not provide the current theoretical solar max required to determine sunshine
+                config.showWindVariation = false;   // no wind variation from WView
+                config.showRoseGauge = false;       // No wind rose array from WView by default - there is a user supplied modification to enable it though.
                 config.showCloudGauge = false;
                 config.tipImgs = [                                      // config.tipImgs for WView users
                     ['tempdaycomp.png', 'indoor_temp.png'],             // Temperature: outdoor, indoor
@@ -324,7 +327,7 @@ function () {
                 break;
             case 6:
                 // weewx
-                realtimeVer = 13;   //minimum version of the realtime JSON file required
+                realtimeVer = 13;   // minimum version of the realtime JSON file required
                 config.realTimeURL = config.longPoll ? config.realTimeUrlLongPoll : config.realTimeUrlWeewx;
                 config.showSunshineLed = true;
                 config.showWindVariation = true;
@@ -344,9 +347,19 @@ function () {
                     (config.showCloudGauge ? 'daybarometer.png' : null)  // Pressure for cloud height | =null if Cloud Height is disabled
                 ];
                 break;
+            case 7:
+                // WLCOM
+                realtimeVer = 10;   // minimum version of the realtime JSON file required
+                config.realTimeURL = config.realTimeUrlWLCOM;
+                config.showPopupGraphs = false;        // config.tipImgs - no WL images available
+                config.showRoseGauge = false;          // no windrose data from WL
+                config.showCloudGauge = false;
+                config.tipImgs = null;                 // config.tipImgs - no WL images available
+                config.showWindVariation = false;      // no wind variation data from WL
+                break;
             default:
                 // Who knows!
-                realtimeVer = 0;   //minimum version of the realtime JSON file required
+                realtimeVer = 0;   // minimum version of the realtime JSON file required
                 config.realtimeURL = null;
                 config.showPopupGraphs = false;
                 config.tipImgs = null;                     // config.tipImgs - unknown
@@ -379,7 +392,7 @@ function () {
             displayUnits = getCookie('units');
             // Set 'units' radio buttons to match preferred units
             if (displayUnits !== null) {
-                //User wants specific units
+                // User wants specific units
                 userUnitsSet = true;
 
                 // temperature
@@ -483,10 +496,6 @@ function () {
                 $('#canvas_rose').parent().remove();
             } else {
                 gaugeRose = singleRose.getInstance();
-                if (gaugeRose) {
-                    gaugeRose.setTitle(strings.windrose);
-                    gaugeRose.setCompassString(strings.compass);
-                }
             }
 
             // remove the cloud base gauge?
@@ -724,7 +733,7 @@ function () {
                     params.titleString = cache.title;
                     params.unitString = data.tempunit;
                     params.trendVisible = gaugeGlobals.tempTrendVisible;
-                    //params.customLayer = _imgBackground;      // uncomment to add a background image - See Logo Images above
+                    // params.customLayer = _imgBackground;      // uncomment to add a background image - See Logo Images above
 
                     ssGauge = new steelseries.Radial('canvas_temp', params);
                     ssGauge.setValue(cache.value);
@@ -815,7 +824,7 @@ function () {
                     // has the gauge type changed?
                     if (cache.selected !== sel) {
                         cache.selected = sel;
-                        //Change gauge title
+                        // Change gauge title
                         ssGauge.setTitleString(cache.title);
                         ssGauge.setMaxMeasuredValueVisible(cache.maxMinVisible);
                         ssGauge.setMinMeasuredValueVisible(cache.maxMinVisible);
@@ -825,7 +834,7 @@ function () {
                         }
                     }
 
-                    //auto scale the ranges
+                    // auto scale the ranges
                     scaleStep = data.tempunit[1] === 'C' ? 10 : 20;
                     while (cache.lowScale < cache.minValue) {
                         cache.minValue -= scaleStep;
@@ -912,7 +921,7 @@ function () {
                 var params = $.extend(true, {}, commonParams);
                 var tmp;
 
-                //define dew point gauge start values
+                // define dew point gauge start values
                 cache.sections = createTempSections(true);
                 cache.areas = [];
                 cache.minValue = gaugeGlobals.tempScaleDefMinC;
@@ -1078,7 +1087,7 @@ function () {
                         }
                     }
 
-                    //auto scale the ranges
+                    // auto scale the ranges
                     scaleStep = data.tempunit[1] === 'C' ? 10 : 20;
                     while (cache.lowScale < cache.minValue) {
                         cache.minValue -= scaleStep;
@@ -1196,32 +1205,31 @@ function () {
                 function update() {
                     cache.value = extractDecimal(data.rfall);
                     if (data.rainunit === 'mm') { // 10, 20, 30...
-                        cache.maxValue = Math.max(Math.ceil(cache.value / 10) * 10, gaugeGlobals.rainScaleDefMaxmm, cache.maxValue);
+                        cache.maxValue = Math.max(nextHighest(cache.value, 10), gaugeGlobals.rainScaleDefMaxmm, cache.maxValue);
                     } else {
                         // inches 0.5, 1.0, 2.0, 3.0 ... 10.0, 12.0, 14.0
-                        if (cache.value < 6) {
-                            cache.maxValue = Math.max(Math.ceil(cache.value), gaugeGlobals.rainRateScaleDefMaxIn, cache.maxValue);
+                        if (cache.value <= 1) {
+                            cache.maxValue = Math.max(nextHighest(cache.value, 0.5));
+                        } else if (cache.value <= 6) {
+                            cache.maxValue = Math.max(nextHighest(cache.value, 1), gaugeGlobals.rainScaleDefMaxIn, cache.maxValue);
                         } else {
-                            cache.maxValue = Math.max(Math.ceil(cache.value / 2) * 2, gaugeGlobals.rainRateScaleDefMaxIn, cache.maxValue);
+                            cache.maxValue = Math.max(nextHighest(cache.value, 2), gaugeGlobals.rainScaleDefMaxIn, cache.maxValue);
                         }
                         cache.scaleDecimals = cache.maxValue < 1 ? 2 : 1;
                     }
 
-                    if (cache.maxValue !== ssGauge.getMaxValue()) {
-                        if (ssGauge.getMaxValue() > cache.maxValue) {
-                            // Gauge currently showing more than our max (nice scale effct),
-                            // so reset our max to match
-                            cache.maxValue = ssGauge.getMaxValue();
-                        } else {
-                            // Gauge scale is too low, increase it.
-                            // First set the pointer back to zero so we get a nice animation
-                            ssGauge.setValue(0);
-                            // and redraw the gauge with teh new scale
-                            ssGauge.setFractionalScaleDecimals(cache.scaleDecimals);
-                            ssGauge.setMaxValue(cache.maxValue);
-                        }
-                   }
-
+                    if (cache.maxValue < ssGauge.getMaxValue()) {
+                        // Gauge currently showing more than our max (nice scale effect),
+                        // so reset our max to match
+                        cache.maxValue = ssGauge.getMaxValue();
+                    } else if (cache.maxValue > ssGauge.getMaxValue()) {
+                        // Gauge scale is too low, increase it.
+                        // First set the pointer back to zero so we get a nice animation
+                        ssGauge.setValue(0);
+                        // and redraw the gauge with the new scale
+                        ssGauge.setFractionalScaleDecimals(cache.scaleDecimals);
+                        ssGauge.setMaxValue(cache.maxValue);
+                    }
                     ssGauge.setValueAnimated(cache.value);
 
                     if (ddimgtooltip.showTips) {
@@ -1320,13 +1328,15 @@ function () {
                     cache.overallMax = Math.max(cache.maxMeasured, cache.value);  // workaround for VWS bug, not supplying correct max value today
 
                     if (data.rainunit === 'mm') { // 10, 20, 30...
-                        cache.maxValue = Math.max(Math.ceil(cache.overallMax / 10) * 10, 10);
+                        cache.maxValue = nextHighest(cache.overallMax, 10);
                     } else {
-                        // inches 0.5, 1.0, 2.0, 3.0 ...
+                        // inches 0.5, 1.0, 2.0, 3.0 ... 10, 20, 30...
                         if (cache.overallMax <= 0.5) {
                             cache.maxValue = 0.5;
+                        } else if (cache.overallMax <= 10) {
+                            cache.maxValue = nextHighest(cache.overallMax, 1);
                         } else {
-                            cache.maxValue = Math.ceil(cache.overallMax);
+                            cache.maxValue = nextHighest(cache.overallMax, 10);
                         }
                         cache.scaleDecimals = cache.maxValue < 1 ? 2 : (cache.maxValue < 7 ? 1 : 0);
                     }
@@ -1431,7 +1441,7 @@ function () {
                         radio = arguments[0];
                     }
 
-                    //if rad isn't specified, just use existing value
+                    // if rad isn't specified, just use existing value
                     var sel = (typeof radio === 'undefined' ? cache.selected : radio.value),
                         tip;
 
@@ -1453,7 +1463,7 @@ function () {
 
                     if (cache.selected !== sel) {
                         cache.selected = sel;
-                        //Change gauge title
+                        // Change gauge title
                         ssGauge.setTitleString(cache.title);
                         if (config.showPopupGraphs && config.tipImgs[4][cache.popupImg] !== null) {
                             var cacheDefeat = '?' + $('#imgtip4_img').attr('src').split('?')[1];
@@ -1465,7 +1475,7 @@ function () {
                     ssGauge.setValueAnimated(cache.value);
 
                     if (ddimgtooltip.showTips) {
-                        //update tooltip
+                        // update tooltip
                         if (cache.selected === 'out') {
                             tip = strings.hum_out_info + ':' +
                                 '<br>' +
@@ -1582,18 +1592,18 @@ function () {
 
                     if (data.pressunit === 'hPa' || data.pressunit === 'mb') {
                         //  default min range 990-1030 - steps of 10 hPa
-                        cache.minValue = Math.min(Math.floor((cache.recLow - 2) / 10) * 10, gaugeGlobals.baroScaleDefMinhPa);
-                        cache.maxValue = Math.max(Math.ceil((cache.recHigh + 2) / 10) * 10, gaugeGlobals.baroScaleDefMaxhPa);
+                        cache.minValue = Math.min(nextLowest(cache.recLow - 2, 10), gaugeGlobals.baroScaleDefMinhPa);
+                        cache.maxValue = Math.max(nextHighest(cache.recHigh + 2, 10), gaugeGlobals.baroScaleDefMaxhPa);
                         dps = 1; // 1 decimal place
                     } else if (data.pressunit === 'kPa') {
                         //  default min range 99-105 - steps of 1 kPa
-                        cache.minValue = Math.min(Math.floor(cache.recLow - 0.2), gaugeGlobals.baroScaleDefMinkPa);
-                        cache.maxValue = Math.max(Math.ceil(cache.recHigh + 0.2), gaugeGlobals.baroScaleDefMaxkPa);
+                        cache.minValue = Math.min(nextLowest(cache.recLow - 0.2, 1), gaugeGlobals.baroScaleDefMinkPa);
+                        cache.maxValue = Math.max(nextHighest(cache.recHigh + 0.2, 1), gaugeGlobals.baroScaleDefMaxkPa);
                         dps = 2;
                     } else {
                         // inHg: default min range 29.5-30.5 - steps of 0.5 inHg
-                        cache.minValue = Math.min(Math.floor((cache.recLow - 0.1) * 2) / 2, gaugeGlobals.baroScaleDefMininHg);
-                        cache.maxValue = Math.max(Math.ceil((cache.recHigh + 0.1) * 2) / 2, gaugeGlobals.baroScaleDefMaxinHg);
+                        cache.minValue = Math.min(nextLowest(cache.recLow - 0.1, 0.5), gaugeGlobals.baroScaleDefMininHg);
+                        cache.maxValue = Math.max(nextHighest(cache.recHigh + 0.1, 0.5), gaugeGlobals.baroScaleDefMaxinHg);
                         dps = 3;
                     }
                     cache.trendValRnd = cache.trendVal.toFixed(dps);
@@ -1744,13 +1754,13 @@ function () {
                     switch (data.windunit) {
                     case 'mph':
                     case 'kts':
-                        cache.maxValue = Math.max(Math.ceil(cache.maxGustToday / 10) * 10, gaugeGlobals.windScaleDefMaxMph);
+                        cache.maxValue = Math.max(nextHighest(cache.maxGustToday, 10), gaugeGlobals.windScaleDefMaxMph);
                         break;
                     case 'm/s':
-                        cache.maxValue = Math.max(Math.ceil(cache.maxGustToday / 5) * 5, gaugeGlobals.windScaleDefMaxMs);
+                        cache.maxValue = Math.max(nextHighest(cache.maxGustToday, 5), gaugeGlobals.windScaleDefMaxMs);
                         break;
                     default:
-                        cache.maxValue = Math.max(Math.ceil(cache.maxGustToday / 20) * 20, gaugeGlobals.windScaleDefMaxKmh);
+                        cache.maxValue = Math.max(nextHighest(cache.maxGustToday, 20), gaugeGlobals.windScaleDefMaxKmh);
                     }
                     cache.areas = [
                         steelseries.Section(0, +cache.average, gaugeGlobals.windAvgArea),
@@ -2025,7 +2035,9 @@ function () {
                     cache.gaugeSize2 = cache.gaugeSize / 2;
                     cache.showOdo = config.showRoseGaugeOdo || false;
 
-                    cache.compassString = strings.compass;
+                    cache.compassStrings = strings.compass;
+                    cache.titleString = strings.windrose;
+                    cache.gaugeOdoTitle = strings.km;
 
                     // Create a hidden div to host the Rose plot
                     div = document.createElement('div');
@@ -2059,6 +2071,7 @@ function () {
                     buffers.ctxBackground = buffers.background.getContext('2d');
                     steelseries.drawBackground(buffers.ctxBackground, gaugeGlobals.background, cache.gaugeSize2,
                                                cache.gaugeSize2, cache.gaugeSize, cache.gaugeSize);
+
                     // Optional - add a background image
                     /*
                     if (g_imgSmall !== null) {
@@ -2155,7 +2168,7 @@ function () {
                         rose.Set('chart.colors', ['Gradient(#408040:red:#7070A0)']);
                         rose.Set('chart.margin', Math.ceil(40 / data.WindRoseData.length));
 
-                        rose.Set('chart.title', cache.gaugeTitle);
+                        rose.Set('chart.title', cache.titleString);
                         rose.Set('chart.title.size', Math.ceil(0.05 * cache.plotSize));
                         rose.Set('chart.title.bold', false);
                         rose.Set('chart.title.color', gaugeGlobals.background.labelColor.getRgbColor());
@@ -2168,6 +2181,11 @@ function () {
                         rose.Set('chart.background.grid.spokes', 16);
                         rose.Set('chart.radius', cache.plotSize2);
                         rose.Draw();
+
+                        // Add title to windrun odometer to the plot
+                        if (cache.showOdo) {
+                            drawOdoTitle(buffers.ctxPlot);
+                        }
 
                         // Paint the gauge frame
                         ctxRoseCanvas.drawImage(buffers.frame, 0, 0);
@@ -2213,7 +2231,7 @@ function () {
                     // Draw the compass points
                     for (var i = 0; i < 4; i++) {
                         ctx.translate(size / 2, size * 0.125);
-                        ctx.fillText(cache.compassString[i * 2], 0, 0, size);
+                        ctx.fillText(cache.compassStrings[i * 2], 0, 0, size);
                         ctx.translate(-size / 2, -size * 0.125);
                         // Move to center
                         ctx.translate(size / 2, size / 2);
@@ -2223,18 +2241,29 @@ function () {
                     ctx.restore();
                 }
 
-                function setTitle(newTitle) {
-                    cache.gaugeTitle = newTitle;
+                function drawOdoTitle(ctx) {
+                    ctx.save();
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'middle';
+                    ctx.font = 0.05 * cache.gaugeSize + 'px Arial,Verdana,sans-serif';
+                    ctx.fillText(cache.gaugeOdoTitle, cache.plotSize2, cache.plotSize * 0.75, cache.plotSize * 0.5);
+                    ctx.restore();
                 }
 
-                function setCompassString(newStr) {
-                    cache.compassString = newStr;
+                function setTitle(newTitle) {
+                    cache.titleString = newTitle;
+                }
 
+                function setOdoTitle(newTitle) {
+                    cache.gaugeOdoTitle = newTitle;
+                }
+
+                function setCompassStrings(newArray) {
+                    cache.compassStrings = newArray;
                     if (!cache.firstRun) {
                         // Redraw the background
                         steelseries.drawBackground(buffers.ctxBackground, gaugeGlobals.background, cache.gaugeSize2, cache.gaugeSize2,
                                                    cache.gaugeSize, cache.gaugeSize);
-
                         // Add the compass points
                         drawCompassPoints(buffers.ctxBackground, cache.gaugeSize);
                     }
@@ -2245,7 +2274,8 @@ function () {
                     gauge            : ssGauge,
                     drawCompassPoints: drawCompassPoints,
                     setTitle         : setTitle,
-                    setCompassString : setCompassString
+                    setCompassStrings: setCompassStrings,
+                    setOdoTitle      : setOdoTitle
                 };
             } // End of init()
 
@@ -2351,7 +2381,7 @@ function () {
                     }
 
                     if (cache.value > ssGauge.getMaxValue()) {
-                        ssGauge.setMaxValue(Math.ceil(cache.value) + Math.ceil(cache.value) % 2);
+                        ssGauge.setMaxValue(nextHighest(cache.value, 2));
                     }
 
                     cache.risk = strings.uv_levels[indx];
@@ -2419,7 +2449,7 @@ function () {
                     params.section = cache.sections;
                     params.maxValue = gaugeGlobals.solarGaugeScaleMax;
                     params.titleString = strings.solar_title;
-                    params.unitString = 'Wm\u207B\u00B2';
+                    params.unitString = 'W/m\u00B2';
                     params.niceScale = false;
                     params.thresholdVisible = false;
                     params.lcdDecimals = 0;
@@ -2464,11 +2494,8 @@ function () {
                     }
 
                     // Need to rescale the gauge?
-                    cache.maxValue = Math.max(
-                        Math.ceil(cache.value / 100) * 100,
-                        Math.ceil(cache.currMaxValue / 100) * 100,
-                        Math.ceil(cache.maxToday / 100) * 100,
-                        gaugeGlobals.solarGaugeScaleMax);
+                    cache.maxValue = Math.max(cache.value, cache.currMaxValue, cache.maxToday, gaugeGlobals.solarGaugeScaleMax);
+                    cache.maxValue = nextHighest(cache.maxValue, 100);
                     if (cache.maxValue !== ssGauge.getMaxValue()) {
                         ssGauge.setMaxValue(cache.maxValue);
                     }
@@ -2569,7 +2596,7 @@ function () {
 
                     if (data.cloudbaseunit === 'm') {
                         // adjust metre gauge in jumps of 1000 metres, don't downscale during the session
-                        cache.maxValue = Math.max(Math.ceil(cache.value / 1000) * 1000, gaugeGlobals.cloudScaleDefMaxm, cache.maxValue);
+                        cache.maxValue = Math.max(nextHighest(cache.value, 1000), gaugeGlobals.cloudScaleDefMaxm, cache.maxValue);
                         if (cache.value <= 1000 && config.roundCloudbaseVal) {
                             // and round the value to the nearest  10 m
                             cache.value = Math.round(cache.value / 10) * 10;
@@ -2579,7 +2606,7 @@ function () {
                         }
                     } else {
                         // adjust feet gauge in jumps of 2000 ft, don't downscale during the session
-                        cache.maxValue = Math.max(Math.ceil(cache.value / 2000) * 2000, gaugeGlobals.cloudScaleDefMaxft, cache.maxValue);
+                        cache.maxValue = Math.max(nextHighest(cache.value, 2000), gaugeGlobals.cloudScaleDefMaxft, cache.maxValue);
                         if (cache.value <= 2000 && config.roundCloudbaseVal) {
                             // and round the value to the nearest 50 ft
                             cache.value = Math.round(cache.value / 50) * 50;
@@ -2706,7 +2733,7 @@ function () {
                 timestamp = dataObj.timestamp;
                 data = dataObj.data;
             } else {
-                //normal polling
+                // normal polling
                 data = dataObj;
             }
 
@@ -3178,7 +3205,7 @@ function () {
         },
 
         //
-        //--------------- Helper functions ------------------
+        // --------------- Helper functions ------------------
         //
 
         //
@@ -3756,7 +3783,7 @@ function () {
                     gaugeRain.data.scaleDecimals = 1;
                     gaugeRain.data.labelNumberFormat = gaugeGlobals.labelFormat;
                     gaugeRain.data.sections = (gaugeGlobals.rainUseSectionColours ? createRainfallSections(true) : []);
-                    gaugeRain.data.maxValue = gaugeGlobals.rainScaleDefmm;
+                    gaugeRain.data.maxValue = gaugeGlobals.rainScaleDefMaxmm;
                     gaugeRain.data.grad = (gaugeGlobals.rainUseGradientColours ? createRainfallGradient(true) : null);
                 }
                 if (gaugeRRate) {
@@ -3764,24 +3791,24 @@ function () {
                     gaugeRRate.data.scaleDecimals = 0;
                     gaugeRRate.data.labelNumberFormat = gaugeGlobals.labelFormat;
                     gaugeRRate.data.sections = createRainRateSections(true);
-                    gaugeRRate.data.maxValue = gaugeGlobals.rainRateScaleDefmm;
+                    gaugeRRate.data.maxValue = gaugeGlobals.rainRateScaleDefMaxmm;
                 }
             } else {
                 data.rainunit = 'in';
                 if (gaugeRain) {
                     gaugeRain.data.lcdDecimals = 2;
-                    gaugeRain.data.scaleDecimals = gaugeGlobals.rainScaleDefIn < 1 ? 2 : 1;
+                    gaugeRain.data.scaleDecimals = gaugeGlobals.rainScaleDefMaxIn < 1 ? 2 : 1;
                     gaugeRain.data.labelNumberFormat = steelseries.LabelNumberFormat.FRACTIONAL;
                     gaugeRain.data.sections = (gaugeGlobals.rainUseSectionColours ? createRainfallSections(false) : []);
-                    gaugeRain.data.maxValue = gaugeGlobals.rainScaleDefIn;
+                    gaugeRain.data.maxValue = gaugeGlobals.rainScaleDefMaxIn;
                     gaugeRain.data.grad = (gaugeGlobals.rainUseGradientColours ? createRainfallGradient(false) : null);
                 }
                 if (gaugeRRate) {
                     gaugeRRate.data.lcdDecimals = 2;
-                    gaugeRRate.data.scaleDecimals = gaugeGlobals.rainRateScaleDefIn < 1 ? 2 : 1;
+                    gaugeRRate.data.scaleDecimals = gaugeGlobals.rainRateScaleDefMaxIn < 1 ? 2 : 1;
                     gaugeRRate.data.labelNumberFormat = steelseries.LabelNumberFormat.FRACTIONAL;
                     gaugeRRate.data.sections = createRainRateSections(false);
-                    gaugeRRate.data.maxValue = gaugeGlobals.rainRateScaleDefIn;
+                    gaugeRRate.data.maxValue = gaugeGlobals.rainRateScaleDefMaxIn;
                 }
             }
             if (gaugeRain) {
@@ -3792,6 +3819,8 @@ function () {
                 gaugeRain.gauge.setFractionalScaleDecimals(gaugeRain.data.scaleDecimals);
                 gaugeRain.gauge.setLabelNumberFormat(gaugeRain.data.labelNumberFormat);
                 gaugeRain.gauge.setLcdDecimals(gaugeRain.data.lcdDecimals);
+                gaugeRain.gauge.setValue(0);
+                gaugeRain.gauge.setMaxValue(gaugeRain.data.maxValue);
             }
             if (gaugeRRate) {
                 gaugeRRate.data.value = 0;
@@ -3800,34 +3829,39 @@ function () {
                 gaugeRRate.gauge.setFractionalScaleDecimals(gaugeRRate.data.scaleDecimals);
                 gaugeRRate.gauge.setLabelNumberFormat(gaugeRRate.data.labelNumberFormat);
                 gaugeRRate.gauge.setLcdDecimals(gaugeRRate.data.lcdDecimals);
+                gaugeRRate.gauge.setValue(0);
+                gaugeRRate.gauge.setMaxValue(gaugeRRate.data.maxValue);
             }
         },
 
         setWindUnits = function (to) {
             var maxVal;
-            if (!gaugeWind) {return;}
-
-            // conversion function to required units
-            switch (to) {
-            case 'mph':
-                maxVal = gaugeGlobals.windScaleDefMaxMph;
-                break;
-            case 'kts':
-                maxVal = gaugeGlobals.windScaleDefMaxKts;
-                break;
-            case 'km/h':
-                maxVal = gaugeGlobals.windScaleDefMaxKmh;
-                break;
-            case 'm/s':
-                maxVal = gaugeGlobals.windScaleDefMaxMs;
-                break;
-            // no default
-            }
-            // set the gauges
             data.windunit = to;
-            gaugeWind.data.maxValue = maxVal;
-            gaugeWind.gauge.setUnitString(data.windunit);
-            gaugeWind.gauge.setValue(0);
+            if (gaugeWind) {
+                // conversion function to required units
+                switch (to) {
+                case 'mph':
+                    maxVal = gaugeGlobals.windScaleDefMaxMph;
+                    break;
+                case 'kts':
+                    maxVal = gaugeGlobals.windScaleDefMaxKts;
+                    break;
+                case 'km/h':
+                    maxVal = gaugeGlobals.windScaleDefMaxKmh;
+                    break;
+                case 'm/s':
+                    maxVal = gaugeGlobals.windScaleDefMaxMs;
+                    break;
+                // no default
+                }
+                // set the gauges
+                gaugeWind.data.maxValue = maxVal;
+                gaugeWind.gauge.setUnitString(data.windunit);
+                gaugeWind.gauge.setValue(0);
+            }
+            if (gaugeRose) {
+                gaugeRose.setOdoTitle(strings[getWindrunUnits(data.windunit)]);
+            }
         },
 
         setBaroUnits = function (to) {
@@ -3977,7 +4011,8 @@ function () {
             }
             if (gaugeRose) {
                 gaugeRose.setTitle(strings.windrose);
-                gaugeRose.setCompassString(strings.compass);
+                gaugeRose.setCompassStrings(strings.compass);
+                gaugeRose.setOdoTitle(strings[getWindrunUnits(displayUnits.wind)]);
                 if (data.ver) {gaugeRose.update();}
             }
             if (gaugeCloud) {
@@ -3999,7 +4034,7 @@ function () {
                 retVal = 'miles';
                 break;
             case 'kts':
-                retVal = 'n.miles';
+                retVal = 'n_miles';
                 break;
             case 'km/h':
             // falls through
@@ -4046,13 +4081,25 @@ function () {
             grnOrigin = parseInt(startCol.substr(2, 2), 16);
             bluOrigin = parseInt(startCol.substr(4, 2), 16);
 
-            gradientSizeRed = parseInt(endCol.substr(0, 2), 16)  - redOrigin; //Graduation Size Red
+            gradientSizeRed = parseInt(endCol.substr(0, 2), 16)  - redOrigin; // Graduation Size Red
             gradientSizeGrn = parseInt(endCol.substr(2, 2), 16)  - grnOrigin;
             gradientSizeBlu = parseInt(endCol.substr(4, 2), 16)  - bluOrigin;
 
             return (redOrigin + (gradientSizeRed * fraction)).toFixed(0) + ',' +
                     (grnOrigin + (gradientSizeGrn * fraction)).toFixed(0) + ',' +
                     (bluOrigin + (gradientSizeBlu * fraction)).toFixed(0);
+        },
+        //
+        // returns the next highest number in the step sequence
+        //
+        nextHighest = function (value, step) {
+            return +value == 0 ? step : Math.ceil(+value / step) * step;
+        },
+        //
+        // returns the next lowest number in the step sequence
+        //
+        nextLowest = function (value, step) {
+            return +value == 0 ? -step : Math.floor(+value / step) * step;
         };
         // ########################################################
         // End of gauges() var declarations
@@ -4111,16 +4158,16 @@ function () {
             return tooltips;
         }()),
 
-        tooltipoffsets: [20, -30], //additional x and y offset from mouse cursor for tooltips
+        tooltipoffsets: [20, -30], // additional x and y offset from mouse cursor for tooltips
 
         tipDelay: 1000,
 
         delayTimer: 0,
 
-        tipprefix: 'imgtip', //tooltip DOM ID prefixes
+        tipprefix: 'imgtip', // tooltip DOM ID prefixes
 
         createtip: function ($, tipid, tipinfo) {
-            if ($('#' + tipid).length === 0) { //if this tooltip doesn't exist yet
+            if ($('#' + tipid).length === 0) { // if this tooltip doesn't exist yet
                 return $('<div id="' + tipid + '" class="ddimgtooltip" />')
                             .html(
                                 ((tipinfo[1]) ? '<div class="tipinfo" id="' + tipid + '_txt">' + tipinfo[1] + '</div>' : '') +
@@ -4165,14 +4212,14 @@ function () {
 
         showbox: function (tooltip) {
             if (this.showTips) {
-                //$(tooltip).show();
+                // $(tooltip).show();
                 $(tooltip).fadeIn();
             }
         },
 
         hidebox: function ($, $tooltip) {
             clearTimeout(ddimgtooltip.delayTimer);
-            //$tooltip.hide();
+            // $tooltip.hide();
             $tooltip.fadeOut();
         },
 
@@ -4189,14 +4236,14 @@ function () {
                 var $target = $(this),
                     tipsuffix, tipid,
                     $tooltip;
-                var ind = ($target.attr('id').match(/_(\d+)/) || [])[1] || ''; //match d of attribute id='tip_d'
-                tipsuffix = parseInt(ind, 10); //get d as integer
-                tipid = this.tipid = ddimgtooltip.tipprefix + tipsuffix; //construct this tip's ID value and remember it
+                var ind = ($target.attr('id').match(/_(\d+)/) || [])[1] || ''; // match d of attribute id='tip_d'
+                tipsuffix = parseInt(ind, 10); // get d as integer
+                tipid = this.tipid = ddimgtooltip.tipprefix + tipsuffix; // construct this tip's ID value and remember it
                 $tooltip = ddimgtooltip.createtip($, tipid, tiparray[tipsuffix]);
 
                 $target.mouseenter(function (e) {
                     var $tooltip = $('#' + this.tipid);
-                    //ddimgtooltip.showbox($, $tooltip, e);
+                    // ddimgtooltip.showbox($, $tooltip, e);
                     ddimgtooltip.delaybox($, $tooltip, e);
                 });
                 $target.mouseleave(function () {
@@ -4207,7 +4254,7 @@ function () {
                     var $tooltip = $('#' + this.tipid);
                     ddimgtooltip.positiontooltip($, $tooltip, e);
                 });
-                if ($tooltip) { //add mouseenter to this tooltip (only if event hasn't already been added)
+                if ($tooltip) { // add mouseenter to this tooltip (only if event hasn't already been added)
                     $tooltip.mouseenter(function () {
                         ddimgtooltip.hidebox($, $(this));
                     });

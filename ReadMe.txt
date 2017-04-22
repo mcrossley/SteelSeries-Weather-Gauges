@@ -412,6 +412,14 @@ If the display is in feet, then values below 2000 ft are rounded to 50 ft, above
 
 Release History
 =======================
+2.6.0
+  * Updated gauges.js
+    - *Really* fixed scaling issues with rain gauge ;)
+    - Added support for Weather Link/WL.com as a data source [Note requires a Saratoga template module]
+    - Added title to Windrose odometer
+  * Updated language.js/language.min.js
+    - Added strings for mile, km, n_mile (nautical mile), used for WindRose odometer title
+
 2.5.19
   * Updated gauges.js
     - Added tweak to rain gauge to fix constant redraws due to maxValue/maxScale mismatch when using default niceScale.

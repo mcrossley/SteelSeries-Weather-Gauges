@@ -5,7 +5,7 @@
  *
  * File encoding = UTF-8
 */
-/*! Version: 2.5.1 - Updated: 04 October 2016 (Norwegan 'meters' -> 'meter') */
+/*! Version: 2.6.0 - Updated: 22 April 2017 (Added miles/km/n_miles) */
 
 /*global gauges */
 
@@ -156,6 +156,9 @@ LANG.EN = {
                            'air being saturated',
     feet              : 'feet',
     metres            : 'metres',
+    miles             : 'miles',
+    n_miles           : 'n.miles',
+    km                : 'km',
     //
     lowest_info       : 'Lowest',
     highest_info      : 'Highest',
@@ -333,7 +336,10 @@ LANG.FR = {
 
     feet              : 'feet',
     metres            : 'mètres',
-    //
+    miles             : 'miles',
+    n_miles           : 'miles.n',
+    km                : 'km',
+   //
     lowest_info       : 'le plus bas',
     highest_info      : 'le plus élevé',
     lowestF_info      : 'la plus basse',  // for proper translation of feminine words
@@ -503,6 +509,9 @@ LANG.DE = {
                            'in der sich Cumulus Wolken formen, wenn die Luft gesättigt ist.',
     feet              : 'Fuß',
     metres            : 'Meter',
+    miles             : 'Meilen',
+    n_miles           : 'Seemeilen',
+    km                : 'km',
     //
     lowest_info       : 'Niedrigster',
     highest_info      : 'Höchster',
@@ -668,6 +677,9 @@ LANG.NL = {
                            'lucht verzadigd wordt',
     feet              : 'feet',
     metres            : 'meter',
+    miles             : 'mijl',
+    n_miles           : 'zeemijlen',
+    km                : 'km',
     //
     lowest_info       : 'Laagste',
     highest_info      : 'Hoogste',
@@ -835,6 +847,9 @@ LANG.SE = {
                            'luften är mättad',
     feet              : 'feet',
     metres            : 'meter',
+    miles             : 'miles',
+    n_miles           : 'sjömil',
+    km                : 'km',
     //
     lowest_info       : 'Lägsta',
     highest_info      : 'Högsta',
@@ -1003,6 +1018,9 @@ LANG.DK = {
                            'air being saturated',
     feet              : 'feet',
     metres            : 'meters',
+    miles             : 'miles',
+    n_miles           : 'sømil',
+    km                : 'km',
     //
     lowest_info       : 'Laveste',
     highest_info      : 'Højeste',
@@ -1169,6 +1187,9 @@ LANG.FI = {
                            'ilman ollessa kylläinen',
     feet              : 'feet',
     metres            : 'metriä',
+    miles             : 'miles',   // ???
+    n_miles           : 'n.miles', // ???
+    km                : 'km',
     //
     lowest_info       : 'Alin',
     highest_info      : 'Korkein',
@@ -1340,6 +1361,9 @@ LANG.NO = {
                            'luften er mettet.',
     feet              : 'feet',
     metres            : 'meter',
+    miles             : 'miles',
+    n_miles           : 'n.mil',
+    km                : 'km',
     //
     lowest_info       : 'Lavest',
     highest_info      : 'Høyest',
@@ -1512,6 +1536,9 @@ LANG.IT = {
                            'perché l\'aria essere satura',
     feet              : 'piedi',
     metres            : 'metri',
+    miles             : 'miglia',
+    n_miles           : 'miglia n.',
+    km                : 'km',
     //
     lowest_info       : 'Minimo',
     highest_info      : 'Massimo',
@@ -1682,6 +1709,9 @@ LANG.ES = {
                            'air being saturated',
     feet              : 'feet',
     metres            : 'metros',
+    miles             : 'millas',
+    n_miles           : 'millas n.',
+    km                : 'km',
     //
     lowest_info       : 'Mínima',
     highest_info      : 'Máxima',
@@ -1854,6 +1884,9 @@ LANG.CT = {
                            'air being saturated',
     feet              : 'feet',
     metres            : 'metres',
+    miles             : 'milles',
+    n_miles           : 'milles n.',
+    km                : 'km',
     //
     lowest_info       : 'Mínima',
     highest_info      : 'Màxima',
@@ -2024,6 +2057,9 @@ LANG.GR = {
                            'οταν ο αέρας είναι κορεσμένος',
     feet              : 'πόδια',
     metres            : 'μέτρα',
+    miles             : 'μίλια',
+    n_miles           : 'v.μίλια',
+    km                : 'km',
     //
     lowest_info       : 'Eλάχιστη',
     highest_info      : 'Μέγιστη',
@@ -2190,6 +2226,9 @@ LANG.PT = {
                            'ar começa a ficar saturado',
     feet              : 'pés',
     metres            : 'metros',
+    miles             : 'milhas',
+    n_miles           : 'milhas n.',
+    km                : 'km',
     //
     lowest_info       : 'Mais Baixa',
     highest_info      : 'Máxima',
@@ -2381,6 +2420,13 @@ LANG.CS = {
                            'rozdílu mezi teplotou a teplotou rosného bodu. Všimněte si, že to prostě<br>' +
                            'dává teoretickou výšku, ve které se kupovité mraky začínají tvořit, kdy<br>' +
                            'vzduch je nasycen',
+    //
+    feet   : 'feet',
+    metres : 'metrů',
+    miles  : 'míle',
+    n_miles: 'n.míle',
+    km     : 'km'
+
 };
 
 //======================================================================================================================
