@@ -33,7 +33,7 @@ function () {
     var strings = LANG.EN,         // Set to your default language. Store all the strings in one object
         config = {
             // Script configuration parameters you may want to 'tweak'
-            scriptVer          : '2.6.0',
+            scriptVer          : '2.6.1',
             weatherProgram     : 0,                      // Set 0=Cumulus, 1=Weather Display, 2=VWS, 3=WeatherCat, 4=Meteobridge, 5=WView, 6=WeeWX, 7=WLCOM
             imgPathURL         : './images/',            // *** Change this to the relative path for your 'Trend' graph images
             oldGauges          : 'gauges.htm',           // *** Change this to the relative path for your 'old' gauges page.
@@ -2224,6 +2224,7 @@ function () {
                     ctx.save();
                     // set the font
                     ctx.font = 0.08 * size + 'px serif';
+                    ctx.strokeStyle = gaugeGlobals.background.labelColor.getRgbaColor();
                     ctx.fillStyle = gaugeGlobals.background.labelColor.getRgbColor();
                     ctx.textAlign = 'center';
                     ctx.textBaseline = 'middle';
@@ -2246,6 +2247,8 @@ function () {
                     ctx.textAlign = 'center';
                     ctx.textBaseline = 'middle';
                     ctx.font = 0.05 * cache.gaugeSize + 'px Arial,Verdana,sans-serif';
+                    ctx.strokeStyle = gaugeGlobals.background.labelColor.getRgbaColor();
+                    ctx.fillStyle = gaugeGlobals.background.labelColor.getRgbaColor();
                     ctx.fillText(cache.gaugeOdoTitle, cache.plotSize2, cache.plotSize * 0.75, cache.plotSize * 0.5);
                     ctx.restore();
                 }

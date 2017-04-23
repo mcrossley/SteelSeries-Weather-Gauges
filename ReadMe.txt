@@ -2,8 +2,8 @@ SteelSeries JavaScript gauges
 =============================
 Created by Mark Crossley July 2011
 
-Version 2.5.19
-Updated: 30 March 2017
+Version 2.6.1
+Updated: 23 April 2017
 
 +-------------------------------------------------------+
 |                                                       |
@@ -412,6 +412,10 @@ If the display is in feet, then values below 2000 ft are rounded to 50 ft, above
 
 Release History
 =======================
+2.6.1
+  * Updated gauges.js
+    - Fixed the odometer label colour not changing with the background colour.
+
 2.6.0
   * Updated gauges.js
     - *Really* fixed scaling issues with rain gauge ;)
@@ -452,7 +456,7 @@ Release History
     - humidex calc now (correctly) uses dewpoint in degree K
     - removed redunant code in humidex and apptemp calcs
   * Updated language.js language.min.js
-    - Minor change to Norwegan 'meters' -> 'meter'
+    - Minor change to Norwegian 'meters' -> 'meter'
 
 2.5.15
   * Updated gauges.js
