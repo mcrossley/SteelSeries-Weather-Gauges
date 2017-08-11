@@ -2,8 +2,8 @@ SteelSeries JavaScript gauges
 =============================
 Created by Mark Crossley July 2011
 
-Version 2.6.2
-Updated: 26 July 2017
+Version 2.6.3
+Updated: 11 August 2017
 
 +-------------------------------------------------------+
 |                                                       |
@@ -412,6 +412,13 @@ If the display is in feet, then values below 2000 ft are rounded to 50 ft, above
 
 Release History
 =======================
+2.6.3
+  Updated
+  * gauges.js
+  * gauges-ss-basic-inc.php
+  * gauges-ss-basic.htm
+    - Added rel="noopener" to progam html links
+
 2.6.2
   * Updated gauges.js
     - Solar gauge: Fixed the "over theoretical" sector not displaying correctly above the default gauge max scale value.

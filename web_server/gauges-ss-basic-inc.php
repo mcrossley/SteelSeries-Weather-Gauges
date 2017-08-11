@@ -1,5 +1,5 @@
   <!--
-    30 Dec 2014 - Mark Crossley
+    11 Aug 2017 - Mark Crossley
     Basic PHP include file for the steel series gauges.
     Just contains the HTML for incuding in template page.
   -->
@@ -146,8 +146,8 @@
   <div class="credits" style="padding: 0px 10px 10px 10px; text-align: left">
     <hr>
     Scripts: Mark Crossley - version <span id="scriptVer"></span><br>
-    Gauges: Gerrit Grunwald's <a href="http://harmoniccode.blogspot.com" target="_blank">SteelSeries</a> <a href="https://github.com/HanSolo/SteelSeries-Canvas">JavaScript library</a><br>
-    <span id="rgraph_attrib">Wind Rose: <a href="http://www.rgraph.net/">RGraph</a><br></span>
+    Gauges: Gerrit Grunwald's <a href="http://harmoniccode.blogspot.com" target="_blank" rel="noopener">SteelSeries</a> <a href="https://github.com/HanSolo/SteelSeries-Canvas" target="_blank" rel="noopener">JavaScript library</a><br>
+    <span id="rgraph_attrib">Wind Rose: <a href="http://www.rgraph.net/" target="_blank" rel="noopener">RGraph</a><br></span>
     A cookie is used to store your UoM and gauge preferences<br>
     powered by <span id="programName"></span> v<span id="programVersion"></span> (b<span id="programBuild"></span>)
   </div><!-- Credits -->
