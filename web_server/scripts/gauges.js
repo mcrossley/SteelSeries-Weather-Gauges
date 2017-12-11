@@ -33,7 +33,7 @@ function () {
     var strings = LANG.EN,         // Set to your default language. Store all the strings in one object
         config = {
             // Script configuration parameters you may want to 'tweak'
-            scriptVer          : '2.6.3',
+            scriptVer          : '2.6.4',
             weatherProgram     : 0,                      // Set 0=Cumulus, 1=Weather Display, 2=VWS, 3=WeatherCat, 4=Meteobridge, 5=WView, 6=WeeWX, 7=WLCOM
             imgPathURL         : './images/',            // *** Change this to the relative path for your 'Trend' graph images
             oldGauges          : 'gauges.htm',           // *** Change this to the relative path for your 'old' gauges page.
@@ -172,14 +172,14 @@ function () {
         sampleDate,
         realtimeVer,                // minimum version of the realtime JSON file required
         programLink = [
-            '<a href="http://sandaysoft.com/products/cumulus" target="_blank" rel="noopener">Cumulus</a>',
-            '<a href="http://www.weather-display.com/" target="_blank" rel="noopener">Weather Display</a>',
-            '<a href="http://www.ambientweather.com/virtualstation.html" target="_blank" rel="noopener">Virtual Weather Station</a>',
-            '<a href="http://trixology.com/weathercat/" target="_blank" rel="noopener">WeatherCat</a>',
-            '<a href="http://www.meteobridge.com/" target="_blank rel="noopener"">Meteobridge</a>',
-            '<a href="http://www.wviewweather.com/" target="_blank" rel="noopener">Wview</a>',
-            '<a href="http://www.weewx.com/" target="_blank" rel="noopener">weewx</a>',
-            '<a href="http://weatherlink.com/" target="_blank" rel="noopener">Weatherlink.com</a>'
+            '<a href="//sandaysoft.com/products/cumulus" target="_blank" rel="noopener">Cumulus</a>',
+            '<a href="//www.weather-display.com/" target="_blank" rel="noopener">Weather Display</a>',
+            '<a href="//www.ambientweather.com/virtualstation.html" target="_blank" rel="noopener">Virtual Weather Station</a>',
+            '<a href="//trixology.com/weathercat/" target="_blank" rel="noopener">WeatherCat</a>',
+            '<a href="//www.meteobridge.com/" target="_blank rel="noopener"">Meteobridge</a>',
+            '<a href="//www.wviewweather.com/" target="_blank" rel="noopener">Wview</a>',
+            '<a href="//www.weewx.com/" target="_blank" rel="noopener">weewx</a>',
+            '<a href="//weatherlink.com/" target="_blank" rel="noopener">Weatherlink.com</a>'
         ],
 
         ledIndicator, statusScroller, statusTimer,

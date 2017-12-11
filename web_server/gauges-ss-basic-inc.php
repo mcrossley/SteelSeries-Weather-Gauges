@@ -1,5 +1,5 @@
   <!--
-    11 Aug 2017 - Mark Crossley
+    11 Dec 2017 - Mark Crossley
     Basic PHP include file for the steel series gauges.
     Just contains the HTML for incuding in template page.
   -->
@@ -146,8 +146,8 @@
   <div class="credits" style="padding: 0px 10px 10px 10px; text-align: left">
     <hr>
     Scripts: Mark Crossley - version <span id="scriptVer"></span><br>
-    Gauges: Gerrit Grunwald's <a href="http://harmoniccode.blogspot.com" target="_blank" rel="noopener">SteelSeries</a> <a href="https://github.com/HanSolo/SteelSeries-Canvas" target="_blank" rel="noopener">JavaScript library</a><br>
-    <span id="rgraph_attrib">Wind Rose: <a href="http://www.rgraph.net/" target="_blank" rel="noopener">RGraph</a><br></span>
+    Gauges: Gerrit Grunwald's <a href="https://harmoniccode.blogspot.com" target="_blank" rel="noopener">SteelSeries</a> <a href="https://github.com/HanSolo/SteelSeries-Canvas" target="_blank" rel="noopener">JavaScript library</a><br>
+    <span id="rgraph_attrib">Wind Rose: <a href="https://www.rgraph.net/" target="_blank" rel="noopener">RGraph</a><br></span>
     A cookie is used to store your UoM and gauge preferences<br>
     powered by <span id="programName"></span> v<span id="programVersion"></span> (b<span id="programBuild"></span>)
   </div><!-- Credits -->
@@ -155,10 +155,10 @@
   <!-- Included Scripts -->
 
   <!-- CDN hosted JQuery library -->
-  <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+  <script src="//code.jquery.com/jquery-3.2.1.min.js"></script>
   <!-- or... -->
   <!-- Local JQuery library, do not use if your containing page already pulls in a copy of JQuery -->
-  <!-- <script src="scripts/jquery-1.11.1.min.js"></script> -->
+  <!-- <script src="scripts/jquery-3.2.1.min.js"></script> -->
 
   <!-- Combined steelseries.js & tween.js -->
   <script src="scripts/steelseries_tween.min.js"></script>

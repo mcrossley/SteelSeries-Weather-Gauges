@@ -412,6 +412,13 @@ If the display is in feet, then values below 2000 ft are rounded to 50 ft, above
 
 Release History
 =======================
+2.6.4
+  Updated to be more http/https friendly
+  Uplifts JQuery version to 3.2.1 from obsolete 1.11
+  * gauges.js
+  * gauges-ss-basic-inc.php
+  * gauges-ss-basic.htm
+
 2.6.3
   Updated
   * gauges.js
@@ -426,6 +433,7 @@ Release History
     - Wind gauge: Added animation to rescaling.
     - UV gauge: Added rescaling back to default and animation.
     - Rain gauge: Added rescaling back to default.
+
 2.6.1
   * Updated gauges.js
     - Fixed the odometer label colour not changing with the background colour.
