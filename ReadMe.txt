@@ -2,8 +2,8 @@ SteelSeries JavaScript gauges
 =============================
 Created by Mark Crossley July 2011
 
-Version 2.6.4
-Updated: 12 December 2017
+Version 2.6.5
+Updated: 22 July 2018
 
 +-------------------------------------------------------+
 |                                                       |
@@ -412,6 +412,10 @@ If the display is in feet, then values below 2000 ft are rounded to 50 ft, above
 
 Release History
 =======================
+2.6.5
+  * customclientrawlocal.txt
+    - Fix time of min. wind chill
+
 2.6.4
   Updated to be more http/https friendly
   Uplifts JQuery version to 3.2.1 from obsolete 1.11
