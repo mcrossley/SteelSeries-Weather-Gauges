@@ -2,8 +2,8 @@ SteelSeries JavaScript gauges
 =============================
 Created by Mark Crossley July 2011
 
-Version 2.6.5
-Updated: 22 July 2018
+Version 2.7.0
+Updated: 23 July 2018
 
 +-------------------------------------------------------+
 |                                                       |
@@ -412,6 +412,17 @@ If the display is in feet, then values below 2000 ft are rounded to 50 ft, above
 
 Release History
 =======================
+2.7.0
+  * gauges.js
+    - Add indoor min/max for weather s/ware that supports it. Currently Weather Display, WeeWX, and Weather Cat
+  * customclientrawlocal
+    - Fixes error in 2.6.5 release
+    - Adds indoor min/max data
+  * gauge-data.txt.tmpl
+    - Adds indoor min/max data
+  * realtimegaugesWC.txt
+    - Adds indoor min/max data
+
 2.6.5
   * customclientrawlocal.txt
     - Fix time of min. wind chill

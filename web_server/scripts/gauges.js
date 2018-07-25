@@ -1,4 +1,4 @@
-/*!
+﻿/*!
  * A starter gauges page for Cumulus and Weather Display, based
  * on the JavaScript SteelSeries gauges by Gerrit Grunwald.
  *
@@ -27,13 +27,13 @@
     $.publish = function () {o.trigger.apply(o, arguments);};
 }(jQuery));
 
-var gauges = (
-function () {
+var gauges;
+gauges = (function () {
     'use strict';
     var strings = LANG.EN,         // Set to your default language. Store all the strings in one object
         config = {
             // Script configuration parameters you may want to 'tweak'
-            scriptVer          : '2.6.4',
+            scriptVer          : '2.7.0',
             weatherProgram     : 0,                      // Set 0=Cumulus, 1=Weather Display, 2=VWS, 3=WeatherCat, 4=Meteobridge, 5=WView, 6=WeeWX, 7=WLCOM
             imgPathURL         : './images/',            // *** Change this to the relative path for your 'Trend' graph images
             oldGauges          : 'gauges.htm',           // *** Change this to the relative path for your 'old' gauges page.
@@ -76,11 +76,12 @@ function () {
             useCookies         : true,                   // Persistently store user preferences in a cookie?
             tipImages          : [],
             dashboardMode      : false,                  // Used by Cumulus MX dashboard - SET TO FALSE OTHERWISE
-            dewDisplayType     : 'app'                   // Initial 'scale' to display  'dew' - Dewpoint
-                                                         //  on the 'dew point' gauge.  'app' - Apparent temperature
-                                                         //                             'wnd' - Wind Chill
-                                                         //                             'hea' - Heat Index
-                                                         //                             'hum' - Humidex
+            dewDisplayType     : 'app'                   // Initial 'scale' to display on the 'dew point' gauge.
+                                                         // 'dew' - Dewpoint
+                                                         // 'app' - Apparent temperature
+                                                         // 'wnd' - Wind Chill
+                                                         // 'hea' - Heat Index
+                                                         // 'hum' - Humidex
         },
 
         // Gauge global look'n'feel settings
@@ -229,7 +230,7 @@ function () {
                 break;
             case 1:
                 // Weather Display
-                realtimeVer = 12;   // minimum version of the realtime JSON file required
+                realtimeVer = 14;   // minimum version of the realtime JSON file required
                 config.realTimeURL = config.longPoll ? config.realTimeUrlLongPoll : config.realTimeUrlWD;
                 config.tipImgs = [                                      // config.tipImgs for Weather Display users with wxgraph
                     ['temp+hum_24hr.php', 'indoor_temp_24hr.php'],      // Temperature: outdoor, indoor
@@ -275,7 +276,7 @@ function () {
                 break;
             case 3:
                 // WeatherCat
-                realtimeVer = 13;   // minimum version of the realtime JSON file required
+                realtimeVer = 14;   // minimum version of the realtime JSON file required
                 config.realTimeURL = config.longPoll ? config.realTimeUrlLongPoll : config.realTimeUrlWC;
                 config.tipImgs = [                                       // config.tipImgs - WeatherCat users using the 'default' weather site
                     ['temperature1.jpg', 'tempin1.jpg'],                 // Temperature: outdoor, indoor
@@ -329,7 +330,7 @@ function () {
                 break;
             case 6:
                 // weewx
-                realtimeVer = 13;   // minimum version of the realtime JSON file required
+                realtimeVer = 14;   // minimum version of the realtime JSON file required
                 config.realTimeURL = config.longPoll ? config.realTimeUrlLongPoll : config.realTimeUrlWeewx;
                 config.showSunshineLed = true;
                 config.showWindVariation = true;
@@ -809,15 +810,26 @@ function () {
                             }
                         }
                     } else {
-                        cache.low = extractDecimal(data.intemp);
-                        cache.lowScale = cache.low;
-                        cache.high = cache.low;
-                        cache.highScale = cache.low;
-                        cache.value = cache.low;
+                        // Indoor
                         cache.title = strings.temp_title_in;
                         cache.loc = strings.temp_in_info;
-                        cache.maxMinVisible = false;
+                        cache.value = extractDecimal(data.intemp);
                         cache.popupImg = 1;
+                        if (data.intempTL && data.intempTH) {
+                            // Indoor - and Max/Min values supplied
+                            cache.low = extractDecimal(data.intempTL);
+                            cache.high = extractDecimal(data.intempTH);
+                            cache.lowScale = getMinTemp(cache.minValue);
+                            cache.highScale = getMaxTemp(cache.maxValue);
+                            cache.maxMinVisible = true;
+                        } else {
+                            // Indoor - no Max/Min values supplied
+                            cache.low = cache.value;
+                            cache.lowScale = cache.value;
+                            cache.high = cache.value;
+                            cache.highScale = cache.value;
+                            cache.maxMinVisible = false;
+                        }
                         if (gaugeGlobals.tempTrendVisible) {
                             cache.trend = steelseries.TrendState.OFF;
                         }
@@ -858,7 +870,11 @@ function () {
                     }
                     if (cache.selected === 'out') {
                         cache.areas = [steelseries.Section(+cache.low, +cache.high, gaugeGlobals.minMaxArea)];
+                    } else if (data.intempTL && data.intempTH) {
+                        // Indoor and min/max avaiable
+                        cache.areas = [steelseries.Section(+extractDecimal(data.intempTL), +extractDecimal(data.intempTH), gaugeGlobals.minMaxArea)];
                     } else {
+                        // Nndoor no min/max avaiable
                         cache.areas = [];
                     }
 
@@ -879,7 +895,13 @@ function () {
                                     strings.temp_trend_info + ': ' + tempTrend(cache.trendVal, data.tempunit, true) +
                                     ' ' + cache.trendVal + data.tempunit + '/h';
                             }
+                        } else if (data.TintempTL && data.TintempTH) {
+                            // Indoor and min/max available
+                            tip = cache.loc + ' - ' + strings.lowestF_info + ': ' + cache.low + data.tempunit + ' ' + strings.at + ' ' + data.TintempTL +
+                            ' | ' +
+                            strings.highestF_info + ': ' + cache.high + data.tempunit + ' ' + strings.at + ' ' + data.TintempTH;
                         } else {
+                            // Indoor no min/max
                             tip = cache.loc + ': ' + data.intemp + data.tempunit;
                         }
                         $('#imgtip0_txt').html(tip);
@@ -1485,7 +1507,7 @@ function () {
                         } else if (data.inhumTL && data.inhumTH) {
                             // we have indoor high/low data
                             tip = strings.hum_in_info + ':' +
-                                 '<br>' +
+                                '<br>' +
                                 '- ' + strings.minimum_info + ': ' + extractDecimal(data.inhumTL) + '% ' + strings.at + ' ' + data.TinhumTL +
                                 ' | ' + strings.maximum_info + ': ' + extractDecimal(data.inhumTH) + '% ' + strings.at + ' ' + data.TinhumTH;
                         } else {
@@ -1907,7 +1929,7 @@ function () {
                         cache.gstKnots = Math.round(cache.gstKnots);
                         if (config.showWindMetar) {
                             ssGauge.VRB = ' - METAR: ' + ('0' + data.avgbearing).slice(-3) + ('0' + cache.avgKnots).slice(-2) +
-                                        'G' + ('0' + cache.gstKnots).slice(-2) + 'KT ';
+                                          'G' + ('0' + cache.gstKnots).slice(-2) + 'KT ';
                         } else {
                             ssGauge.VRB = '';
                         }
@@ -2894,8 +2916,8 @@ function () {
                     data.cloudbaseunit = '';
                 }
                 if (config.showCloudGauge && (
-                        (config.weatherProgram === 4 || config.weatherProgram === 5) ||
-                        data.cloudbasevalue === '')) {
+                    (config.weatherProgram === 4 || config.weatherProgram === 5) ||
+                    data.cloudbasevalue === '')) {
                     // WeatherCat and VWS (and WView?) do not provide a cloud base value, so we have to calculate it...
                     // assume if the station uses an imperial wind speed they want cloud base in feet, otherwise metres
                     data.cloudbaseunit = (data.windunit === 'mph' || data.windunit === 'kts') ? 'ft' : 'm';
@@ -3125,40 +3147,40 @@ function () {
             var section;
             if (celsius) {
                 section = [
-                    steelseries.Section(-100, -35, 'rgba(195,  92, 211, 0.4)'),
-                    steelseries.Section(-35, -30, 'rgba(139,  74, 197, 0.4)'),
-                    steelseries.Section(-30, -25, 'rgba( 98,  65, 188, 0.4)'),
-                    steelseries.Section(-25, -20, 'rgba( 62,  66, 185, 0.4)'),
-                    steelseries.Section(-20, -15, 'rgba( 42,  84, 194, 0.4)'),
-                    steelseries.Section(-15, -10, 'rgba( 25, 112, 210, 0.4)'),
-                    steelseries.Section(-10, -5, 'rgba(  9, 150, 224, 0.4)'),
-                    steelseries.Section(-5, 0, 'rgba(  2, 170, 209, 0.4)'),
-                    steelseries.Section(0, 5, 'rgba(  0, 162, 145, 0.4)'),
-                    steelseries.Section(5, 10, 'rgba(  0, 158, 122, 0.4)'),
-                    steelseries.Section(10, 15, 'rgba( 54, 177,  56, 0.4)'),
-                    steelseries.Section(15, 20, 'rgba(111, 202,  56, 0.4)'),
-                    steelseries.Section(20, 25, 'rgba(248, 233,  45, 0.4)'),
-                    steelseries.Section(25, 30, 'rgba(253, 142,  42, 0.4)'),
-                    steelseries.Section(30, 40, 'rgba(236,  45,  45, 0.4)'),
+                    steelseries.Section(-100, -35, 'rgba(195, 92, 211, 0.4)'),
+                    steelseries.Section(-35, -30, 'rgba(139, 74, 197, 0.4)'),
+                    steelseries.Section(-30, -25, 'rgba(98, 65, 188, 0.4)'),
+                    steelseries.Section(-25, -20, 'rgba(62, 66, 185, 0.4)'),
+                    steelseries.Section(-20, -15, 'rgba(42, 84, 194, 0.4)'),
+                    steelseries.Section(-15, -10, 'rgba(25, 112, 210, 0.4)'),
+                    steelseries.Section(-10, -5, 'rgba(9, 150, 224, 0.4)'),
+                    steelseries.Section(-5, 0, 'rgba(2, 170, 209, 0.4)'),
+                    steelseries.Section(0, 5, 'rgba(0, 162, 145, 0.4)'),
+                    steelseries.Section(5, 10, 'rgba(0, 158, 122, 0.4)'),
+                    steelseries.Section(10, 15, 'rgba(54, 177, 56, 0.4)'),
+                    steelseries.Section(15, 20, 'rgba(111, 202, 56, 0.4)'),
+                    steelseries.Section(20, 25, 'rgba(248, 233, 45, 0.4)'),
+                    steelseries.Section(25, 30, 'rgba(253, 142, 42, 0.4)'),
+                    steelseries.Section(30, 40, 'rgba(236, 45, 45, 0.4)'),
                     steelseries.Section(40, 100, 'rgba(245, 109, 205, 0.4)')
                 ];
             } else {
                 section = [
-                    steelseries.Section(-200, -30, 'rgba(195,  92, 211, 0.4)'),
-                    steelseries.Section(-30, -25, 'rgba(139,  74, 197, 0.4)'),
-                    steelseries.Section(-25, -15, 'rgba( 98,  65, 188, 0.4)'),
-                    steelseries.Section(-15, -5, 'rgba( 62,  66, 185, 0.4)'),
-                    steelseries.Section(-5, 5, 'rgba( 42,  84, 194, 0.4)'),
-                    steelseries.Section(5, 15, 'rgba( 25, 112, 210, 0.4)'),
-                    steelseries.Section(15, 25, 'rgba(  9, 150, 224, 0.4)'),
-                    steelseries.Section(25, 32, 'rgba(  2, 170, 209, 0.4)'),
-                    steelseries.Section(32, 40, 'rgba(  0, 162, 145, 0.4)'),
-                    steelseries.Section(40, 50, 'rgba(  0, 158, 122, 0.4)'),
-                    steelseries.Section(50, 60, 'rgba( 54, 177,  56, 0.4)'),
-                    steelseries.Section(60, 70, 'rgba(111, 202,  56, 0.4)'),
-                    steelseries.Section(70, 80, 'rgba(248, 233,  45, 0.4)'),
-                    steelseries.Section(80, 90, 'rgba(253, 142,  42, 0.4)'),
-                    steelseries.Section(90, 110, 'rgba(236,  45,  45, 0.4)'),
+                    steelseries.Section(-200, -30, 'rgba(195, 92, 211, 0.4)'),
+                    steelseries.Section(-30, -25, 'rgba(139, 74, 197, 0.4)'),
+                    steelseries.Section(-25, -15, 'rgba(98, 65, 188, 0.4)'),
+                    steelseries.Section(-15, -5, 'rgba(62, 66, 185, 0.4)'),
+                    steelseries.Section(-5, 5, 'rgba(42, 84, 194, 0.4)'),
+                    steelseries.Section(5, 15, 'rgba(25, 112, 210, 0.4)'),
+                    steelseries.Section(15, 25, 'rgba(9, 150, 224, 0.4)'),
+                    steelseries.Section(25, 32, 'rgba(2, 170, 209, 0.4)'),
+                    steelseries.Section(32, 40, 'rgba(0, 162, 145, 0.4)'),
+                    steelseries.Section(40, 50, 'rgba(0, 158, 122, 0.4)'),
+                    steelseries.Section(50, 60, 'rgba(54, 177, 56, 0.4)'),
+                    steelseries.Section(60, 70, 'rgba(111, 202, 56, 0.4)'),
+                    steelseries.Section(70, 80, 'rgba(248, 233, 45, 0.4)'),
+                    steelseries.Section(80, 90, 'rgba(253, 142, 42, 0.4)'),
+                    steelseries.Section(90, 110, 'rgba(236, 45, 45, 0.4)'),
                     steelseries.Section(110, 200, 'rgba(245, 109, 205, 0.4)')
                 ];
             }
@@ -3301,7 +3323,7 @@ function () {
         //
         extractDecimal = function (str, errVal) {
             try {
-                return (/[\-+]?[0-9]+\.?[0-9]*/).exec(str.replace(',', '.'))[0];
+                return (/[-+]?[0-9]+\.?[0-9]*/).exec(str.replace(',', '.'))[0];
             } catch (e) {
                 // error condition
                 return errVal || -9999;
@@ -3314,7 +3336,7 @@ function () {
         //
         extractInteger = function (str, errVal) {
             try {
-                return (/[\-+]?[0-9]+/).exec(str)[0];
+                return (/[-+]?[0-9]+/).exec(str)[0];
             } catch (e) {
                 // error condition
                 return errVal || -9999;
@@ -3549,6 +3571,10 @@ function () {
             data.heatindexTH = convFunc(data.heatindexTH);
             data.humidex = convFunc(data.humidex);
             data.intemp = convFunc(data.intemp);
+            if (data.intempTL && data.intempTH) {
+                data.intempTL = convFunc(data.intempTl);
+                data.intempTH = convFunc(data.intempTH);
+            }
             data.temp = convFunc(data.temp);
             data.tempTH = convFunc(data.tempTH);
             data.tempTL = convFunc(data.tempTL);
@@ -4145,8 +4171,8 @@ function () {
             gradientSizeBlu = parseInt(endCol.substr(4, 2), 16)  - bluOrigin;
 
             return (redOrigin + (gradientSizeRed * fraction)).toFixed(0) + ',' +
-                    (grnOrigin + (gradientSizeGrn * fraction)).toFixed(0) + ',' +
-                    (bluOrigin + (gradientSizeBlu * fraction)).toFixed(0);
+                (grnOrigin + (gradientSizeGrn * fraction)).toFixed(0) + ',' +
+                (bluOrigin + (gradientSizeBlu * fraction)).toFixed(0);
         },
         //
         // returns the next highest number in the step sequence
@@ -4192,7 +4218,7 @@ function () {
         setUnits   : setUnits,
         processData: processData
     };
-}()),
+}());
 
 // ===============================================================================================================================
 // ===============================================================================================================================
@@ -4206,121 +4232,122 @@ function () {
     * Modified: M Crossley June 2011, January 2012
     * v2.-
     */
-    ddimgtooltip = {
-        tiparray: (function () {
-            var style = {background: '#FFFFFF', color: 'black', border: '2px ridge darkblue'},
-                i = 12,  // set to number of tooltips required
-                tooltips = [];
-            for (;i--;) {
-                tooltips[i] = [null, ' ', style];
-            }
-            return tooltips;
-        }()),
-
-        tooltipoffsets: [20, -30], // additional x and y offset from mouse cursor for tooltips
-
-        tipDelay: 1000,
-
-        delayTimer: 0,
-
-        tipprefix: 'imgtip', // tooltip DOM ID prefixes
-
-        createtip: function ($, tipid, tipinfo) {
-            if ($('#' + tipid).length === 0) { // if this tooltip doesn't exist yet
-                return $('<div id="' + tipid + '" class="ddimgtooltip" />')
-                            .html(
-                                ((tipinfo[1]) ? '<div class="tipinfo" id="' + tipid + '_txt">' + tipinfo[1] + '</div>' : '') +
-                                (tipinfo[0] !== null ? '<div style="text-align:center"><img class="tipimg" id="' + tipid +
-                                '_img" src="' + tipinfo[0] + '" /></div>' : '')
-                            )
-                            .css(tipinfo[2] || {})
-                            .appendTo(document.body);
-            }
-            return null;
-        },
-
-        positiontooltip: function ($, $tooltip, e) {
-            var x = e.pageX + this.tooltipoffsets[0],
-                y = e.pageY + this.tooltipoffsets[1],
-                tipw = $tooltip.outerWidth(),
-                tiph = $tooltip.outerHeight(),
-                wWidth = $(window).width(),
-                wHght = $(window).height(),
-                dTop = $(document).scrollTop();
-
-            x = (x + tipw > $(document).scrollLeft() + wWidth) ? x - tipw - (ddimgtooltip.tooltipoffsets[0] * 2) : x;
-            y = (y + tiph > dTop + wHght) ? dTop + wHght - tiph - 10 : y;
-            // last ditch attempt to keep the graphs 'on page'
-            x = Math.max(x, 0);
-            if (tipw >= wWidth) {
-                $($tooltip.attr('id') + '_img').css({width: wWidth - 20});
-                $('#' + $tooltip.attr('id') + '_img').css({width: wWidth - 20});
-                y = e.pageY + 5;
-            }
-            $tooltip.css({left: x, top: y});
-        },
-
-        delaybox: function ($, $tooltip) {
-            if (this.showTips) {
-                ddimgtooltip.delayTimer = setTimeout(
-                    function () {
-                        ddimgtooltip.showbox($tooltip);
-                    }, ddimgtooltip.tipDelay);
-            }
-        },
-
-        showbox: function (tooltip) {
-            if (this.showTips) {
-                // $(tooltip).show();
-                $(tooltip).fadeIn();
-            }
-        },
-
-        hidebox: function ($, $tooltip) {
-            clearTimeout(ddimgtooltip.delayTimer);
-            // $tooltip.hide();
-            $tooltip.fadeOut();
-        },
-
-        showTips: false,
-
-        init: function (targetselector) {
-            var tiparray = ddimgtooltip.tiparray,
-                $targets = $(targetselector);
-
-            if ($targets.length === 0) {
-                return;
-            }
-            $targets.each(function () {
-                var $target = $(this),
-                    tipsuffix, tipid,
-                    $tooltip;
-                var ind = ($target.attr('id').match(/_(\d+)/) || [])[1] || ''; // match d of attribute id='tip_d'
-                tipsuffix = parseInt(ind, 10); // get d as integer
-                tipid = this.tipid = ddimgtooltip.tipprefix + tipsuffix; // construct this tip's ID value and remember it
-                $tooltip = ddimgtooltip.createtip($, tipid, tiparray[tipsuffix]);
-
-                $target.mouseenter(function (e) {
-                    var $tooltip = $('#' + this.tipid);
-                    // ddimgtooltip.showbox($, $tooltip, e);
-                    ddimgtooltip.delaybox($, $tooltip, e);
-                });
-                $target.mouseleave(function () {
-                    var $tooltip = $('#' + this.tipid);
-                    ddimgtooltip.hidebox($, $tooltip);
-                });
-                $target.mousemove(function (e) {
-                    var $tooltip = $('#' + this.tipid);
-                    ddimgtooltip.positiontooltip($, $tooltip, e);
-                });
-                if ($tooltip) { // add mouseenter to this tooltip (only if event hasn't already been added)
-                    $tooltip.mouseenter(function () {
-                        ddimgtooltip.hidebox($, $(this));
-                    });
-                }
-            });
+var ddimgtooltip;
+ddimgtooltip = {
+    tiparray: (function () {
+        var style = {background: '#FFFFFF', color: 'black', border: '2px ridge darkblue'},
+            i = 12,  // set to number of tooltips required
+            tooltips = [];
+        for (;i--;) {
+            tooltips[i] = [null, ' ', style];
         }
-    };
+        return tooltips;
+    }()),
+
+    tooltipoffsets: [20, -30], // additional x and y offset from mouse cursor for tooltips
+
+    tipDelay: 1000,
+
+    delayTimer: 0,
+
+    tipprefix: 'imgtip', // tooltip DOM ID prefixes
+
+    createtip: function ($, tipid, tipinfo) {
+        if ($('#' + tipid).length === 0) { // if this tooltip doesn't exist yet
+            return $('<div id="' + tipid + '" class="ddimgtooltip" />')
+                .html(
+                    ((tipinfo[1]) ? '<div class="tipinfo" id="' + tipid + '_txt">' + tipinfo[1] + '</div>' : '') +
+                    (tipinfo[0] !== null ? '<div style="text-align:center"><img class="tipimg" id="' + tipid +
+                    '_img" src="' + tipinfo[0] + '" /></div>' : '')
+                )
+                .css(tipinfo[2] || {})
+                .appendTo(document.body);
+        }
+        return null;
+    },
+
+    positiontooltip: function ($, $tooltip, e) {
+        var x = e.pageX + this.tooltipoffsets[0],
+            y = e.pageY + this.tooltipoffsets[1],
+            tipw = $tooltip.outerWidth(),
+            tiph = $tooltip.outerHeight(),
+            wWidth = $(window).width(),
+            wHght = $(window).height(),
+            dTop = $(document).scrollTop();
+
+        x = (x + tipw > $(document).scrollLeft() + wWidth) ? x - tipw - (ddimgtooltip.tooltipoffsets[0] * 2) : x;
+        y = (y + tiph > dTop + wHght) ? dTop + wHght - tiph - 10 : y;
+        // last ditch attempt to keep the graphs 'on page'
+        x = Math.max(x, 0);
+        if (tipw >= wWidth) {
+            $($tooltip.attr('id') + '_img').css({width: wWidth - 20});
+            $('#' + $tooltip.attr('id') + '_img').css({width: wWidth - 20});
+            y = e.pageY + 5;
+        }
+        $tooltip.css({left: x, top: y});
+    },
+
+    delaybox: function ($, $tooltip) {
+        if (this.showTips) {
+            ddimgtooltip.delayTimer = setTimeout(
+                function () {
+                    ddimgtooltip.showbox($tooltip);
+                }, ddimgtooltip.tipDelay);
+        }
+    },
+
+    showbox: function (tooltip) {
+        if (this.showTips) {
+            // $(tooltip).show();
+            $(tooltip).fadeIn();
+        }
+    },
+
+    hidebox: function ($, $tooltip) {
+        clearTimeout(ddimgtooltip.delayTimer);
+        // $tooltip.hide();
+        $tooltip.fadeOut();
+    },
+
+    showTips: false,
+
+    init: function (targetselector) {
+        var tiparray = ddimgtooltip.tiparray,
+            $targets = $(targetselector);
+
+        if ($targets.length === 0) {
+            return;
+        }
+        $targets.each(function () {
+            var $target = $(this),
+                tipsuffix, tipid,
+                $tooltip;
+            var ind = ($target.attr('id').match(/_(\d+)/) || [])[1] || ''; // match d of attribute id='tip_d'
+            tipsuffix = parseInt(ind, 10); // get d as integer
+            tipid = this.tipid = ddimgtooltip.tipprefix + tipsuffix; // construct this tip's ID value and remember it
+            $tooltip = ddimgtooltip.createtip($, tipid, tiparray[tipsuffix]);
+
+            $target.mouseenter(function (e) {
+                var $tooltip = $('#' + this.tipid);
+                // ddimgtooltip.showbox($, $tooltip, e);
+                ddimgtooltip.delaybox($, $tooltip, e);
+            });
+            $target.mouseleave(function () {
+                var $tooltip = $('#' + this.tipid);
+                ddimgtooltip.hidebox($, $tooltip);
+            });
+            $target.mousemove(function (e) {
+                var $tooltip = $('#' + this.tipid);
+                ddimgtooltip.positiontooltip($, $tooltip, e);
+            });
+            if ($tooltip) { // add mouseenter to this tooltip (only if event hasn't already been added)
+                $tooltip.mouseenter(function () {
+                    ddimgtooltip.hidebox($, $(this));
+                });
+            }
+        });
+    }
+};
 
 // if String doesn't offer a .trim() method, add it
 String.prototype.trim = String.prototype.trim || function trim() {
