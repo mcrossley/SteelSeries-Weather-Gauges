@@ -33,7 +33,7 @@ gauges = (function () {
     var strings = LANG.EN,         // Set to your default language. Store all the strings in one object
         config = {
             // Script configuration parameters you may want to 'tweak'
-            scriptVer          : '2.7.0',
+            scriptVer          : '2.7.1',
             weatherProgram     : 0,                      // Set 0=Cumulus, 1=Weather Display, 2=VWS, 3=WeatherCat, 4=Meteobridge, 5=WView, 6=WeeWX, 7=WLCOM
             imgPathURL         : './images/',            // *** Change this to the relative path for your 'Trend' graph images
             oldGauges          : 'gauges.htm',           // *** Change this to the relative path for your 'old' gauges page.
@@ -821,14 +821,12 @@ gauges = (function () {
                             cache.high = extractDecimal(data.intempTH);
                             cache.lowScale = getMinTemp(cache.minValue);
                             cache.highScale = getMaxTemp(cache.maxValue);
-                            cache.maxMinVisible = true;
                         } else {
                             // Indoor - no Max/Min values supplied
                             cache.low = cache.value;
                             cache.lowScale = cache.value;
                             cache.high = cache.value;
                             cache.highScale = cache.value;
-                            cache.maxMinVisible = false;
                         }
                         if (gaugeGlobals.tempTrendVisible) {
                             cache.trend = steelseries.TrendState.OFF;
@@ -872,7 +870,7 @@ gauges = (function () {
                         cache.areas = [steelseries.Section(+cache.low, +cache.high, gaugeGlobals.minMaxArea)];
                     } else if (data.intempTL && data.intempTH) {
                         // Indoor and min/max avaiable
-                        cache.areas = [steelseries.Section(+extractDecimal(data.intempTL), +extractDecimal(data.intempTH), gaugeGlobals.minMaxArea)];
+                        cache.areas = [steelseries.Section(+cache.low, +cache.high, gaugeGlobals.minMaxArea)];
                     } else {
                         // Nndoor no min/max avaiable
                         cache.areas = [];
