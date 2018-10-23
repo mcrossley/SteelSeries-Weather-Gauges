@@ -412,6 +412,10 @@ If the display is in feet, then values below 2000 ft are rounded to 50 ft, above
 
 Release History
 =======================
+2.7.2
+  * gaugues.js
+    - Fix conversion of Indoor Temp Todays Low between C & F
+
 2.7.1
   * gauges.js
     - Fix temperature gauge, 2.7.0 caused the min/max indicators to be shown erroneously
