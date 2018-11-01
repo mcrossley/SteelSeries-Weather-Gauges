@@ -33,7 +33,7 @@ gauges = (function () {
     var strings = LANG.EN,         // Set to your default language. Store all the strings in one object
         config = {
             // Script configuration parameters you may want to 'tweak'
-            scriptVer          : '2.7.2',
+            scriptVer          : '2.7.3',
             weatherProgram     : 0,                      // Set 0=Cumulus, 1=Weather Display, 2=VWS, 3=WeatherCat, 4=Meteobridge, 5=WView, 6=WeeWX, 7=WLCOM
             imgPathURL         : './images/',            // *** Change this to the relative path for your 'Trend' graph images
             oldGauges          : 'gauges.htm',           // *** Change this to the relative path for your 'old' gauges page.
@@ -173,7 +173,7 @@ gauges = (function () {
         sampleDate,
         realtimeVer,                // minimum version of the realtime JSON file required
         programLink = [
-            '<a href="//sandaysoft.com/products/cumulus" target="_blank" rel="noopener">Cumulus</a>',
+            '<a href="https://cumuluswiki.wxforum.net/a/Software" target="_blank" rel="noopener">Cumulus</a>',
             '<a href="//www.weather-display.com/" target="_blank" rel="noopener">Weather Display</a>',
             '<a href="//www.ambientweather.com/virtualstation.html" target="_blank" rel="noopener">Virtual Weather Station</a>',
             '<a href="//trixology.com/weathercat/" target="_blank" rel="noopener">WeatherCat</a>',

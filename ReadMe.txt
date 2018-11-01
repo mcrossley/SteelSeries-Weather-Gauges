@@ -2,8 +2,8 @@ SteelSeries JavaScript gauges
 =============================
 Created by Mark Crossley July 2011
 
-Version 2.7.1
-Updated: 27 July 2018
+Version 2.7.3
+Updated: 01 November 2018
 
 +-------------------------------------------------------+
 |                                                       |
@@ -412,6 +412,10 @@ If the display is in feet, then values below 2000 ft are rounded to 50 ft, above
 
 Release History
 =======================
+2.7.3
+  * gauges.js
+    - New URL for Cumulus downloads
+
 2.7.2
   * gauges.js
     - Fix conversion of Indoor Temp Todays Low between C & F
