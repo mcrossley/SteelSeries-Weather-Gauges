@@ -1,4 +1,4 @@
-﻿/*!
+/*!
  * A starter gauges page for Cumulus and Weather Display, based
  * on the JavaScript SteelSeries gauges by Gerrit Grunwald.
  *

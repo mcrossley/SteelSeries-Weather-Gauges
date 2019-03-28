@@ -5,7 +5,7 @@
  *
  * File encoding = UTF-8
 */
-/*! Version: 2.6.0 - Updated: 22 April 2017 (Added miles/km/n_miles) */
+/*! Version: 2.7.0 - Updated: 28 March 2019 (Added Polish) */
 
 /*global gauges */
 
@@ -2427,6 +2427,175 @@ LANG.CS = {
     n_miles: 'n.míle',
     km     : 'km'
 
+};
+//======================================================================================================================
+// Polish by barcik75
+//======================================================================================================================
+LANG.PL = {
+	canvasnosupport: "Brak wsparcia dla HTML5 w Twojej przeglądarce...<br>Spróbuj zaktualizować przeglądarkę do nowszej wersji<br><br>Przekierowanie na 'stary' wygląd strony...",
+	//
+	led_title: "Nieznany status zdalnego sensora",
+	led_title_ok: "Zdalny sensor OK",
+	led_title_lost: "Stracone połączenie ze zdalnym sensorem!",
+	led_title_unknown: "Nieznany status zdalnego sensora!",
+	led_title_offline: "Stacja pogoda aktualnie jest wyłączona.",
+	//
+	weather: "pogoda",
+	latitude: "Długość geograficzna",
+	longitude: "Szerokość geograficzna",
+	elevation: "Wysokość",
+	//
+	statusStr: "Ładowanie...",
+	StatusMsg: "Ściąganie...",
+	StatusHttp: "Błąd przetwarzania HTTP",
+	StatusRetry: "Ponawianie...",
+	StatusRetryIn: "Ponowienie za...",
+	StatusTimeout: "Przekroczony czas",
+	StatusPageLimit: "Autoodświeżanie strony osiągnęlo limit, naciśnij diodę LED, aby odświeżyć.",
+	//
+	StatusLastUpdate: "Ostatni odczyt",
+	StatusMinsAgo: "minut temu",
+	StatusHoursAgo: "godzin temu",
+	StatusDaysAgo: "dni temu",
+	//
+	realtimeCorrupt: "Ściąganie pliku tekstowego nie powiodło się. Ponawianie...",
+	//
+	timer: "sekund",
+	at: "o",
+	//
+	// MAXIMUM number of characters that can be used for the 'title' variables (such as 'LANG_EN.temp_title_out')
+        //        11 characters  ===="12345678901"====  11 characters
+        //
+	temp_title_out: "Temperatura",
+	temp_title_in: "Temperatura wewnątrz",
+	temp_out_info: "Temperatura na zewnątrz",
+	temp_out_web: "Na zewnątrz",
+	temp_in_info: "Wewnątrz",
+	temp_in_web: "Wewnątrz",
+	temp_trend_info: "Trend temperatury",
+	//
+	dew_title: "Punkt rosy",
+	dew_info: "Punkt rosy",
+	dew_web: "Punkt rosy",
+	apptemp_title: "Odczuwalna",
+	apptemp_info: "Temperatura odczuwalna",
+	apptemp_web: "Odczuwalna",
+	chill_title: "Chłod wiatru",
+	chill_info: "Chłod wiatru",
+	chill_web: "Chłód wiatru",
+	heat_title: "Indeks ciepła",
+	heat_info: "Indeks ciepła",
+	heat_web: "Indeks ciepła",
+	humdx_title: "Humidex",
+	humdx_info: "Humidex",
+	humdx_web: "Humidex",
+	//
+	rain_title: "Opady deszczu",
+	rrate_title: "Stopa opadów",
+	rrate_info: "Stopa opadów",
+	LastRain_info: "Ostatnie opady",
+	LastRainedT_info: "Dzisiaj o",
+	LastRainedY_info: "Wczoraj o",
+	//
+	hum_title_out: "Wilgotność",
+	hum_title_in: "Wilgotność wewnątrz",
+	hum_out_info: "Wilgotność na zewnątrz",
+	hum_in_info: "Wilgotność wewnątrz",
+	hum_out_web: "Na zewnątrze",
+	hum_in_web: "Wewnątrz",
+	//
+	baro_title: "Ciśnienie",
+	baro_info: "Ciśnienie barometryczne",
+	baro_trend_info: "Trend ciśnienia",
+	//
+	wind_title: "Prędkość wiatru",
+	tenminavg_title: "Średnia prędkość wiatru",
+	tenminavgwind_info: "Średnia prędkość wiatru z ostatnich 10 minut",
+	maxavgwind_info: "Maksymalna średnia prędkość wiatru",
+	tenmingust_info: "Porywy wiatru z ostatnich 10 minut",
+	maxgust_info: "Maksymalny poryw wiatru",
+	latest_title: "Ostatni wiatr",
+	latestwind_info: "Ostatnia prędkość wiatru",
+	bearing_info: "kierunek",
+	latest_web: "Ostatni",
+	tenminavg_web: "Średni",
+	dominant_bearing: "Dzisiejszy dominujący wiatr",
+	calm: "spokojnie",
+	windrose: "Róża wiatru",
+	windruntoday: "Dzisiejszy wiatr",
+	//
+	uv_title: "UV Indeks",
+	uv_levels: ["Brak",
+	            "Brak ryzyka",
+				"Średnie ryzyko",
+				"Wysokie ryzyko",
+				"Bardzo wysokie ryzyko",
+				"Ekstremalne ryzyko"],
+	uv_headlines: ["Brak pomiarów indeksu UV",
+				   "Brak ryzyka dla statystycznej osoby",
+				   "Umiarkowane ryzyko szkód wynikających z nieosłoniętego nasłonecznienia",
+				   "Wysokie ryzyko szkód spowodowanych nieosłoniętą ekspozycją na słońce",
+				   "Bardzo wysokie ryzyko szkód spowodowanych nieosłoniętą ekspozycją na słońce",
+				   "Ekstremalne ryzyko szkód spowodowanych nieosłoniętym nasłonecznieniem"],
+	uv_details: ["Nadal jest noc lub jest bardzo pochmurny dzień.",
+				 "Noś okulary przeciwsłoneczne w jasne dni, użyj ochrony przeciwsłonecznej, jeśli śnieg jest na ziemi,<br>" +
+				 "który odbija promieniowanie UV, lub jeśli masz szczególnie jasną skórę.",
+
+				 "Noś okulary przeciwsłoneczne i używaj kremów przeciwsłonecznych SPF 30+, zakryj ciało<br>" +
+				 "ubraniem i kapeluszem, a gdy słońce jest najbardziej intensywne, szukaj cienia około południa.",
+
+				 "Noś okulary przeciwsłoneczne i używaj kremu przeciwsłonecznego SPF 30+, zakryj ciało<br>" +
+				 "z ochroną przeciwsłoneczną i ubraniem oraz kapelusz z szerokim rondem i skróć czas na<br>" +
+				 "słońcu z dwóch godzin przed do trzech godzin po słonecznym południu (około 11:00<br>" +
+				 "do 16:00 latem w strefach, w których obserwuje się czas letni)",
+
+				 "Stosuj filtr przeciwsłoneczny SPF 30+, noś koszulę, okulary przeciwsłoneczne i kapelusz.<br>" +
+				 "Nie zostawaj zbyt długo w słońcu.", "Podejmij wszelkie środki ostrożności, w tym:<br>" +
+				 "noś okulary przeciwsłoneczne i używać kremu do opalania z filtrem SPF 30+,<br>" +
+				 "przykryj ciało koszulą z długim rękawem i spodniami, załóż bardzo szeroki kapelusz, i<br>" +
+				 "unikaj słońca od dwóch godzin przed do trzech godzin po słonecznym południu (około 11:00<br>" +
+				 "do 16:00 latem w strefach, które obserwują czas letni)"],
+	//
+	solar_title: "Promieniowanie słoneczne",
+	solar_currentMax: "Obecne teoretyczne maksymalne promieniowanie",
+	solar_ofMax: "z maksimum",
+	solar_maxToday: "Dzisiejszy maksymalny odczyt",
+	//
+	lowest_info: "Najniższa",
+	highest_info: "Najwyższa",
+	lowestF_info: "Najniższa",
+	highestF_info: "Najwyższa",
+	//
+	RisingVeryRapidly: "Rośnie bardzo szybko",
+	RisingQuickly: "Rośnie szybko",
+	Rising: "Rośnie",
+	RisingSlowly: "Rośnie powoli",
+	Steady: "Stabilne",
+	FallingSlowly: "Opada wolno",
+	Falling: "Opada",
+	FallingQuickly: "Opada szybko",
+	FallingVeryRapidly: "Opada bardzo szybko",
+	//
+	maximum_info: "Maksimum",
+	max_hour_info: "Maksymalnie na godzine",
+	minimum_info: "Minimum",
+	//
+	coords: ["N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE", "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW"],
+	compass: ["N", "NE", "E", "SE", "S", "SW", "W", "NW"],
+	months: ["Sty", "Lut", "Mar", "Kwi", "Maj", "Cze", "Lip", "Sie", "Wrz", "Paź", "Lis", "Gru"],
+	//
+	cloudbase_title: "Poziom chmur",
+	cloudbase_popup_title: "Teoretyczny poziom chmur",
+	cloudbase_popup_text: "Obliczenia są proste:<br>" +
+						  "1000 stóp na każde 4,4 stopnia Fahrenheita różnicy między temperaturą, a punktem rosy.<br>" +
+						  "Zauważ, że to teoretyczna wysokość, w której chmury Cumulus zaczęłyby się formować,<br>" +
+						  "a powietrze było nasycone",
+	//
+	feet: "stopy",
+	metres: "metry",
+	miles: "mile",
+	n_miles: "mile morskie",
+	km: "km",
 };
 
 //======================================================================================================================
