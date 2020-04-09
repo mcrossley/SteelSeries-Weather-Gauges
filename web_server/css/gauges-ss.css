@@ -1,6 +1,6 @@
 ﻿/* CSS for SteelSeries Gauges
  * Mark Crossley
- * v2.5.0 - 03 Dec 2014
+ * v2.5.1 - 09 April 2020
 */
 body {
 	font-family: Verdana, Helvetica, sans-serif;
@@ -22,7 +22,6 @@ body {
   padding: 5px;
   text-align: center;
   display: inline-block;
-  vertical-align: top;
   position: relative;
 }
 .gaugeSizeSml {

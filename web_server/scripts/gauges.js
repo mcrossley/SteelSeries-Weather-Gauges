@@ -33,7 +33,7 @@ gauges = (function () {
     var strings = LANG.EN,         // Set to your default language. Store all the strings in one object
         config = {
             // Script configuration parameters you may want to 'tweak'
-            scriptVer          : '2.7.3',
+            scriptVer          : '2.7.4',
             weatherProgram     : 0,                      // Set 0=Cumulus, 1=Weather Display, 2=VWS, 3=WeatherCat, 4=Meteobridge, 5=WView, 6=WeeWX, 7=WLCOM
             imgPathURL         : './images/',            // *** Change this to the relative path for your 'Trend' graph images
             oldGauges          : 'gauges.htm',           // *** Change this to the relative path for your 'old' gauges page.
@@ -4214,7 +4214,8 @@ gauges = (function () {
     return {
         setLang    : setLang,
         setUnits   : setUnits,
-        processData: processData
+        processData: processData,
+        config     : config
     };
 }());
 
