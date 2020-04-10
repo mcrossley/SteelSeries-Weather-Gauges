@@ -4215,7 +4215,8 @@ gauges = (function () {
         setLang    : setLang,
         setUnits   : setUnits,
         processData: processData,
-        config     : config
+        config     : config,
+        init       : init
     };
 }());
 
