@@ -274,7 +274,7 @@
 #set $hourlyrainTH = 0
 #set $ThourlyrainTH = ''
 #for $hour in $day.hours
-#if $hour.rain.sum.raw > $hourlyrainTH
+#if $hour.rain.sum.raw is not None and $hour.rain.sum.raw > $hourlyrainTH
 #set $hourlyrainTH = $hour.rain.sum.raw
 #set $ThourlyrainTH = $hour.dateTime.format("%H:%M")
 #end if
