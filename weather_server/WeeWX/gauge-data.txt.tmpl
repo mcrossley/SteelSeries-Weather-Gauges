@@ -8,6 +8,8 @@
 ##                                  added UoM consitency from unit_type rather than labels which can be localised
 ##                                  force rain in cm to mm as gauges do not currently handle cm's.
 ## Updated 04oct2016 by M Crossley, added changes from PR4
+## Updated 3Jun2020  by G Roderick, rain calculations now tolerate a station that does not provide rain data
+##                                  (as distinct from rain data that is 0)
 ## definitions for the tags can be found here:
 ## http://wiki.sandaysoft.com/a/Webtags
 ##
@@ -265,16 +267,27 @@
 #set $UOM_rain = 'mm'
 #set $rain_mult = 10
 #end if
+#if $day.rain.sum.has_data
 #set $day_rain = $rain_format % ($day.rain.sum.raw * $rain_mult)
+#else
+#set $day_rain = 0.0
+#end if
+#if $current.rainRate.raw is not None
 #set $current_rainrate = $rainrate_format % ($current.rainRate.raw * $rain_mult)
+#else
+#set $current_rainrate = 0.0
+#end if
+#if $day.rainRate.max.has_data
 #set $day_rainrate_max = $rainrate_format % ($day.rainRate.max.raw * $rain_mult)
-#set $hour_rain_max = $rain_format % ($hour.rain.max.raw * $rain_mult)
+#else
+#set $day_rainrate_max = 0.0
+#end if
 ##
 ## Today's High Hourly Rain
 #set $hourlyrainTH = 0
 #set $ThourlyrainTH = ''
 #for $hour in $day.hours
-#if $hour.rain.sum.raw is not None and $hour.rain.sum.raw > $hourlyrainTH
+#if $hour.rain.sum.has_data and $hour.rain.sum.raw > $hourlyrainTH
 #set $hourlyrainTH = $hour.rain.sum.raw
 #set $ThourlyrainTH = $hour.dateTime.format("%H:%M")
 #end if
