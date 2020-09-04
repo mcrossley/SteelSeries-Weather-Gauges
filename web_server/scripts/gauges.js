@@ -33,7 +33,7 @@ gauges = (function () {
     var strings = LANG.EN,         // Set to your default language. Store all the strings in one object
         config = {
             // Script configuration parameters you may want to 'tweak'
-            scriptVer          : '2.7.4',
+            scriptVer          : '2.7.5',
             weatherProgram     : 0,                      // Set 0=Cumulus, 1=Weather Display, 2=VWS, 3=WeatherCat, 4=Meteobridge, 5=WView, 6=WeeWX, 7=WLCOM
             imgPathURL         : './images/',            // *** Change this to the relative path for your 'Trend' graph images
             oldGauges          : 'gauges.htm',           // *** Change this to the relative path for your 'old' gauges page.
@@ -4014,10 +4014,14 @@ gauges = (function () {
 
             // temperature
             if (gaugeTemp) {
-                if ($('#rad_temp1').is(':checked')) {
-                    gaugeTemp.data.title = strings.temp_title_out;
+                if (config.showIndoorTempHum) {
+                    if ($('#rad_temp1').is(':checked')) {
+                        gaugeTemp.data.title = strings.temp_title_out;
+                    } else {
+                        gaugeTemp.data.title = strings.temp_title_in;
+                    }
                 } else {
-                    gaugeTemp.data.title = strings.temp_title_in;
+                    gaugeTemp.data.title = strings.temp_title_out;
                 }
                 gaugeTemp.gauge.setTitleString(gaugeTemp.data.title);
                 if (data.ver) {gaugeTemp.update();}
@@ -4058,10 +4062,14 @@ gauges = (function () {
             }
             // humidity
             if (gaugeHum) {
-                if ($('#rad_hum1').is(':checked')) {
-                    gaugeHum.data.title = strings.hum_title_out;
+                if (config.showIndoorTempHum) {
+                    if ($('#rad_hum1').is(':checked')) {
+                        gaugeHum.data.title = strings.hum_title_out;
+                    } else {
+                        gaugeHum.data.title = strings.hum_title_in;
+                    }
                 } else {
-                    gaugeHum.data.title = strings.hum_title_in;
+                    gaugeHum.data.title = strings.hum_title_out;
                 }
                 gaugeHum.gauge.setTitleString(gaugeHum.data.title);
                 if (data.ver) {gaugeHum.update();}
