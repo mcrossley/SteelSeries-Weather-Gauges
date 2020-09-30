@@ -412,6 +412,13 @@ If the display is in feet, then values below 2000 ft are rounded to 50 ft, above
 
 Release History
 =======================
+2.7.5
+  * gauges.js
+    - Fix temp/hum gauge titles if the language is updated and show indoor values is disabled.
+    - Fix to add missing public exposure of the init() function
+  * WeeWX/gauge-data.txt.tmpl
+    - Rain calculations now tolerate a station that does not provide rain data
+
 2.7.4
   * language.js language.min.js
     - Added Polish translation courtesy of barcik75
