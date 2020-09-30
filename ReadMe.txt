@@ -2,8 +2,8 @@ SteelSeries JavaScript gauges
 =============================
 Created by Mark Crossley July 2011
 
-Version 2.7.4
-Updated: 28 March 2019
+Version 2.7.5
+Updated: 30 September 2019
 
 +-------------------------------------------------------+
 |                                                       |
