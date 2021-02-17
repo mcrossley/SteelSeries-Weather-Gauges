@@ -33,7 +33,7 @@ gauges = (function () {
     var strings = LANG.EN,         // Set to your default language. Store all the strings in one object
         config = {
             // Script configuration parameters you may want to 'tweak'
-            scriptVer          : '2.7.5',
+            scriptVer          : '2.7.6',
             weatherProgram     : 0,                      // Set 0=Cumulus, 1=Weather Display, 2=VWS, 3=WeatherCat, 4=Meteobridge, 5=WView, 6=WeeWX, 7=WLCOM
             imgPathURL         : './images/',            // *** Change this to the relative path for your 'Trend' graph images
             oldGauges          : 'gauges.htm',           // *** Change this to the relative path for your 'old' gauges page.
@@ -2166,11 +2166,7 @@ gauges = (function () {
                             height: cache.odoHeight
                         });
                         // Position it
-                        $(buffers.Odo).css({
-                            position: 'absolute',
-                            top     : Math.ceil(cache.gaugeSize * 0.7 + $('#canvas_rose').position().top) + 'px',
-                            left    : Math.ceil((cache.gaugeSize - cache.odoWidth) / 2 + $('#canvas_rose').position().left) + 'px'
-                        });
+                        $(buffers.Odo).attr("class", "odo");
                         // Insert it into the DOM before the Rose gauge
                         $(buffers.Odo).insertBefore('#canvas_rose');
                         // Create the odometer

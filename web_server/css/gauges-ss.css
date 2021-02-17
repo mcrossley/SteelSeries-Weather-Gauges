@@ -24,6 +24,13 @@ body {
   display: inline-block;
   position: relative;
 }
+.odo {
+  position: absolute;
+  top: 67%;
+  left: 50%;
+  transform: translateX(-50%);
+  -webkit-transform: translateX(-50%);
+}
 .gaugeSizeSml {
   width: 181px;
   height: 181px;
