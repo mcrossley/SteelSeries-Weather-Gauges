@@ -2731,7 +2731,7 @@ gauges = (function () {
         //
         getRealtime = function () {
             var url = config.realTimeURL;
-            if ($.active > 0) {
+            if ($.active > 0 && undefined != jqXHR) {
                 // kill any outstanding requests
                 jqXHR.abort();
             }
