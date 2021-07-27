@@ -1,4 +1,4 @@
-{"date":"de$",
+DOTSEPARATORS${"date":"de$",
 "timeUTC":"DUTC$",
 "SensorContactLost":"COMMSFAILFLAG$",
 "forecast":"Current forecast is -- CF$ --",
