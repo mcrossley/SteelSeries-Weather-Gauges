@@ -2,8 +2,8 @@ SteelSeries JavaScript gauges
 =============================
 Created by Mark Crossley July 2011
 
-Version 2.7.6
-Updated: 17 February 2021
+Version 2.7.7
+Updated: 01 September 2023
 
 +-------------------------------------------------------+
 |                                                       |
@@ -412,6 +412,10 @@ If the display is in feet, then values below 2000 ft are rounded to 50 ft, above
 
 Release History
 =======================
+2.7.7
+  * gauges.js
+    - Fix rounding errors when converting wind speeds.
+
 2.7.5
   * gauges.js
     - Fix temp/hum gauge titles if the language is updated and show indoor values is disabled.

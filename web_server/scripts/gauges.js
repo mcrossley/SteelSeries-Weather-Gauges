@@ -5,6 +5,8 @@
  * Created by Mark Crossley, July 2011
  *  see scriptVer below for latest release
  *
+ * Last Updated: 2023/09/01 16:44:34
+ *
  * Released under GNU GENERAL PUBLIC LICENSE, Version 2, June 1991
  * See the enclosed License file
  *
@@ -33,7 +35,7 @@ gauges = (function () {
     var strings = LANG.EN,         // Set to your default language. Store all the strings in one object
         config = {
             // Script configuration parameters you may want to 'tweak'
-            scriptVer          : '2.7.6',
+            scriptVer          : '2.7.7',
             weatherProgram     : 0,                      // Set 0=Cumulus, 1=Weather Display, 2=VWS, 3=WeatherCat, 4=Meteobridge, 5=WView, 6=WeeWX, 7=WLCOM
             imgPathURL         : './images/',            // *** Change this to the relative path for your 'Trend' graph images
             oldGauges          : 'gauges.htm',           // *** Change this to the relative path for your 'old' gauges page.
@@ -680,7 +682,7 @@ gauges = (function () {
                             digitalFont      : config.digitalFont,
                             value            : count
                         });
-                    // subcribe to data updates
+                    // subscribe to data updates
                     $.subscribe('gauges.clockTick', tick);
                 }
 
@@ -763,7 +765,7 @@ gauges = (function () {
                         $('#lab_hum2').remove();
                     }
 
-                    // subcribe to data updates
+                    // subscribe to data updates
                     $.subscribe('gauges.dataUpdated', update);
                     $.subscribe('gauges.graphUpdate', updateGraph);
                 } else {
@@ -1002,7 +1004,7 @@ gauges = (function () {
                         $('#canvas_dew').css(gaugeShadow(params.size));
                     }
 
-                    // subcribe to data updates
+                    // subscribe to data updates
                     $.subscribe('gauges.dataUpdated', update);
                     $.subscribe('gauges.graphUpdate', updateGraph);
                 } else {
@@ -1217,7 +1219,7 @@ gauges = (function () {
                         $('#canvas_rain').css(gaugeShadow(params.size));
                     }
 
-                    // subcribe to data updates
+                    // subscribe to data updates
                     $.subscribe('gauges.dataUpdated', update);
                     $.subscribe('gauges.graphUpdate', updateGraph);
                 } else {
@@ -1331,7 +1333,7 @@ gauges = (function () {
                         $('#canvas_rrate').css(gaugeShadow(params.size));
                     }
 
-                    // subcribe to data updates
+                    // subscribe to data updates
                     $.subscribe('gauges.dataUpdated', update);
                     $.subscribe('gauges.graphUpdate', updateGraph);
                 } else {
@@ -1447,7 +1449,7 @@ gauges = (function () {
                         $('#canvas_hum').css(gaugeShadow(params.size));
                     }
 
-                    // subcribe to data updates
+                    // subscribe to data updates
                     $.subscribe('gauges.dataUpdated', update);
                     $.subscribe('gauges.graphUpdate', updateGraph);
                 } else {
@@ -1592,7 +1594,7 @@ gauges = (function () {
                         $('#canvas_baro').css(gaugeShadow(params.size));
                     }
 
-                    // subcribe to data updates
+                    // subscribe to data updates
                     $.subscribe('gauges.dataUpdated', update);
                     $.subscribe('gauges.graphUpdate', updateGraph);
                 } else {
@@ -1755,7 +1757,7 @@ gauges = (function () {
                         $('#canvas_wind').css(gaugeShadow(params.size));
                     }
 
-                    // subcribe to data updates
+                    // subscribe to data updates
                     $.subscribe('gauges.dataUpdated', update);
                     $.subscribe('gauges.graphUpdate', updateGraph);
                 } else {
@@ -1875,7 +1877,7 @@ gauges = (function () {
                         $('#canvas_dir').css(gaugeShadow(params.size));
                     }
 
-                    // subcribe to data updates
+                    // subscribe to data updates
                     $.subscribe('gauges.dataUpdated', update);
                     $.subscribe('gauges.graphUpdate', updateGraph);
                 } else {
@@ -2176,7 +2178,7 @@ gauges = (function () {
                             decimals: 1
                         });
                     }
-                    // subcribe to data updates
+                    // subscribe to data updates
                     $.subscribe('gauges.dataUpdated', update);
                     $.subscribe('gauges.graphUpdate', updateGraph);
                 } else {
@@ -2400,7 +2402,7 @@ gauges = (function () {
                         $('#canvas_uv').css(gaugeShadow(params.size));
                     }
 
-                    // subcribe to data updates
+                    // subscribe to data updates
                     $.subscribe('gauges.dataUpdated', update);
                     $.subscribe('gauges.graphUpdate', updateGraph);
                 } else {
@@ -2520,7 +2522,7 @@ gauges = (function () {
                     if (config.showGaugeShadow) {
                         $('#canvas_solar').css(gaugeShadow(params.size));
                     }
-                    // subcribe to data updates
+                    // subscribe to data updates
                     $.subscribe('gauges.dataUpdated', update);
                     $.subscribe('gauges.graphUpdate', updateGraph);
                 } else {
@@ -2647,7 +2649,7 @@ gauges = (function () {
                     if (config.showGaugeShadow) {
                         $('#canvas_cloud').css(gaugeShadow(params.size));
                     }
-                    // subcribe to data updates
+                    // subscribe to data updates
                     $.subscribe('gauges.dataUpdated', update);
                     $.subscribe('gauges.graphUpdate', updateGraph);
                 } else {
@@ -3429,83 +3431,70 @@ gauges = (function () {
         },
 
         // Celsius to Fahrenheit
-        c2f = function c2f(val) {
+        c2f = function (val) {
             return (extractDecimal(val) * 9 / 5 + 32).toFixed(1);
         },
         // Fahrenheit to Celsius
-        f2c = function f2c(val) {
+        f2c = function (val) {
             return ((extractDecimal(val) - 32) * 5 / 9).toFixed(1);
         },
-        // mph to ms
-        mph2ms = function mph2ms(val) {
-            return (extractDecimal(val) * 0.447).toFixed(1);
-        },
-        // knots to ms
-        kts2ms = function kts2ms(val) {
-            return (extractDecimal(val) * 0.515).toFixed(1);
-        },
         // kph to ms
-        kmh2ms = function kmh2ms(val) {
+        kmh2ms = function (val) {
             return (extractDecimal(val) * 0.2778).toFixed(1);
         },
-        // ms to kts
-        ms2kts = function ms2kts(val) {
-            return (extractDecimal(val) * 1.9426).toFixed(1);
-        },
-        // ms to mph
-        ms2mph = function ms2mph(val) {
-            return (extractDecimal(val) * 2.237).toFixed(1);
-        },
         // ms to kph
-        ms2kmh = function ms2kmh(val) {
+        ms2kmh = function (val) {
             return (extractDecimal(val) * 3.6).toFixed(1);
         },
+        kmh2ms = function (val){
+            return (extractDecimal(val) / 3.6).toFixed(1);
+        },
         // mm to inches
-        mm2in = function mm2in(val) {
+        mm2in = function (val) {
             return (extractDecimal(val) / 25.4).toFixed(2);
         },
         // inches to mm
-        in2mm = function in2mm(val) {
+        in2mm = function (val) {
             return (extractDecimal(val) * 25.4).toFixed(1);
         },
         // miles to km
-        miles2km = function miles2km(val) {
+        miles2km = function (val) {
             return (extractDecimal(val) * 1.609344).toFixed(1);
         },
         // nautical miles to km
-        nmiles2km = function nmiles2km(val) {
+        nmiles2km = function (val) {
             return (extractDecimal(val) * 1.85200).toFixed(1);
         },
         // km to miles
-        km2miles = function km2miles(val) {
+        km2miles = function (val) {
             return (extractDecimal(val) / 1.609344).toFixed(1);
         },
         // km to nautical miles
-        km2nmiles = function km2nmiles(val) {
+        km2nmiles = function (val) {
             return (extractDecimal(val) / 1.85200).toFixed(1);
         },
         // hPa to inHg (@0°C)
-        hpa2inhg = function hpa2inhg(val, decimals) {
+        hpa2inhg = function (val, decimals) {
             return (extractDecimal(val) * 0.029528744).toFixed(decimals || 3);
         },
         // inHg to hPa (@0°C)
-        inhg2hpa = function inhg2hpa(val) {
+        inhg2hpa = function (val) {
             return (extractDecimal(val) / 0.029528744).toFixed(1);
         },
         // kPa to hPa
-        kpa2hpa = function kpa2hpa(val) {
+        kpa2hpa = function (val) {
             return (extractDecimal(val) * 10).toFixed(1);
         },
         // hPa to kPa
-        hpa2kpa = function hpa2kpa(val, decimals) {
+        hpa2kpa = function (val, decimals) {
             return (extractDecimal(val) / 10).toFixed(decimals || 2);
         },
         // m to ft
-        m2ft = function m2ft(val) {
+        m2ft = function (val) {
             return (val * 3.2808399).toFixed(0);
         },
         // ft to m
-        ft2m = function ft2m(val) {
+        ft2m = function (val) {
             return (val / 3.2808399).toFixed(0);
         },
 
@@ -3604,21 +3593,21 @@ gauges = (function () {
                     return val;
                 };
 
-            // convert to m/s & km
+            // convert to km/h & km
             switch (from) {
             case 'mph':
-                fromFunc1 = mph2ms;
+                fromFunc1 = miles2km;
                 fromFunc2 = miles2km;
                 break;
             case 'kts':
-                fromFunc1 = kts2ms;
+                fromFunc1 = nmiles2km;
                 fromFunc2 = nmiles2km;
                 break;
-            case 'km/h':
-                fromFunc1 = kmh2ms;
+            case 'm/s':
+                fromFunc1 = ms2kmh;
                 fromFunc2 = dummy;
                 break;
-            case 'm/s':
+            case 'km/h':
             // falls through
             default:
                 fromFunc1 = dummy;
@@ -3627,21 +3616,21 @@ gauges = (function () {
             // conversion function from km to required units
             switch (to) {
             case 'mph':
-                toFunc1 = ms2mph;
+                toFunc1 = km2miles;
                 toFunc2 = km2miles;
                 displayUnits.windrun = 'miles';
                 break;
             case 'kts':
-                toFunc1 = ms2kts;
+                toFunc1 = km2nmiles;
                 toFunc2 = km2nmiles;
                 displayUnits.windrun = 'n.miles';
                 break;
-            case 'km/h':
-                toFunc1 = ms2kmh;
+            case 'm/s':
+                toFunc1 = kmh2ms;
                 toFunc2 = dummy;
                 displayUnits.windrun = 'km';
                 break;
-            case 'm/s':
+            case 'km/h':
             // falls through
             default:
                 toFunc1 = dummy;
